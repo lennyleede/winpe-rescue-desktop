@@ -1,0 +1,18 @@
+﻿[P_conhost.exe] 978944
+[P_csrss.exe] 38576
+[P_wininit.exe] 563456
+[P_user32.dll] 1852616
+[P_sessions] csrss:508:S0 csrss:588:S1 services:680:S0 smss:420:S0 winlogon:664:S1
+[P_cim] 10.0.26100
+[C_copy] 24 个文件已复制到 X:\Windows\System32\OpenSSH
+[C_cfg] HostKey X:\Windows\System32\OpenSSH\ssh_host_rsa_key ; HostKey X:\Windows\System32\OpenSSH\ssh_host_ecdsa_key ; HostKey X:\Windows\System32\OpenSSH\ssh_host_ed25519_key ; AuthorizedKeysFile X:\Windows\System32\OpenSSH\administrators_authorized_keys ; Subsystem sftp X:\Windows\System32\OpenSSH\sftp-server.exe
+[E_reg] 已订阅 sshd.exe 的 start/stop trace
+[S_parent_procs] 
+[L_sys32] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[E_start] pid=1464 ppid=1892
+[E_stop] pid=608 ppid=0 ExitStatus=0xFFFFFFFF ;; pid=1464 ppid=0 ExitStatus=0x00000001
+[S_srv_tail] Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key' are too open. || It is required that your private key files are NOT accessible by others. || This private key will be ignored. || Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions || Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key || sshd: no hostkeys available -- exiting.
+[L_srcpath] Connection reset by 127.0.0.1 port 22
+[O_start] pid=1464 ppid=1892 ;; pid=672 ppid=1892 ;; pid=1904 ppid=672
+[O_stop] pid=608 ExitStatus=0xFFFFFFFF ;; pid=1464 ExitStatus=0x00000001 ;; pid=1904 ExitStatus=0xC0000142 ;; pid=672 ExitStatus=0x000000FF
+[D_sshd_running] YES

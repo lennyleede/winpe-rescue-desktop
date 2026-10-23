@@ -1,0 +1,56 @@
+===== 0. 取新版 wifi.exe (svc watch / dllload / regq) =====
+  OK 1432064 字节
+===== 1. 注册表里真正烘焙进去的值(类型错就是秒退的常见原因) =====
+  [reg-Type] Type = DWORD 32(0x20)
+  [reg-Start] Start = DWORD 3(0x3)
+  [reg-ErrorControl] ErrorControl = DWORD 1(0x1)
+  [reg-Group] Group = SZ(kind=1) <TDI>
+  [reg-ImagePath] ImagePath = SZ(kind=2) <%SystemRoot%\System32\svchost.exe -k LocalSystemNetworkRestricted -p>
+  [reg-ObjectName] ObjectName = SZ(kind=1) <LocalSystem>
+  [reg-ServiceSidType] ServiceSidType = DWORD 1(0x1)
+  [reg-DependOnService] DependOnService = MULTI_SZ(kind=7) [RpcSs]
+  [reg-RequiredPrivileges] RequiredPrivileges = MULTI_SZ(kind=7) [SeChangeNotifyPrivilege,SeImpersonatePrivilege,SeAuditPrivilege,SeTcbPrivilege,SeDebugPrivilege,SeLoadDriverPrivilege]
+  [reg-ServiceDll] ServiceDll = SZ(kind=2) <%SystemRoot%\System32\wlansvc.dll>
+  [reg-ServiceMain] ServiceMain = SZ(kind=1) <WlanSvcMain>
+  [reg-ServiceDllUnloadOnStop] ServiceDllUnloadOnStop = DWORD 1(0x1)
+  --- wcmsvc ---
+  [creg-Type] Type = DWORD 32(0x20)
+  [creg-Start] Start = DWORD 3(0x3)
+  [creg-ObjectName] ObjectName = SZ(kind=1) <LocalService>
+  [creg-DependOnService] DependOnService = MULTI_SZ(kind=7) [RpcSs]
+  [creg-RequiredPrivileges] RequiredPrivileges = MULTI_SZ(kind=7) [SeChangeNotifyPrivilege,SeImpersonatePrivilege,SeAuditPrivilege,SeTcbPrivilege]
+  [creg-dll] ServiceDll = SZ(kind=2) <%SystemRoot%\System32\wcmsvc.dll>
+  [creg-main] ServiceMain = SZ(kind=1) <WcmSvcMain>
+===== 2. DLL 能不能载入 + ServiceMain 导出在不在 =====
+  [dll-wlansvc] LoadLibraryEx OK base=0x7FFDA49F0000
+  [dll-wlansvc] GetProcAddress(WlanSvcMain) OK 0x7FFDA4A043F0
+  [dll-wcmsvc] LoadLibraryEx OK base=0x7FFDA4B90000
+  [dll-wcmsvc] GetProcAddress(WcmSvcMain) OK 0x7FFDA4BD57D0
+  [dll-wlanmsm] LoadLibraryEx OK base=0x7FFDA4C20000
+  [dll-wlanutil] LoadLibraryEx OK base=0x282E5480000
+  [dll-wci] LoadLibraryEx OK base=0x7FFDA4C80000
+  [dll-dmc] LoadLibraryEx OK base=0x7FFDA4C00000
+===== 3. 边启动边采样(抓过渡态和 Win32ExitCode) =====
+  [watch-wlansvc] StartService -> σ╖▓µÄÑσÅù
+  [watch-wlansvc] +     0ms state=START_PENDING(2) pid=0 exit=0(0x0) specific=0 via=QueryServiceStatus(basic)
+  [watch-wlansvc] +    28ms state=STOP_PENDING(3) pid=0 exit=0(0x0) specific=0 via=QueryServiceStatus(basic)
+  [watch-wlansvc] +   152ms state=STOPPED(1) pid=0 exit=2148270086(0x800C0006) specific=0 via=QueryServiceStatus(basic)
+  [watch-wlansvc] µ£Çτ╗ê: state=STOPPED(1) pid=0 exit=2148270086(0x800C0006)
+  --- wcmsvc ---
+  [watch-wcmsvc] StartService -> 1068 ERROR_SERVICE_DEPENDENCY_FAIL (The dependency service or group failed to start.)
+  [watch-wcmsvc] +     0ms state=STOPPED(1) pid=0 exit=1068(0x42C) specific=0 via=QueryServiceStatus(basic)
+  [watch-wcmsvc] µ£Çτ╗ê: state=STOPPED(1) pid=0 exit=1068(0x42C)
+===== 4. 依赖链 + wlanapi 句柄 =====
+  [deps-wlansvc] wlansvc: state=STOPPED(1) pid=0 exit=2148270086(0x800C0006) via=QueryServiceStatus(basic) type=32 start=3 deps=[RpcSs]
+  [deps-wlansvc] RpcSs: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[RpcEptMapper,DcomLaunch]
+  [deps-wlansvc] RpcEptMapper: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[]
+  [deps-wlansvc] DcomLaunch: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[]
+  [status] FAIL WlanOpenHandle: 1062 ERROR_SERVICE_NOT_STARTED (The service has not been started.)
+  [status] HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== 5. svchost 侧: 有没有进程加载过 wlansvc.dll =====
+  无进程加载 wlansvc/wcmsvc/wlanmsm
+  wlansvc WMI State=Stopped PID=0 ExitCode=0x800C0006
+  wcmsvc WMI State=Stopped PID=0 ExitCode=0x0000042C
+===== 6. 网络适配器侧(有没有 miniport 可绑) =====
+  Microsoft Hyper-V Network Adapter | GUID={5FE5D9B3-48FF-4B86-82D5-7630E93E0D43} | NetEnabled=True | PNPDeviceID=VMBUS\{F8615163-DF3E-46C5-913F-F2D2F965ED0E}\{E343A567-5608-433C-B67D-6C2AE5C312B3}
+  Microsoft Kernel Debug Network Adapter | GUID= | NetEnabled= | PNPDeviceID=ROOT\KDNIC\0000

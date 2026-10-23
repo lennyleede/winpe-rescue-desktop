@@ -1,0 +1,330 @@
+﻿===== Win10 PE 验收 2026-10-07 20:18:31 =====
+ISO = WinPE10_Desktop_v1_1007-201014.iso (586.5 MB)
+现有 VM = PE-TEST(Off), WinPE10-Test(Running), WinPE-Test(Off)
+[1] 已存在 WinPE10-Test, 删掉重建(只动这一台)
+[2] 开机前基线扫描(排除别的 VM 的 pe-sshd) ...
+    已开放 22 的 IP = 无
+[3] 建 VM WinPE10-Test Gen2 / 2048MB 固定 / 2vCPU / 交换机=Default Switch / 不挂硬盘
+    DVD 驱动器不存在 -> 已 Add-VMDvdDrive(SCSI 0/1)
+    光驱介质 = D:\QoderProject\国内版\生成winpe\dist\WinPE10_Desktop_v1_1007-201014.iso
+    已把显存降到 1024x768 单屏 (降显存)
+    本 VM 网卡 MAC = 00155D10E10A (静态, 用它做正向确认)
+[4] 第一轮: Secure Boot = On (赌 19041 正式版签名引导)
+    启动前 空闲内存=3743 MB, 本机需要 2048 MB (SecureBoot=On)
+    Start-VM 成功 (SecureBoot=On, 第 1 次尝试)
+    [screen] 异常: 无效类 
+    候选 172.17.40.212 MAC=00155D10E10A
+结论: Secure Boot 开着就能启动 = True (19041 正式版签名引导生效, 这是相对 v8 的增量)
+[5] 目标 PE = Administrator@172.17.40.212
+---------- 00 身份闸门 BUILD_TAG ----------
+  (rc=0 行数=9)
+  build   = 2026-10-07 09:43:26
+  base    = Windows 10 10.0.19041.1 (WinBuild.160101.0800) (boot.wim index 1)
+  product = WinPE10_Desktop_v1
+  netdrv  = inf 64 / DriverStore 306->370
+  tools   = niccheck / netdrvfix  (netdrvfix auto-runs at boot: startnet [1a])
+  bootbin = 19041 retail signed (Secure Boot should stay ON)
+  wifi    = injected
+  hta     = panel v10-ie8 (recut 2026-10-07 20:09)
+  powershell = yes
+---------- 00b OS 版本(必须是 10.0.19041.x) ----------
+  (rc=0 行数=2)
+  10.0.19041.0
+  5.1.19041.1
+身份校验通过: 这台就是 WinPE10_Desktop_v1 (19041 世代)
+    [screen] 异常: 无效类 
+---------- 01 status.txt(自启逐项结果) ----------
+  (rc=0 行数=6)
+  # startnet autostart record 
+  netdrvfix=attempted 
+  fw_off=off-mpsvc-disabled
+  pe-sshd.exe=started 
+  frpc.exe=manual 
+  sunloginsos.exe=started 
+---------- 02 boot.log(启动序列全文) ----------
+  (rc=0 行数=76)
+  ==== startnet v8 begin ==== 
+  [1] wpeinit err=-2147023838 
+  
+  Windows IP Configuration
+  
+     Host Name . . . . . . . . . . . . : minint-aelkcr8
+     Primary Dns Suffix  . . . . . . . : 
+     Node Type . . . . . . . . . . . . : Mixed
+     IP Routing Enabled. . . . . . . . : No
+     WINS Proxy Enabled. . . . . . . . : No
+     DNS Suffix Search List. . . . . . : mshome.net
+  
+  Ethernet adapter Ethernet:
+  
+     Connection-specific DNS Suffix  . : 
+     Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+     Physical Address. . . . . . . . . : 00-15-5D-10-E1-0A
+     DHCP Enabled. . . . . . . . . . . : Yes
+     Autoconfiguration Enabled . . . . : Yes
+     Link-local IPv6 Address . . . . . : fe80::ede0:83e5:b5e8:84c%3(Preferred) 
+     IPv4 Address. . . . . . . . . . . : 172.17.40.212(Preferred) 
+     Subnet Mask . . . . . . . . . . . : 255.255.240.0
+     Lease Obtained. . . . . . . . . . : Wednesday, October 7, 2026 8:19:58 PM
+     Lease Expires . . . . . . . . . . : Thursday, October 8, 2026 8:19:57 PM
+     Default Gateway . . . . . . . . . : 172.17.32.1
+     DHCP Server . . . . . . . . . . . : 172.17.32.1
+     DHCPv6 IAID . . . . . . . . . . . : 50337117
+     DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-32-58-D2-46-00-15-5D-10-E1-0A
+     NetBIOS over Tcpip. . . . . . . . : Enabled
+  20:20:07  ==== netdrvfix begin ====
+  20:20:09  ?? 369 ???ID
+  20:20:09  ?????? 1 ?
+  20:20:09  ?????? PCI ??, ???
+  20:20:09  ????
+  [1a] netdrvfix attempted 
+  
+  Windows IP Configuration
+  
+  
+  Ethernet adapter Ethernet:
+  
+     Connection-specific DNS Suffix  . : 
+     Link-local IPv6 Address . . . . . : fe80::ede0:83e5:b5e8:84c%3
+     IPv4 Address. . . . . . . . . . . : 172.17.40.212
+     Subnet Mask . . . . . . . . . . . : 255.255.240.0
+     Default Gateway . . . . . . . . . : 172.17.32.1
+  20:20:18 FwPolicy2 OK ???=
+  20:20:18 FwPolicy2 ???: There are no more endpoints available from the endpoint mapper. (Exception from HRESULT: 0x800706D9)
+  20:20:19 State=Stopped StartMode=Disabled -> ??????????????, ???????
+  20:20:19 MpsSvc State=Stopped StartMode=Disabled
+  20:20:19 BFE State=Running StartMode=Auto
+  fw_off verdict=off-mpsvc-disabled
+  [1b] fw_off attempted (详情 X:\fw_off.log, 结论 X:\status.txt 里 fw_off=) 
+  [2] pe-sshd started 
+  [3] frpc present, autostart disabled - start it from the desktop FRP panel 
+  [4] sunlogin launched 
+  [wlan] ===== 启动 WiFi 相关服务 =====
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL (The dependency service or group failed to start.)
+  StartService OK
+    wlansvc: reg type=32 start=3 errctl=1 group=TDI acct=LocalSystem
+       image=%SystemRoot%\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+       deps=[RpcSs] dll=%SystemRoot%\System32\wlansvc.dll main=WlanSvcMain
+    state=STOPPED(1) pid=0 exit=2148270086(0x800C0006) specific=0 checkpoint=0 waithint=0 via=QueryServiceStatus(basic)
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_NOT_STARTED (The service has not been started.)
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+  [5] wlan done err=0 
+  The requested service has already been started.
+  
+  More help is available by typing NET HELPMSG 2182.
+  
+  ...(还有 6 行未打印)
+---------- 02b sshd.log + authorized_keys(pe-sshd 侧) ----------
+  (rc=0 行数=21)
+  2026/10/07 20:20:19 宸插姞杞?1 鎶婃巿鏉冨叕閽?2026/10/07 20:20:19 pe-sshd 鐩戝惉 0.0.0.0:22 璁よ瘉=绌哄瘑鐮?鍏挜 (hostkey=X:\SSH\pe_host_ed25519 authkeys=X:\SSH\authorized_keys shell=X:\Windows\System32\cmd.exe)
+  2026/10/07 20:20:48 鎻℃墜澶辫触 172.17.32.1:57046: read tcp 172.17.40.212:22->172.17.32.1:57046: wsarecv: An existing connection was forcibly closed by the remote host.
+  2026/10/07 20:21:07 宸茶繛鎺?172.17.32.1:58992 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5"
+  2026/10/07 20:21:07 浼氳瘽寮€濮? user=Administrator cmd="type X:\\BUILD_TAG.txt"
+  2026/10/07 20:21:07 浼氳瘽缁撴潫 172.17.32.1:58992
+  2026/10/07 20:21:08 宸茶繛鎺?172.17.32.1:58993 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5"
+  2026/10/07 20:21:08 浼氳瘽寮€濮? user=Administrator cmd="X:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -ExecutionPolicy Bypass -EncodedCommand WwBFAG4AdgBpAHIAbwBuAG0AZQBuAHQAXQA6ADoATwBTAFYAZQByAHMAaQBvAG4ALgBWAGUAcgBzAGkAbwBuAC4AVABvAFMAdAByAGkAbgBnACgAKQA7ACAAJABQAFMAVgBlAHIAcwBpAG8AbgBUAGEAYgBsAGUALgBQAFMAVgBlAHIAcwBpAG8AbgAuAFQAbwBTAHQAcgBpAG4AZwAoACkA"
+  2026/10/07 20:21:11 浼氳瘽缁撴潫 172.17.32.1:58993
+  2026/10/07 20:21:13 宸茶繛鎺?172.17.32.1:59001 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5"
+  2026/10/07 20:21:13 浼氳瘽寮€濮? user=Administrator cmd="type X:\\status.txt"
+  2026/10/07 20:21:13 浼氳瘽缁撴潫 172.17.32.1:59001
+  2026/10/07 20:21:13 宸茶繛鎺?172.17.32.1:59002 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5"
+  2026/10/07 20:21:13 浼氳瘽寮€濮? user=Administrator cmd="type X:\\boot.log"
+  2026/10/07 20:21:13 浼氳瘽缁撴潫 172.17.32.1:59002
+  2026/10/07 20:21:16 宸茶繛鎺?172.17.32.1:59004 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5"
+  2026/10/07 20:21:16 浼氳瘽寮€濮? user=Administrator cmd="type X:\\sshd.log & echo ---KEYS--- & dir /b X:\\SSH"
+  ---KEYS--- 
+  authorized_keys
+  pe-sshd.exe
+  pe_host_ed25519
+  pe_host_ed25519.pub
+---------- 03 进程(替代 tasklist) ----------
+  (rc=0 行数=34)
+  768 cmd
+  760 cmd
+  2036 conhost
+  904 conhost
+  820 conhost
+  492 csrss
+  408 csrss
+  732 fontdrvhost
+  724 fontdrvhost
+  0 Idle
+  620 lsass
+  1308 mshta
+  1908 pe-sshd
+  1976 powershell
+  88 Registry
+  568 services
+  316 smss
+  1916 SunloginSOS
+  1536 SunloginSOS
+  1048 SunloginSOS
+  1344 svchost
+  1404 svchost
+  1572 svchost
+  972 svchost
+  716 svchost
+  824 svchost
+  964 svchost
+  4 System
+  472 WallpaperHost
+  480 wininit
+  576 winlogon
+  892 winpeshl
+  1708 WmiPrvSE
+  
+---------- 04 关键自启进程判定 ----------
+  (rc=0 行数=5)
+  pe-sshd=RUNNING pid 1908
+  mshta=RUNNING pid 1308
+  SunloginSOS=RUNNING pid 1048/1536/1916
+  frpc=not running
+  wlansvc=not running
+---------- 05 网络(ipconfig /all) ----------
+  (rc=0 行数=28)
+  
+  Windows IP Configuration
+  
+     Host Name . . . . . . . . . . . . : minint-aelkcr8
+     Primary Dns Suffix  . . . . . . . : 
+     Node Type . . . . . . . . . . . . : Mixed
+     IP Routing Enabled. . . . . . . . : No
+     WINS Proxy Enabled. . . . . . . . : No
+     DNS Suffix Search List. . . . . . : mshome.net
+  
+  Ethernet adapter Ethernet:
+  
+     Connection-specific DNS Suffix  . : mshome.net
+     Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+     Physical Address. . . . . . . . . : 00-15-5D-10-E1-0A
+     DHCP Enabled. . . . . . . . . . . : Yes
+     Autoconfiguration Enabled . . . . : Yes
+     Link-local IPv6 Address . . . . . : fe80::ede0:83e5:b5e8:84c%3(Preferred) 
+     IPv4 Address. . . . . . . . . . . : 172.17.40.212(Preferred) 
+     Subnet Mask . . . . . . . . . . . : 255.255.240.0
+     Lease Obtained. . . . . . . . . . : Wednesday, October 7, 2026 8:19:58 PM
+     Lease Expires . . . . . . . . . . : Thursday, October 8, 2026 8:19:58 PM
+     Default Gateway . . . . . . . . . : 172.17.32.1
+     DHCP Server . . . . . . . . . . . : 172.17.32.1
+     DHCPv6 IAID . . . . . . . . . . . : 50337117
+     DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-32-58-D2-46-00-15-5D-10-E1-0A
+     DNS Servers . . . . . . . . . . . : 172.17.32.1
+     NetBIOS over Tcpip. . . . . . . . : Enabled
+---------- 06 netdrvfix.log(开机自动认网卡) ----------
+  (rc=0 行数=5)
+  20:20:07  ==== netdrvfix begin ====
+  20:20:09  ?? 369 ???ID
+  20:20:09  ?????? 1 ?
+  20:20:09  ?????? PCI ??, ???
+  20:20:09  ????
+---------- 07 niccheck.cmd(自检工具) ----------
+  (rc=0 行数=15)
+  ISO    = build = 2026-10-07 09:43:26 base = Windows 10 10.0.19041.1 (WinBuild.160101.0800) (boot.wim index 1) product = WinPE10_Desktop_v1 netdrv = inf 64 / DriverStore 306->370 tools = niccheck / netdrvfix (netdrvfix auto-runs at boot: startnet [1a]) bootbin = 19041 retail signed (Secure Boot should stay ON) wifi = injected hta = panel v10-ie8 (recut 2026-10-07 20:09) powershell = yes
+  NETDRV = ????? 72 ? (???? 370 ?)
+           aqnic650.inf_amd64_34990bbba0e314ee
+           aqnicusb.inf_amd64_8e7ec1909e63a908
+           ax88178.inf_amd64_b5e01393ac538542
+           ax88772.inf_amd64_d0ce711768684d8b
+           ax88772b.inf_amd64_39faada7107aa474
+           b57nd60a.inf_amd64_2e5e999f267804bc
+           ... ? 72 ?
+  PROBLEMDRV = 1 ??????/????:
+             code28  ACPI\HYPER_V_GEN_COUNTER_V1\0  | 
+  ADAPTER  = 1 ?????
+             Microsoft Hyper-V Network Adapter  NetConnectionStatus=2  (Ethernet)
+  IP       = 172.17.40.212,fe80::ede0:83e5:b5e8:84c  gw=172.17.32.1
+  SSH22    = LISTENING
+---------- 08 niccheck.ps1 详情 ----------
+  (rc=0 行数=16)
+  ISO    = build = 2026-10-07 09:43:26 base = Windows 10 10.0.19041.1 (WinBuild.160101.0800) (boot.wim index 1) product = WinPE10_Desktop_v1 netdrv = inf 64 / DriverStore 306->370 tools = niccheck / netdrvfix (netdrvfix auto-runs at boot: startnet [1a]) bootbin = 19041 retail signed (Secure Boot should stay ON) wifi = injected hta = panel v10-ie8 (recut 2026-10-07 20:09) powershell = yes
+  NETDRV = ????? 72 ? (???? 370 ?)
+           aqnic650.inf_amd64_34990bbba0e314ee
+           aqnicusb.inf_amd64_8e7ec1909e63a908
+           ax88178.inf_amd64_b5e01393ac538542
+           ax88772.inf_amd64_d0ce711768684d8b
+           ax88772b.inf_amd64_39faada7107aa474
+           b57nd60a.inf_amd64_2e5e999f267804bc
+           ... ? 72 ?
+  PROBLEMDRV = 1 ??????/????:
+             code28  ACPI\HYPER_V_GEN_COUNTER_V1\0  | 
+  ADAPTER  = 1 ?????
+             Microsoft Hyper-V Network Adapter  NetConnectionStatus=2  (Ethernet)
+  IP       = 172.17.40.212,fe80::ede0:83e5:b5e8:84c  gw=172.17.32.1
+  SSH22    = LISTENING
+  
+---------- 09 组件存在性 ----------
+  (rc=0 行数=1)
+  HTA_OK
+---------- 10 桌面/向日葵/frp 素材 ----------
+  (rc=0 行数=22)
+  Desktop.hta
+  wallpaper.jpg
+  Frp
+  Wlan
+  ---Frp--- 
+  frpc.exe
+  frpc.toml
+  frps.exe
+  frps.toml
+  LICENSE
+  start_frpc.bat
+  start_frps.bat
+  ---Sunlogin--- 
+  libcrypto.dll
+  msvcp140.dll
+  msvcp140_1.dll
+  msvcp140_2.dll
+  SunloginSOS.exe
+  ucrtbase.dll
+  vcruntime140.dll
+  vcruntime140_1.dll
+  ???
+---------- 11 服务状态(wlansvc/dot3svc/Winmgmt/MpsSvc/BFE) ----------
+  (rc=0 行数=14)
+  dot3svc = Stopped start=Manual exit=0x00000435
+  WcmSvc = Stopped start=Manual exit=0x0000042C
+  Winmgmt = Running start=Manual exit=0x00000000
+  MpsSvc = Stopped start=Disabled exit=0x00000435
+  BFE = Running start=Auto exit=0x00000000
+  netprofm = ABSENT
+  Cannot convert value "2148270086" to type "System.Int32". Error: "Value was either too large or too small for an 
+
+  Int32."
+
+  At line:1 char:167
+
+  + ... nue; if($s){"{0} = {1} start={2} exit=0x{3:X8}" -f $n,$s.State,$s.Sta ...
+
+  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+      + CategoryInfo          : InvalidArgument: (:) [], RuntimeException
+
+      + FullyQualifiedErrorId : InvalidCastIConvertible
+
+   
+
+---------- 12 网卡与驱动(PnP 是否绑上) ----------
+  (rc=0 行数=3)
+  Microsoft Kernel Debug Network Adapter | NetEnabled= | PNPDeviceID=ROOT\KDNIC\0000 | GUID=
+  Microsoft Hyper-V Network Adapter | NetEnabled=True | PNPDeviceID=VMBUS\{F8615163-DF3E-46C5-913F-F2D2F965ED0E}\{5C1450D4-79CE-4A12-A5C5-EF168C686425} | GUID={FE54B977-E822-4706-A112-6CBF79615FEB}
+  
+---------- 13 私钥绝不能进镜像 ----------
+  (rc=0 行数=7)
+  NO_PRIVATE_KEY_IN_IMAGE_OK
+  authorized_keys
+  pe-sshd.exe
+  pe_host_ed25519
+  pe_host_ed25519.pub
+  ---S32--- 
+  CLEAN2
+---------- 14 磁盘与内存盘 ----------
+  (rc=0 行数=3)
+  D used=614,975,488 free=0
+  X used=2,548,736 free=515,481,600
+  
+    [screen] 异常: 无效类 
+
+===== 自检结束 =====
+VM WinPE10-Test 仍在运行, 控制台里应能看到 HTA 桌面和向日葵窗口(这两项只能肉眼确认)
+结果文件: D:\QoderProject\国内版\生成winpe\test\vm10_verify.txt
+清理: 管理员 PowerShell 里 Remove-VM -Name WinPE10-Test -Force

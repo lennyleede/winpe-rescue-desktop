@@ -1,0 +1,19 @@
+﻿===== HtaTypingDebug phase=start 17:02:48 目标=Administrator@172.17.40.212 =====
+---------- A. 现场取证 + 起 120 秒采样器 ----------
+  (rc=0 用时=6s 行数=12)
+  ===== frp ??????? ?? 17:03:06.839 =====
+  ???? Desktop.hta: size=24207 sha256=117895F277289671BECE64A29587CAEA241EFBEE138BFC01F62B00EFFCA8C99A mtime=10/04/2026 00:20:02
+  mshta ?? = 11.00.19041.1
+  ie ???? = 
+  mshta ??? = 1
+    pid=1120 ???=0x10076 ??="" Responding=True ??=16:50:38 ??=56MB
+  WerFault ?? = 0
+  --- WMI ??????(HTA ? refresh ? 3 ???????) ---
+    26 ms  SELECT Name FROM Win32_Process -> 33 ?
+    7 ms  SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled=True -> 1 ?
+  ??????(X:\fg.log, 120 ?) -- ????? frp ???????
+  ===== ???? 17:03:07.544 =====
+
+>>> 采样器已经在 PE 里跑 120 秒: 请现在到 VM 控制台的 frp 输入框里连续打字(中英文都试), 再点几下输入框切换焦点。
+    之后取结果: powershell -NoProfile -ExecutionPolicy Bypass -File "D:\QoderProject\国内版\生成winpe\test\33_HtaTypingDebug.ps1" -Phase fetch
+结果文件 = D:\QoderProject\国内版\生成winpe\test\vm10_htadbg_start.txt

@@ -1,0 +1,41 @@
+﻿[A_getenv_ProgramData] X:\ProgramData
+[A_getenv_APPDATA] 
+[A_getenv_LOCALAPPDATA] 
+[A_getenv_USERPROFILE] X:\windows\system32\config\systemprofile
+[A_getenv_TEMP] X:\windows\TEMP
+[A_getenv_TMP] X:\windows\TEMP
+[A_getenv_SystemDrive] X:
+[A_getenv_windir] X:\windows
+[A_getenv_PUBLIC] X:\Users\Public
+[A_proc_ProgramData] X:\ProgramData
+[A_proc_APPDATA] 
+[A_proc_LOCALAPPDATA] 
+[A_proc_USERPROFILE] X:\windows\system32\config\systemprofile
+[A_proc_TEMP] X:\windows\TEMP
+[A_proc_TMP] X:\windows\TEMP
+[A_proc_SystemDrive] X:
+[A_proc_windir] X:\windows
+[A_proc_PUBLIC] X:\Users\Public
+[B_token] 异常: Arithmetic operation resulted in an overflow.
+[C_sshd_t] 
+[C_id] user=NT AUTHORITY\SYSTEM groups=BUILTIN\Administrators;Everyone;NT AUTHORITY\Authenticated Users;NT SERVICE\TrustedInstaller
+[D_set] ProgramData=X:\ProgramData APPDATA=X:\Users\Roaming USERPROFILE=X:\windows\system32\config\systemprofile
+[S_withpd] + FullyQualifiedErrorId : NativeCommandError
+[D_withpd] Connection from 127.0.0.1 port 49743 on 127.0.0.1 port 22 || debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 || debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 || debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: do_cleanup || debug1: Killing privsep child 1940
+[E_withpd] lines=19 exit=0
+[D_machine_before] X:\ProgramData
+[D_machine_after] X:\ProgramData
+[E_min_written] Port 2222 | ListenAddress 0.0.0.0 | HostKey X:\OpenSSH\ssh_host_rsa_key | AuthorizedKeysFile X:\OpenSSH\administrators_authorized_keys | PasswordAuthentication no | PubkeyAuthentication yes | StrictModes no | LogLevel DEBUG3
+[S_min] + FullyQualifiedErrorId : NativeCommandError
+[D_min] debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 || debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 || debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1628
+[E_min] lines=18 exit=0
+[E_min_around_kill] debug1: get_passwd: lookup_sid() failed: 1332. || debug1: monitor_read_log: child log fd closed || debug1: Killing privsep child 1628
+[F_OpenSCManager] OK
+[F_CreateService] OK
+[F_Start] ret=1 err=0
+[F_state] state=16 win32exit=0
+[F_procs] 1412
+[F_ssh_as_service] + FullyQualifiedErrorId : NativeCommandError
+[F_service_log_tail] 
+[F_service_log_err] 
+[G_sshd_running] YES

@@ -1,0 +1,4 @@
+﻿isAdmin=False
+vm=WinPE-Test switch=PE-INT host=192.168.100.1 pe=192.168.100.2
+DRY-RUN (只读)。动手请加 -Fix
+找不到 VM WinPE-Test

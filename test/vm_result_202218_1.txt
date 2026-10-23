@@ -1,0 +1,54 @@
+﻿[A_strictmodes] ok
+[A_acl] 已对齐 1 个: sshd_config_default
+[A_acl_after] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[B_t_dst] sshd.exe : Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_rsa_key.
+At X:\v13.ps1:43 char:16
++ ... L 'B_t_dst' ((& "$DST\sshd.exe" -t -f "$DST\sshd_config" 2>&1 | Out-S ...
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Bad permissions...h_host_rsa_key.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key
+Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_ecdsa_key.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key
+Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_ed25519_key.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key
+sshd: no hostkeys available -- exiting.
+[TRAP] The term 'X:\OpenSSH\sshd_config_default\sshd_config\ssh_host_rsa_key\ssh_host_ecdsa_key\ssh_host_ed25519_key\administrators_authorized_keys\sshd.exe' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. @line44
+[L_sys32_fixed] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[C_stop] pid=1812 ExitStatus=0xFFFFFFFF ;; pid=1952 ExitStatus=0x00000001
+[C_srv_tail] It is required that your private key files are NOT accessible by others. || This private key will be ignored. || Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions || Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key || sshd: no hostkeys available -- exiting.
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line67
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line71
+[TRAP] The term 'X:\OpenSSH\sshd_config_default\sshd_config\ssh_host_rsa_key\ssh_host_ecdsa_key\ssh_host_ed25519_key\administrators_authorized_keys\ssh.exe' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. @line16
+[D_child_cmdlines] 
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line83
+[E_sshd_running] NO

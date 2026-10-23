@@ -1,0 +1,6 @@
+2026-10-03 22:49:22.652 [I] [frps/root.go:115] frps uses config file: D:/QoderProject/国内版/生成winpe/test/frps_test.toml
+2026-10-03 22:49:22.876 [I] [server/service.go:253] frps tcp listen on 0.0.0.0:7000
+2026-10-03 22:49:22.877 [I] [frps/root.go:124] frps started successfully
+2026-10-03 23:30:01.043 [I] [server/service.go:803] [7da361d4a48b4788] client login info: ip [172.31.38.211:55241] version [0.71.0] hostname [minint-0dvihmv] os [windows] arch [amd64]
+2026-10-03 23:30:01.083 [I] [proxy/tcp.go:82] [7da361d4a48b4788] [pe-ssh] tcp proxy listen port [6000]
+2026-10-03 23:30:01.083 [I] [server/control.go:761] [7da361d4a48b4788] new proxy [pe-ssh] type [tcp] success

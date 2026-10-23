@@ -1,0 +1,9 @@
+﻿process=pid 16804 alive=True
+listen=TCP    127.0.0.1:2222         0.0.0.0:0              LISTENING
+key_login_output=LOCAL_SSH_OK rescue-host-01\rescueuser Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts. 
+empty_pw_output=EMPTY_PW_OK rescue-host-01\rescueuser 
+interactive_shell_output=Microsoft Windows [版本 10.0.19044.7725] (c) Microsoft Corporation。保留所有权利。 C:\>echo INTERACTIVE_OK INTERACTIVE_OK C:\>whoami rescue-host-01\rescueuser C:\>cd C:\ C:\>exit Pseudo-terminal will not be allocated because stdin is not a terminal. 
+locked_noauth_output= Warning: Permanently added '[127.0.0.1]:2223' (ED25519) to the list of known hosts. rescue@127.0.0.1: Permission denied (password,publickey). 
+locked_key_output=KEY_STILL_WORKS 
+server_log=2026/10/04 16:55:00 已生成主机密钥 D:\QoderProject\国内版\生成winpe\build\sshtest\host_ed25519 || 2026/10/04 16:55:00 已加载 1 把授权公钥 || 2026/10/04 16:55:00 pe-sshd 监听 127.0.0.1:2222 认证=空密码+公钥 (hostkey=D:\QoderProject\国内版\生成winpe\build\sshtest\host_ed25519 authkeys=D:\QoderProject\国内版\生成winpe\test\share\authorized_keys shell=C:\Windows\System32\cmd.exe) || 2026/10/04 16:55:04 已连接 127.0.0.1:64577 user=tester client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 16:55:04 会话开始: user=tester cmd="echo LOCAL_SSH_OK && whoami" || 2026/10/04 16:55:04 会话结束 127.0.0.1:64577 || 2026/10/04 16:55:04 已连接 127.0.0.1:64578 user=rescue client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 16:55:04 会话开始: user=rescue cmd="echo EMPTY_PW_OK && whoami" || 2026/10/04 16:55:05 会话结束 127.0.0.1:64578 || 2026/10/04 16:55:05 已连接 127.0.0.1:64580 user=tester client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 16:55:05 会话开始: user=tester cmd="" || 2026/10/04 16:55:05 会话结束 127.0.0.1:64580
+verdict=私钥登录 通过 / 空密码登录 通过 / 交互shell 通过 / 锁定后无凭证 已拒绝 / 锁定后公钥 仍可用

@@ -1,0 +1,24 @@
+﻿A. DL wifi.exe OK 1399296
+===== B. PE ???? svchost ??????? =====
+  LocalSystemNetworkRestricted ??=4 ?wlansvc=False ??=hidserv|svsvc|Netman|dot3svc
+  LocalServiceNetworkRestricted ??=5 ?wlansvc=False ??=TimeBrokerSvc|eventlog|WinHttpAutoProxySvc|LmHosts
+  PEWLan ??=1 ?wlansvc=False ??=%SystemRoot%\System32\wlansvc.dll
+===== C. ? wlansvc ????? LocalSystemNetworkRestricted (??????) =====
+  ???? wlansvc, ???=5
+  ImagePath=X:\windows\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  PEWLan ??=%SystemRoot%\System32\wlansvc.dll
+===== D. ?????? =====
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+  t=2s state=Stopped exit=1068 pid=0
+===== E. ??? svchost ???? wlansvc.dll =====
+  ?? svchost ?? wlansvc.dll
+  svchost pid=1116 cmd=X:\windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+===== F. wlanapi ?? =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== ??: wlansvc ???? =====
+RESULT-POSTED
+
+

@@ -1,0 +1,53 @@
+﻿===== A. ???????? =====
+  drivers\nativewifip.sys   NO
+  drivers\Ndisuio.sys       YES
+  drivers\nwifi.sys         YES
+  nsi.dll                   YES
+  wcmsvc.dll                NO
+  wlanapi.dll               YES
+  wlansvc.dll               YES
+  wlancfg.dll               YES
+  wlanmsm.dll               YES
+  fwpuclnt.dll              YES
+  wci.dll                   NO
+  msvcp_win.dll             YES
+  rpcrt4.dll                YES
+  secur32.dll               YES
+  wkscli.dll                YES
+  srvcli.dll                YES
+===== B. PE ?? svchost ? (????? wlansvc.dll ?) =====
+  ???: 
+===== C. ?? wlansvc ? =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  ImagePath = X:\windows\System32\svchost.exe -k PEWLan
+  ObjectName = LocalService
+  DisplayName = WLAN AutoConfig (PE)
+  DependOnService = RPCSS
+  ServiceSidType = 0
+  Group = NDIS
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeCreateGlobalPrivilege;SeImpersonatePrivilege;SeIncreaseBasePriorityPrivilege;SeTcbPrivilege
+===== D. ?? 1: LocalServiceNetworkRestricted + ?? RpcSs =====
+  PE ???
+===== E. ?? 2: ???? =====
+  [no-dep] net start =>     + FullyQualifiedErrorId : NativeCommandError / The dependency service or group failed to start.
+  [no-dep] state=Stopped pid=0
+===== F. ?? 3: LocalSystemNetworkRestricted (????????) =====
+  PE ???
+===== G. ?? 4: netsvcs + ?? RpcSs =====
+  PE ???
+===== H. ??: ???????? boot ?? =====
+  wlansvc ?? state=Stopped
+  ??: Microsoft Hyper-V Network Adapter/netvsc
+  ??: wlansvc ? PE ?????
+RESULT-POSTED
+
+You cannot call a method on a null-valued expression.
+At X:\w1.ps1:16 char:1
++ $groups = (Get-Item $SCH -EA SilentlyContinue).GetValueNames()
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : InvokeMethodOnNull
+ 
+

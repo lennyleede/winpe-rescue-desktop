@@ -1,0 +1,33 @@
+===== vm_fw_off 00:18:40  ShowOnly=False  KeepRules=False  Observe=30s =====
+
+### 0. 起点状态
+  DomainProfile EnableFirewall(注册表)=0
+  StandardProfile EnableFirewall(注册表)=0
+  PublicProfile EnableFirewall(注册表)=0
+  FwPolicy2 可用, 规则数=45
+  FirewallEnabled(运行时策略) Domain=False Private=False Public=False
+    规则 "PE allow TCP 22" 存在=True
+    规则 "PE allow ICMPv4 echo" 存在=True
+  BFE State=Running StartMode=Auto
+  MpsSvc State=Running StartMode=Auto
+  计数起点: Packets Received = 294824 | Received Packets Delivered = 294923 | Packets Received = 1401 | Received Packets Delivered = 1140 | Echo Replies 25 58237 | Echos 58967 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 58221 | Current Connections = 0 | Segments Received = 234359 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+
+### 1. 删掉阶段 B 那两条允许规则(让入站重新被拦, 这样第 3 步才是干净的对照)
+  处理 "PE allow TCP 22" 走的是 Rules.Remove -> 现在存在=False 规则数=44
+  处理 "PE allow ICMPv4 echo" 走的是 Rules.Remove -> 现在存在=False 规则数=43
+  [00:18:43] 基线观察窗开始(预期主机 ping 不通)
+  [00:19:13] 基线窗结束 计数: Packets Received = 294901 | Received Packets Delivered = 295000 | Packets Received = 1401 | Received Packets Delivered = 1140 | Echo Replies 25 58241 | Echos 58991 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 58224 | Current Connections = 0 | Segments Received = 234412 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+
+### 2. 用 COM 把三个 profile 的 FirewallEnabled 置 False(不重启服务)
+  Domain(1): 赋值语法完成, 读回=False
+  Private(2): 赋值语法完成, 读回=False
+  Public(4): 赋值语法完成, 读回=False
+  注册表 EnableFirewall 现在: Domain=0 Standard=0 Public=0
+
+### 3. 验证窗(观察 30 秒, 主机请保持 ping; 通了就证明关防火墙这条运行时路可行)
+  [00:19:13] 进入验证窗
+  [00:19:43] 验证窗结束 计数: Packets Received = 300210 | Received Packets Delivered = 300309 | Packets Received = 1401 | Received Packets Delivered = 1140 | Echo Replies 25 59302 | Echos 60052 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 59286 | Current Connections = 0 | Segments Received = 238660 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+  读回 FirewallEnabled Domain=False Private=False Public=False
+  MpsSvc State=Running
+
+### 4. 结束 00:19:44

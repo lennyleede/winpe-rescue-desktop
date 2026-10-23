@@ -1,0 +1,4 @@
+bindPort = 7000
+auth.token = "CHANGE_ME"
+log.to = "D:\\QoderProject\\国内版\\生成winpe\\test\\frps.log"
+log.level = "info"

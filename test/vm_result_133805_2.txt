@@ -1,0 +1,73 @@
+===== 0. 取新版 wifi.exe (svc watch / dllload / regq) =====
+  OK 1432064 字节
+===== 1. 注册表里真正烘焙进去的值(类型错就是秒退的常见原因) =====
+  [reg-Type] Type = DWORD 16(0x10)
+  [reg-Start] Start = DWORD 2(0x2)
+  [reg-ErrorControl] ErrorControl = DWORD 1(0x1)
+  [reg-Group] Group = SZ(kind=1) <TDI>
+  [reg-ImagePath] ImagePath = SZ(kind=2) <%SystemRoot%\system32\svchost.exe -k LocalSystemNetworkRestricted -p>
+  [reg-ObjectName] ObjectName = SZ(kind=1) <LocalSystem>
+  [reg-ServiceSidType] ServiceSidType = DWORD 1(0x1)
+  [reg-DependOnService] DependOnService = MULTI_SZ(kind=7) [nativewifip,RpcSs,Ndisuio,wcmsvc]
+  [reg-RequiredPrivileges] RequiredPrivileges = MULTI_SZ(kind=7) [SeChangeNotifyPrivilege,SeImpersonatePrivilege,SeAuditPrivilege,SeTcbPrivilege,SeDebugPrivilege,SeLoadDriverPrivilege]
+  [reg-ServiceDll] ServiceDll = SZ(kind=2) <%SystemRoot%\System32\wlansvc.dll>
+  [reg-ServiceMain] ServiceMain = SZ(kind=1) <WlanSvcMain>
+  [reg-ServiceDllUnloadOnStop] ServiceDllUnloadOnStop = DWORD 1(0x1)
+  --- wcmsvc ---
+  [creg-Type] Type = DWORD 16(0x10)
+  [creg-Start] Start = DWORD 2(0x2)
+  [creg-ObjectName] ObjectName = SZ(kind=1) <NT Authority\LocalService>
+  [creg-DependOnService] DependOnService = MULTI_SZ(kind=7) [RpcSs,NSI]
+  [creg-RequiredPrivileges] RequiredPrivileges = MULTI_SZ(kind=7) [SeChangeNotifyPrivilege,SeImpersonatePrivilege]
+  [creg-dll] ServiceDll = SZ(kind=2) <%SystemRoot%\System32\wcmsvc.dll>
+  [creg-main] ServiceMain = SZ(kind=1) <WcmSvcMain>
+===== 2. DLL 能不能载入 + ServiceMain 导出在不在 =====
+  [dll-wlansvc] LoadLibraryEx OK base=0x7FFD9A760000
+  [dll-wlansvc] GetProcAddress(WlanSvcMain) OK 0x7FFD9A7743F0
+  [dll-wcmsvc] LoadLibraryEx OK base=0x7FFD9B080000
+  [dll-wcmsvc] GetProcAddress(WcmSvcMain) OK 0x7FFD9B0C57D0
+  [dll-wlanmsm] LoadLibraryEx OK base=0x7FFD9A690000
+  [dll-wlanutil] LoadLibraryEx OK base=0x1F8F5960000
+  [dll-wci] LoadLibraryEx OK base=0x7FFDAD640000
+  [dll-dmc] LoadLibraryEx OK base=0x7FFD954B0000
+===== 3. 边启动边采样(抓过渡态和 Win32ExitCode) =====
+  [watch-wlansvc] OpenService: 5 ERROR_ACCESS_DENIED (鎷掔粷璁块棶銆?
+  --- wcmsvc ---
+  [watch-wcmsvc] OpenService: 5 ERROR_ACCESS_DENIED (鎷掔粷璁块棶銆?
+===== 4. 依赖链 + wlanapi 句柄 =====
+  [deps-wlansvc] wlansvc: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=16 start=2 deps=[nativewifip,RpcSs,Ndisuio,wcmsvc]
+  [deps-wlansvc] nativewifip: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=1 start=3 deps=[]
+  [deps-wlansvc] RpcSs: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[RpcEptMapper,DcomLaunch]
+  [deps-wlansvc] RpcEptMapper: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[]
+  [deps-wlansvc] DcomLaunch: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[]
+  [deps-wlansvc] Ndisuio: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=1 start=3 deps=[]
+  [deps-wlansvc] wcmsvc: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=16 start=2 deps=[RpcSs,NSI]
+  [deps-wlansvc] NSI: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[rpcss,nsiproxy]
+  [deps-wlansvc] rpcss: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=32 start=2 deps=[RpcEptMapper,DcomLaunch]
+  [deps-wlansvc] nsiproxy: state=RUNNING(4) pid=0 exit=0(0x0) via=QueryServiceStatus(basic) type=1 start=1 deps=[]
+  [status] WlanOpenHandle OK negotiated=2
+  [status] interfaces=1
+  [status] {1017A372-8C12-4097-9D48-BFEE9446812B} state=4(available) desc=Intel(R) Wireless-AC 9260 160MHz
+===== 5. svchost 侧: 有没有进程加载过 wlansvc.dll =====
+  无进程加载 wlansvc/wcmsvc/wlanmsm
+  wlansvc WMI State=Running PID=5600 ExitCode=0x00000000
+  wcmsvc WMI State=Running PID=5320 ExitCode=0x00000000
+===== 6. 网络适配器侧(有没有 miniport 可绑) =====
+  Microsoft Kernel Debug Network Adapter | GUID= | NetEnabled= | PNPDeviceID=ROOT\KDNIC\0000
+  Intel(R) Wireless-AC 9260 160MHz | GUID={1017A372-8C12-4097-9D48-BFEE9446812B} | NetEnabled=False | PNPDeviceID=PCI\VEN_8086&DEV_2526&SUBSYS_00108086&REV_29\4&7D77544&0&00EB
+  Intel(R) Ethernet Connection (6) I219-V | GUID={E660E74D-D924-48C0-B17E-61B33AE8B8EC} | NetEnabled=True | PNPDeviceID=PCI\VEN_8086&DEV_15BE&SUBSYS_507517AA&REV_30\3&11583659&0&FE
+  Microsoft Wi-Fi Direct Virtual Adapter | GUID= | NetEnabled= | PNPDeviceID={5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\VWIFIMP_WFD\5&15B31EB3&0&11
+  Microsoft Wi-Fi Direct Virtual Adapter #2 | GUID= | NetEnabled= | PNPDeviceID={5D624F94-8850-40C3-A3FA-A4FD2080BAF3}\VWIFIMP_WFD\5&15B31EB3&0&12
+  WAN Miniport (SSTP) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_SSTPMINIPORT
+  WAN Miniport (IKEv2) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_AGILEVPNMINIPORT
+  WAN Miniport (L2TP) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_L2TPMINIPORT
+  WAN Miniport (PPTP) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_PPTPMINIPORT
+  WAN Miniport (PPPOE) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_PPPOEMINIPORT
+  WAN Miniport (IP) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_NDISWANIP
+  WAN Miniport (IPv6) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_NDISWANIPV6
+  WAN Miniport (Network Monitor) | GUID= | NetEnabled= | PNPDeviceID=SWD\MSRRAS\MS_NDISWANBH
+  Bluetooth Device (Personal Area Network) | GUID={007E8CBE-5D61-4B20-A6A4-A8BBAEA85870} | NetEnabled=False | PNPDeviceID=BTH\MS_BTHPAN\6&6E2DC2&0&2
+  Hyper-V Virtual Switch Extension Adapter | GUID= | NetEnabled= | PNPDeviceID=ROOT\VMS_VSMP\0000
+  Hyper-V Virtual Ethernet Adapter | GUID={358784A7-196D-4178-8F64-4F474DBA55E5} | NetEnabled=True | PNPDeviceID=ROOT\VMS_MP\0000
+  Hyper-V Virtual Switch Extension Adapter | GUID= | NetEnabled= | PNPDeviceID=ROOT\VMS_VSMP\0001
+  Hyper-V Virtual Ethernet Adapter #2 | GUID={D3C1BA89-4483-4B29-ABFE-E4571166A220} | NetEnabled=False | PNPDeviceID=ROOT\VMS_MP\0001

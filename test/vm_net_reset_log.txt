@@ -1,0 +1,38 @@
+﻿===== vm_net_reset 2026-10-04 22:17:08 isAdmin=False Fix=False =====
+DRY-RUN(只读)。动手加 -Fix
+
+===== 1. 现状 =====
+  管理主机 vNIC: 
+  孤儿/禁用网卡的 PnP 状态: 
+netadapter=本地连接* 12 status=Disconnected mac=DA-3B-BF-36-71-F3 desc=Microsoft Wi-Fi Direct Virtual Adapter #4 hidden=True
+netadapter=本地连接* 11 status=Disconnected mac=D8-3B-BF-36-71-F4 desc=Microsoft Wi-Fi Direct Virtual Adapter #3 hidden=True
+netadapter=本地连接* 5 status=Up mac= desc=WAN Miniport (IP) hidden=True
+netadapter=以太网(内核调试器) status=Not Present mac= desc=Microsoft Kernel Debug Network Adapter hidden=True
+netadapter=蓝牙网络连接 status=Disconnected mac=D8-3B-BF-36-71-F7 desc=Bluetooth Device (Personal Area Network) hidden=False
+netadapter=vSwitch (Default Switch) status=Up mac= desc=Hyper-V Virtual Switch Extension Adapter hidden=True
+netadapter=Teredo Tunneling Pseudo-Interface status=Not Present mac= desc= hidden=True
+netadapter=WLAN status=Disconnected mac=D8-3B-BF-36-71-F3 desc=Intel(R) Wireless-AC 9260 160MHz hidden=False
+netadapter=本地连接* 10 status=Disconnected mac= desc=WAN Miniport (SSTP) hidden=True
+netadapter=vEthernet (Default Switch) status=Up mac=00-15-5D-09-7B-16 desc=Hyper-V Virtual Ethernet Adapter hidden=False
+netadapter=本地连接* 6 status=Disconnected mac= desc=WAN Miniport (PPPOE) hidden=True
+netadapter=本地连接* 4 status=Disconnected mac= desc=WAN Miniport (L2TP) hidden=True
+netadapter=以太网 status=Up mac=F8-75-A4-DF-18-74 desc=Intel(R) Ethernet Connection (6) I219-V hidden=False
+netadapter=本地连接* 9 status=Up mac= desc=WAN Miniport (IPv6) hidden=True
+netadapter=本地连接* 3 status=Disconnected mac= desc=WAN Miniport (IKEv2) hidden=True
+netadapter=本地连接* 7 status=Disconnected mac= desc=WAN Miniport (PPTP) hidden=True
+netadapter=Microsoft IP-HTTPS Platform Interface status=Not Present mac= desc= hidden=True
+netadapter=本地连接* 8 status=Up mac= desc=WAN Miniport (Network Monitor) hidden=True
+netadapter=vSwitch (PE-INT) status=Up mac= desc=Hyper-V Virtual Switch Extension Adapter #2 hidden=True
+netadapter=6to4 Adapter status=Not Present mac= desc= hidden=True
+netadapter=vEthernet (PE-INT) status=Up mac=00-15-5D-00-69-06 desc=Hyper-V Virtual Ethernet Adapter #2 hidden=False
+  host ipv4: 192.168.100.1/24@vEthernet (PE-INT) , 192.168.0.106/24@以太网 , 172.17.32.1/20@vEthernet (Default Switch)
+[before] 没找到 PE 地址
+
+===== 2. -Fix 将会执行的动作 =====
+  a. 交换机 PE-EXT 上次日志已确认不存在, 只补一步: -Scrub 时用 Remove-NetAdapter 删掉残留的 vEthernet (PE-EXT) 2 设备
+  b. New-VMSwitch -Name PE-INT -SwitchType Internal
+  c. Add-VMNetworkAdapter -ManagementOS -Name PE-INT -SwitchName PE-INT  然后配 192.168.100.1/24
+  d. Connect-VMNetworkAdapter -VMName WinPE-Test -SwitchName PE-INT (VM 没开就 Start-VM)
+  e. PE 侧需要手工设静态地址 192.168.100.2/24 (脚本会把命令打印出来), 之后主机复测 ping + tcp22
+  f. Default Switch 本体不动: 上面有 Container NIC(WSL/Docker) 依赖它
+  g. -Wlan 才会 Enable-NetAdapter WLAN (默认保持禁用, 免得又出现两个 192.168.0/24)

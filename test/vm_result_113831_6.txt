@@ -1,0 +1,19 @@
+A. DL wifi.exe OK 1400320
+===== B. 把 PEWLan 改成服务名列表 =====
+  改前 PEWLan = %SystemRoot%\System32\wlansvc.dll
+  改后 PEWLan = wlansvc
+===== C. 起 wlansvc (SCM 用的仍是开机缓存的 Type=32 + -k PEWLan) =====
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+  t=2s state=Stopped exit=1068 pid=0
+===== D. PEWLan 的 svchost 进程 / 模块加载 =====
+  没有 svchost 加载 wlansvc.dll
+===== E. wlanapi 视角 =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+--- svc info wlansvc ---
+  state=(0) pid=0 exit=0 specific=0 checkpoint=0 waithint=0
+  QueryServiceStatusEx: 124 The system call level is not correct.
+  (config Φ»╗Σ╕ìσê░: 1783 The stub received bad data.)
+===== 结论: 仍然起不来, 组表语义不是唯一原因 =====

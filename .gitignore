@@ -1,0 +1,48 @@
+# ===== 构建工作区与产物（体积大/临时，绝不入库）=====
+/build/
+/build10/
+/dist/
+/downloads/
+/tools/
+/vibe_images/
+*.iso
+
+# 根目录散落日志/杂项
+/300
+/NUL
+/test$f
+/build_accept_stdout.txt
+/build_fwo2.txt
+/build_netaudit_run.txt
+/ping_watch6.txt
+
+# 测试输出与现场回传产物
+/test/out/
+/test/vm/
+/test/ping_watch*
+*.evtx
+*.hex
+*.bin
+
+# ===== 第三方二进制与驱动素材池 =====
+# 许可与体积考虑不入库；克隆后自行收集:
+#   Wlan 池   -> harvest_wifi_drivers.ps1
+#   VWiFi/Cats -> test\20_MakeVWifiPool.ps1（从宿主机 C:\Windows 现采）
+#   Net/Storage 池 -> 按 docs 方案从宿主机/厂商包整理
+overlay/Drivers/
+overlay/Sunlogin/
+overlay/VWiFi/
+overlay/Cats/
+overlay/Desktop/Frp/*.exe
+
+# ===== SSH 私钥（绝对禁止入库；.pub 与 authorized_keys 是公钥, 保留）=====
+overlay/Scripts/ssh_login_key
+overlay/SSH/pe_host_ed25519
+test/share/ssh_login_key
+**/id_rsa
+**/id_ed25519
+**/*.pem
+**/*.ppk
+
+# ===== GitHub API token（本地临时凭据, 用完就去 GitHub revoke）=====
+/secrets/

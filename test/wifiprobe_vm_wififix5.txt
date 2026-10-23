@@ -1,0 +1,22 @@
+﻿A. DL wifi.exe OK 1400320
+===== B. ? PEWLan ??????? =====
+  ?? PEWLan = %SystemRoot%\System32\wlansvc.dll
+  ?? PEWLan = wlansvc
+===== C. ? wlansvc (SCM ????????? Type=32 + -k PEWLan) =====
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+  t=2s state=Stopped exit=1068 pid=0
+===== D. PEWLan ? svchost ?? / ???? =====
+  ?? svchost ?? wlansvc.dll
+===== E. wlanapi ?? =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+--- svc info wlansvc ---
+  state=(0) pid=0 exit=0 specific=0 checkpoint=0 waithint=0
+  QueryServiceStatusEx: 124 The system call level is not correct.
+  (config 璇讳笉鍒? 1783 The stub received bad data.)
+===== ??: ?????, ?????????? =====
+RESULT-POSTED
+
+

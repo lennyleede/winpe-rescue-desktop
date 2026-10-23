@@ -1,0 +1,45 @@
+@echo off
+rem ===== startnet v5: SSH + Sunlogin + Desktop HTA + best-effort WiFi =====
+set LOG=X:\boot.log
+echo ==== startnet v5 begin ==== > %LOG%
+wpeinit.exe >> %LOG% 2>&1
+echo [1] wpeinit err=%errorlevel% >> %LOG%
+ping -n 4 127.0.0.1 >nul
+ipconfig /all >> %LOG% 2>&1
+
+rem ---------- OpenSSH ----------
+set SSHDIR=X:\OpenSSH
+copy /y "X:\Windows\System32\sshd_config" "%SSHDIR%\sshd_config" >> %LOG% 2>&1
+if not exist "%SSHDIR%\ssh_host_rsa_key" "%SSHDIR%\ssh-keygen.exe" -t rsa -N "" -f "%SSHDIR%\ssh_host_rsa_key" -q
+if not exist "%SSHDIR%\ssh_host_ecdsa_key" "%SSHDIR%\ssh-keygen.exe" -t ecdsa -N "" -f "%SSHDIR%\ssh_host_ecdsa_key" -q
+if not exist "%SSHDIR%\ssh_host_ed25519_key" "%SSHDIR%\ssh-keygen.exe" -t ed25519 -N "" -f "%SSHDIR%\ssh_host_ed25519_key" -q
+copy /y "X:\Windows\System32\administrators_authorized_keys" "%SSHDIR%\administrators_authorized_keys" >> %LOG% 2>&1
+cd /d "%SSHDIR%"
+start /b "" "%SSHDIR%\sshd.exe" -f "%SSHDIR%\sshd_config" -E X:\sshd.log
+ping -n 3 127.0.0.1 >nul
+netstat -an >> %LOG% 2>&1
+echo [2] sshd started >> %LOG%
+
+rem ---------- 向日葵 SOS ----------
+if exist "X:\Sunlogin\SunloginSOS.exe" (
+  pushd X:\Sunlogin
+  start "" X:\Sunlogin\SunloginSOS.exe
+  popd
+  echo [3] sunlogin launched >> %LOG%
+) else (
+  echo [3] sunlogin NOT found >> %LOG%
+)
+
+rem ---------- WiFi (尽力而为) ----------
+call X:\Windows\System32\wlan.cmd silent >> %LOG% 2>&1
+echo [4] wlan best-effort done >> %LOG%
+
+rem ---------- 桌面 ----------
+if exist "X:\Desktop\Desktop.hta" (
+  start "WinPEDesktop" X:\Windows\System32\mshta.exe X:\Desktop\Desktop.hta
+  echo [5] desktop launched >> %LOG%
+  ping -n 8 127.0.0.1 >nul
+  if exist "X:\Windows\System32\mshta.exe" exit /b 0
+)
+echo [5] fallback to cmd >> %LOG%
+cmd.exe

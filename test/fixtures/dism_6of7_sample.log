@@ -1,0 +1,16 @@
+
+部署映像服务和管理工具
+版本: 10.0.26100.9457
+
+映像版本: 10.0.26100.1
+
+Searching for driver packages to install...
+Found 7 driver package(s) to install.
+Installing 1 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\iaAHCIC_17.11.0.1000\iaAHCIC.inf: Error - The driver package could not be installed.
+Installing 2 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\iaStorAC_17.11.0.1000\iaStorAC.inf: The driver package was successfully installed.
+Installing 3 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\iaStorVD_19.5.0.1039\iaStorVD.inf: The driver package was successfully installed.
+Installing 4 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\Nvme_10.0.26100.1\nvmedrv.inf: The driver package was successfully installed.
+Installing 5 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\raidcls_10.0.26100.1\raidcls.inf: The driver package was successfully installed.
+Installing 6 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\vmd_19.5.0.1039\vmd.inf: The driver package was successfully installed.
+Installing 7 of 7 - D:\QoderProject\国内版\生成winpe\overlay\Drivers\Storage\amdsbs_10.0.26100.1\amdsbs.inf: The driver package was successfully installed.
+The operation completed successfully.

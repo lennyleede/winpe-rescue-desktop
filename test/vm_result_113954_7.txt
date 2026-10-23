@@ -1,0 +1,105 @@
+===== dot3svc =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  Group = TDI
+  ImagePath = X:\windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  ObjectName = localSystem
+  ServiceSidType = 1
+  DependOnService = RpcSs;Ndisuio;Eaphost
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeImpersonatePrivilege;SeAuditPrivilege;SeTcbPrivilege
+  Parameters\ServiceDll = X:\windows\System32\dot3svc.dll
+  Parameters\ServiceDllUnloadOnStop = 1
+  Parameters\ServiceMain = Dot3SvcMain
+  [SCM/CIM] state=Running pid=1116 exit=0 startname=localSystem
+===== wlansvc =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  Group = TDI
+  ImagePath = X:\windows\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  ObjectName = LocalSystem
+  ServiceSidType = 1
+  DependOnService = RpcSs
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeImpersonatePrivilege;SeAuditPrivilege;SeTcbPrivilege;SeDebugPrivilege;SeLoadDriverPrivilege
+  Parameters\ServiceDll = X:\windows\System32\wlansvc.dll
+  [SCM/CIM] state=Stopped pid=0 exit=1068 startname=LocalSystem
+===== RpcSs =====
+  Type = 32
+  Start = 2
+  ErrorControl = 1
+  Group = COM Infrastructure
+  ImagePath = X:\windows\system32\svchost.exe -k rpcss -p
+  ObjectName = NT AUTHORITY\NetworkService
+  ServiceSidType = 1
+  DependOnService = RpcEptMapper;DcomLaunch
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeCreateGlobalPrivilege;SeImpersonatePrivilege
+  Parameters\ServiceDll = X:\windows\system32\rpcss.dll
+  [SCM/CIM] state=Running pid=932 exit=0 startname=NT AUTHORITY\NetworkService
+===== nsi =====
+  Type = 32
+  Start = 2
+  ErrorControl = 1
+  ImagePath = X:\windows\system32\svchost.exe -k LocalService -p
+  ObjectName = NT Authority\LocalService
+  ServiceSidType = 1
+  DependOnService = rpcss;nsiproxy
+  RequiredPrivileges = SeCreateGlobalPrivilege;SeImpersonatePrivilege
+  Parameters\ServiceDll = X:\windows\system32\nsisvc.dll
+  Parameters\ServiceDllUnloadOnStop = 1
+  [SCM/CIM] state=Running pid=1496 exit=0 startname=NT Authority\LocalService
+===== Dhcp =====
+  Type = 32
+  Start = 2
+  ErrorControl = 1
+  Group = TDI
+  ImagePath = X:\windows\system32\svchost.exe -k LocalServiceNetworkRestricted -p
+  ObjectName = NT Authority\LocalService
+  ServiceSidType = 1
+  DependOnService = NSI;Afd
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeCreateGlobalPrivilege;SeImpersonatePrivilege
+  Parameters\ServiceDll = X:\windows\system32\dhcpcore.dll
+  Parameters\ServiceDllUnloadOnStop = 1
+  [SCM/CIM] state=Running pid=388 exit=0 startname=NT Authority\LocalService
+===== BFE =====
+  Type = 32
+  Start = 2
+  ErrorControl = 1
+  Group = NetworkProvider
+  ImagePath = X:\windows\system32\svchost.exe -k LocalServiceNoNetwork -p
+  ObjectName = NT AUTHORITY\LocalService
+  ServiceSidType = 3
+  DependOnService = RpcSs
+  RequiredPrivileges = SeAuditPrivilege
+  Parameters\ServiceDll = X:\windows\System32\bfe.dll
+  Parameters\ServiceDllUnloadOnStop = 1
+  Parameters\ServiceMain = BfeServiceMain
+  [SCM/CIM] state=Running pid=568 exit=0 startname=NT AUTHORITY\LocalService
+===== MPSSvc =====
+  Type = 32
+  Start = 2
+  ErrorControl = 1
+  Group = NetworkProvider
+  ImagePath = X:\windows\system32\svchost.exe -k LocalServiceNoNetworkFirewall -p
+  ObjectName = NT Authority\LocalService
+  ServiceSidType = 3
+  DependOnService = mpsdrv;bfe;nsi
+  RequiredPrivileges = SeAssignPrimaryTokenPrivilege;SeAuditPrivilege;SeChangeNotifyPrivilege;SeCreateGlobalPrivilege;SeImpersonatePrivilege;SeIncreaseQuotaPrivilege
+  Parameters\ServiceDll = X:\windows\system32\mpssvc.dll
+  Parameters\ServiceDllUnloadOnStop = 1
+  [SCM/CIM] state=Running pid=1660 exit=0 startname=NT Authority\LocalService
+===== svchost 组表: 与网络有关的几组 =====
+  LocalSystemNetworkRestricted (5) = hidserv,svsvc,Netman,dot3svc,wlansvc
+  LocalServiceNetworkRestricted (5) = TimeBrokerSvc,eventlog,WinHttpAutoProxySvc,LmHosts,DHCP
+  LocalService (5) = nsi,w32time,SstpSvc,WinHttpAutoProxySvc,FontCache
+  NetworkService (6) = CryptSvc,lanmanworkstation,DNSCache,DHCP,TermService,Tapisrv
+  PEWLan (1) = wlansvc
+===== 组子键 (ObjectName/RequiredPrivileges 等组级设置) =====
+  [LocalServiceNetworkRestricted] CoInitializeSecurityParam=1 | COM_UnmarshalingPolicy=1 | DefaultRpcStackSize=64
+  [LocalServiceNetworkRestrictedDhcpLmHosts] CoInitializeSecurityParam=1 | DefaultRpcStackSize=64
+  [LocalSystemNetworkRestricted] CoInitializeSecurityParam=1 | COM_UnmarshalingPolicy=1
+===== nwifi/nativewifip 服务键与文件 =====
+  nwifi: Type=1 Start=3 Group=NDIS Img=system32\drivers\nwifi.sys
+  nativewifip: Type=1 Start=3 Group=NDIS Img=system32\DRIVERS\nwifi.sys
+  Ndisuio: Type=1 Start=3 Group=NDIS Img=system32\drivers\ndisuio.sys
+  wcmsvc: Type=32 Start=3 Group=TDI Img=X:\windows\System32\svchost.exe -k PEWCm -p

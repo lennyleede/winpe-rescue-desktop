@@ -1,0 +1,43 @@
+===== A. 依赖文件是否存在 =====
+  drivers\nativewifip.sys   NO
+  drivers\Ndisuio.sys       YES
+  drivers\nwifi.sys         YES
+  nsi.dll                   YES
+  wcmsvc.dll                NO
+  wlanapi.dll               YES
+  wlansvc.dll               YES
+  wlancfg.dll               YES
+  wlanmsm.dll               YES
+  fwpuclnt.dll              YES
+  wci.dll                   NO
+  msvcp_win.dll             YES
+  rpcrt4.dll                YES
+  secur32.dll               YES
+  wkscli.dll                YES
+  srvcli.dll                YES
+===== B. PE 现有 svchost 组 (挑一个能挂 wlansvc.dll 的) =====
+  组列表: 
+===== C. 当前 wlansvc 键 =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  ImagePath = X:\windows\System32\svchost.exe -k PEWLan
+  ObjectName = LocalService
+  DisplayName = WLAN AutoConfig (PE)
+  DependOnService = RPCSS
+  ServiceSidType = 0
+  Group = NDIS
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeCreateGlobalPrivilege;SeImpersonatePrivilege;SeIncreaseBasePriorityPrivilege;SeTcbPrivilege
+===== D. 尝试 1: LocalServiceNetworkRestricted + 依赖 RpcSs =====
+  PE 无该组
+===== E. 尝试 2: 去掉依赖 =====
+  [no-dep] net start =>     + FullyQualifiedErrorId : NativeCommandError / The dependency service or group failed to start.
+  [no-dep] state=Stopped pid=0
+===== F. 尝试 3: LocalSystemNetworkRestricted (对照主机真实配置) =====
+  PE 无该组
+===== G. 尝试 4: netsvcs + 依赖 RpcSs =====
+  PE 无该组
+===== H. 收尾: 现在的服务状态与 boot 日志 =====
+  wlansvc 最终 state=Stopped
+  接口: Microsoft Hyper-V Network Adapter/netvsc
+  结论: wlansvc 在 PE 里仍起不来

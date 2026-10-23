@@ -1,0 +1,42 @@
+===== A. 取 wifi.exe =====
+  DL wifi.exe OK 1399296 字节
+===== B. wlansvc 依赖链 + 精确错误 =====
+--- deps wlansvc ---
+  wlansvc: QueryServiceConfig 487 Attempt to access invalid address.
+--- svc info wlansvc ---
+  FAIL QueryServiceConfig: 487 Attempt to access invalid address.
+  CIM wlansvc: state=Stopped startmode=Manual exit=1068 pid=0 path=X:\windows\System32\svchost.exe -k PEWLan -p
+===== C. 起 wlansvc 并逐秒观察状态 =====
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+--- svc info wlansvc t=1s ---
+  FAIL QueryServiceConfig: 487 Attempt to access invalid address.
+  稳定状态=Stopped (t=1s)
+===== D. 承载 wlansvc 的 svchost 进程 =====
+  pid=812 cmd=X:\windows\system32\svchost.exe -k DcomLaunch -p
+  pid=932 cmd=X:\windows\system32\svchost.exe -k RPCSS -p
+  pid=372 cmd=X:\windows\System32\svchost.exe -k netsvcs -p
+  pid=388 cmd=X:\windows\System32\svchost.exe -k LocalServiceNetworkRestricted -p
+  pid=568 cmd=X:\windows\system32\svchost.exe -k LocalServiceNoNetwork -p
+  pid=736 cmd=X:\windows\system32\svchost.exe -k UserProfileService -p
+  pid=1496 cmd=X:\windows\system32\svchost.exe -k LocalService -p
+  pid=1540 cmd=X:\windows\system32\svchost.exe -k NetworkService -p
+  pid=1660 cmd=X:\windows\system32\svchost.exe -k LocalServiceNoNetworkFirewall -p
+  pid=1728 cmd=X:\windows\System32\svchost.exe -k NetworkService -p
+  pid=484 cmd=X:\windows\system32\svchost.exe -k NetworkService -p
+  pid=1116 cmd=X:\windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  svchost 进程数=12
+===== E. 依赖链上的每一环 (CIM 视角) =====
+  CIM RpcSs: state=Running startmode=Auto exit=0 pid=932 path=X:\windows\system32\svchost.exe -k rpcss -p
+  CIM nsi: state=Running startmode=Auto exit=0 pid=1496 path=X:\windows\system32\svchost.exe -k LocalService -p
+  CIM nsiproxy: 查不到
+  CIM dot3svc: state=Running startmode=Manual exit=0 pid=1116 path=X:\windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+  CIM nativewifip: 查不到
+  CIM Ndisuio: 查不到
+  CIM wcmsvc: 查不到
+  CIM nwifi: 查不到
+===== F. wlanapi 能不能打开 =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== 诊断完毕 =====

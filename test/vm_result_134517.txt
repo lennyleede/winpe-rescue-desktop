@@ -1,0 +1,13 @@
+﻿[A_ssh_result] + FullyQualifiedErrorId : NativeCommandError
+[A_sshd_proc_before] 1
+[A_sshd_procs_now] 
+[A_srv_log] debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1076
+[B_copied] comctl32.dll 下载成功 687KB ; msdmo.dll 下载成功 34KB ; pdh.dll 下载成功 308KB
+[B_now_present] comctl32.dll=True msdmo.dll=True pdh.dll=True
+[B2_ssh_dllonly] + FullyQualifiedErrorId : NativeCommandError
+[B2_srv_dllonly] debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1060
+[C_bgpromise] DisableBGPromise=1 已写入
+[B2_ssh_bgpromise] + FullyQualifiedErrorId : NativeCommandError
+[B2_srv_bgpromise] debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: do_cleanup || debug1: Killing privsep child 1688
+[D_sunlogin_after_fix] 存活 6 秒仍运行 (缺 DLL 已解决)
+[E_sshd_running] YES

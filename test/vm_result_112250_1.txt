@@ -1,0 +1,48 @@
+===== vm_fw_roundtrip 11:21:59  ShowOnly=False  Gap=20s  镜像脚本=X:\fwo.ps1 =====
+
+### 0. 起点
+  自动取镜像脚本本体: http://192.168.100.1:8000/file/fw_off.ps1 -> X:\fwo.ps1
+  脚本文件存在=True  大小=2995
+  FwPolicy2 OK 规则数=43 当前 Domain=False Private=False Public=False
+
+### 1. 把防火墙重新打开(写 True), 制造"应当被拦"的状态
+  profile 1 -> 赋值 OK 读回=True
+  profile 2 -> 赋值 OK 读回=True
+  profile 4 -> 赋值 OK 读回=True
+  [11:22:01] 等 20 秒, 主机侧预期: 全部 REQUEST / tcp22 TIMEOUT
+  [11:22:21] 打开后计数: Packets Received = 412488 | Received Packets Delivered = 412462 | Packets Received = 1649 | Received Packets Delivered = 1270 | Passive Opens = 81300 | Segments Received = 328567 | Passive Opens = 0 | Segments Received = 0
+
+### 2. 调用镜像里那个脚本本体(fw_off.ps1), 完全按 startnet 的用法
+  | 11:22:24 FwPolicy2 OK ???=43
+  | 11:22:24 ??? Domain=True Private=True Public=True
+  | 11:22:24 profile 1 ??????, ??=False
+  | 11:22:24 profile 2 ??????, ??=False
+  | 11:22:24 profile 4 ??????, ??=False
+  | 11:22:24 ?? Domain=False Private=False Public=False
+  | 11:22:25 MpsSvc State=Running StartMode=Auto
+  | 11:22:25 BFE State=Running StartMode=Auto
+  | fw_off verdict=off
+  调用返回码=0
+  调用后读回 Domain=False Private=False Public=False
+
+### 3. 等 20 秒, 主机侧预期: 恢复 REPLY + SSH banner
+  [11:22:25] 进入恢复窗
+  [11:22:45] 恢复后计数: Packets Received = 416765 | Received Packets Delivered = 416739 | Packets Received = 1649 | Received Packets Delivered = 1270 | Passive Opens = 82154 | Segments Received = 331988 | Passive Opens = 0 | Segments Received = 0
+  三个 profile 都是 False, 说明确实是镜像脚本关掉的(不需要兜底)
+
+### 3b. 镜像脚本留下的文件(证明开机时会写什么)
+  -- X:\fw_off.log 末 6 行 --
+    11:22:24 profile 1 赋值语法成功, 读回=False
+    11:22:24 profile 2 赋值语法成功, 读回=False
+    11:22:24 profile 4 赋值语法成功, 读回=False
+    11:22:24 写后 Domain=False Private=False Public=False
+    11:22:25 MpsSvc State=Running StartMode=Auto
+    11:22:25 BFE State=Running StartMode=Auto
+  -- X:\status.txt 末 5 行 --
+    # startnet autostart record 
+    pe-sshd.exe=started 
+    frpc.exe=manual 
+    sunloginsos.exe=started 
+    fw_off=off
+
+### 4. 结束 11:22:46

@@ -1,0 +1,5 @@
+SERVING http://172.31.32.1:8000/v.ps1  (脚本: D:\QoderProject\国内版\生成winpe\test\vm_fw_probe.ps1 6170 字节; 等待 WinPE 连接, 最多 1800 秒)
+192.168.100.2:49676 -> GET /v.ps1
+SERVED D:\QoderProject\国内版\生成winpe\test\vm_fw_probe.ps1
+192.168.100.2:49677 -> POST /result
+RESULT-SAVED -> D:\QoderProject\国内版\生成winpe\test\vm_result_234036_1.txt (7050 字节)

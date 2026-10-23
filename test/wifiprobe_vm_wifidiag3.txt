@@ -1,0 +1,39 @@
+﻿A. DL wifi.exe OK 1399296
+===== B. WMI: ??? wlansvc (DependentSystem=wlansvc => Antecedent ???) =====
+  WQL ??: The specified Class does not exist.
+===== C. WMI: ?? (wlansvc ?????) =====
+  RpcSs state=Running
+===== D. ???? wlansvc ???? (X: ????, ???????????) =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  Imagepath = X:\windows\System32\svchost.exe -k PEWLan -p
+  ObjectName = LocalSystem
+  Group = TDI
+  DependOnService = RpcSs
+  ServiceSidType = 1
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeImpersonatePrivilege;SeAuditPrivilege;SeTcbPrivilege;SeDebugPrivilege;SeLoadDriverPrivilege
+  Parameters\ServiceDll = X:\windows\System32\wlansvc.dll
+  ?? X:\Windows\System32\wlansvc.dll ??=True
+  ?? X:\Windows\System32\wlanapi.dll ??=True
+  ?? X:\Windows\System32\drivers\nwifi.sys ??=True
+===== E. SCM ?????? (??? sechost ??) =====
+--- svc info wlansvc ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- svc info dot3svc ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- svc info Dhcp ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- deps wlansvc ---
+  wlansvc: QueryServiceConfig 1783 The stub received bad data.
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+--- svc info wlansvc ?? ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== ?? v3 ?? =====
+RESULT-POSTED
+
+

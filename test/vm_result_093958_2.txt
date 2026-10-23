@@ -1,0 +1,26 @@
+﻿[0_killed_pe-sshd] 1888
+[0_killed_sshd] 1848
+[0_port22_after_kill] 已空
+[A_ipv4] 172.31.38.211, fe80::3abb:d8a2:19d7:5c95
+[A_host_8000_tcp] 可连通(TCP)
+[B_sizes] exe=3773952 ak=94 tk=399 frpc_toml=221
+[B_exe_ok] 大小正常(应为新版)
+[B_proc] pid=436
+[B_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    [::]:22                [::]:0                 LISTENING
+[B_log] 2026/10/04 09:39:35 已加载 1 把授权公钥 || 2026/10/04 09:39:35 pe-sshd 监听 0.0.0.0:22 认证=空密码+公钥 (hostkey=X:\SSH\pe_host_ed25519 authkeys=X:\SSH\authorized_keys shell=X:\Windows\System32\cmd.exe)
+[C_ssh_key] PE_SSH_KEY_OK 
+
+Warning: Permanently added '127.0.0.1' (ED25519) to the list of known hosts.
+'whoami' is not recognized as an internal or external command,
+operable program or batch file.
+[C_ssh_anon] PE_SSH_ANON_OK 
+
+'whoami' is not recognized as an internal or external command,
+operable program or batch file.
+[C_srv_log] 2026/10/04 09:39:35 已加载 1 把授权公钥 || 2026/10/04 09:39:35 pe-sshd 监听 0.0.0.0:22 认证=空密码+公钥 (hostkey=X:\SSH\pe_host_ed25519 authkeys=X:\SSH\authorized_keys shell=X:\Windows\System32\cmd.exe) || 2026/10/04 09:39:39 已连接 127.0.0.1:56194 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 09:39:39 会话开始: user=Administrator cmd="echo PE_SSH_KEY_OK && whoami && cd" || 2026/10/04 09:39:39 会话结束 127.0.0.1:56194 || 2026/10/04 09:39:39 已连接 127.0.0.1:56195 user=rescue client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 09:39:39 会话开始: user=rescue cmd="echo PE_SSH_ANON_OK && whoami" || 2026/10/04 09:39:40 会话结束 127.0.0.1:56195
+[D_frpc_proc] pid=1132
+[D_frpc_log] 2026-10-04 09:39:40.080 [I] [sub/root.go:194] start frpc service for config file [X:\Desktop\Frp\frpc_test16.toml] with aggregated configuration || 2026-10-04 09:39:40.081 [I] [client/service.go:312] try to connect to server... || 2026-10-04 09:39:40.088 [I] [client/service.go:332] [36851e61f4da1ce5] login to server success, get run id [36851e61f4da1ce5] || 2026-10-04 09:39:40.088 [I] [proxy/proxy_manager.go:183] [36851e61f4da1ce5] proxy added: [pe-ssh16] || 2026-10-04 09:39:40.089 [I] [client/control.go:174] [36851e61f4da1ce5] [pe-ssh16] start proxy success
+[E_sunlogin_boot] 开机自启后已退出
+[E_sunlogin_retry] 手动拉起后存活 808
+[F_verdict] 出站TCP通 / 公钥登录通过 / 空密码登录通过 / frpc在跑 / 向日葵在跑

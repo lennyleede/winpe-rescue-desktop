@@ -1,0 +1,32 @@
+﻿probe 2026-10-06 16:45:49
+=== 1. 已安装的 Windows Kits / ADK ===
+  C:\Program Files (x86)\Windows Kits\10  [has copype]
+  (missing) C:\Program Files\Windows Kits
+  (missing) D:\Program Files\Windows Kits
+  (missing) D:\Windows Kits
+=== 2. 注册表里的 ADK / Windows 10 安装信息 ===
+  Windows Deployment Tools | 10.1.26100.9457 | 
+  Windows Deployment Tools Environment | 10.1.26100.9457 | 
+=== 3. 当前 ADK 的 WinPE 基镜像版本 ===
+  (missing) C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\Media\sources\boot.wim
+  (missing) C:\Program Files (x86)\Windows Kits\10\Assessment and Deployment Kit\Windows Preinstallation Environment\amd64\WinPE.wim
+=== 4. WinPE_OCs 组件包版本(取 WinPE-WMI.cab 的内部版本) ===
+  WinPE-DismCmdlets.cab  63,014 B  2026/9/12 21:12:24
+  WinPE-Dot3Svc.cab  1,353,029 B  2026/9/12 21:12:24
+  WinPE-EnhancedStorage.cab  118,299 B  2026/9/12 21:12:24
+  WinPE-FMAPI.cab  49,047 B  2026/9/12 21:12:24
+  WinPE-Fonts-Legacy.cab  3,422,510 B  2026/9/12 21:12:24
+  WinPE-FontSupport-JA-JP.cab  21,064,966 B  2026/9/12 21:12:26
+  WinPE-FontSupport-KO-KR.cab  10,416,931 B  2026/9/12 21:12:24
+  WinPE-FontSupport-WinRE.cab  3,620,794 B  2026/9/12 21:12:24
+  total cab = 945
+=== 5. 本机 OS ===
+  Microsoft Windows 10 IoT 企业版 LTSC 10.0.19044 build 19044
+=== 6. ISO 挂载能力(只读测试, 不改动任何文件) ===
+  found D:\迅雷下载\zh-cn_windows_10_enterprise_ltsc_2021_x64_dvd_033b7312.iso size=5044211712
+  isAdmin=False
+  skip mount (需要管理员)
+=== 7. 网络到 ADK 下载点 ===
+  OK https://go.microsoft.com/fwlink/?linkid=2166289 -> 200
+  OK https://download.microsoft.com/download/ -> 200
+=== done ===

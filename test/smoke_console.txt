@@ -1,0 +1,15 @@
+进程: pid=17644 存活=True
+监听: TCP    127.0.0.1:2222         0.0.0.0:0              LISTENING
+--- 用私钥登录并执行命令 ---
+ssh.exe : Warning: Permanently added '[127.0.0.1]:2222' (ED25519) to the list of known hosts.
+所在位置 D:\QoderProject\国内版\生成winpe\test\local_ssh_smoke.ps1:33 字符: 8
++ $out = & C:\Windows\System32\OpenSSH\ssh.exe @sshArgs 2>&1 | Out-Stri ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Warning: Perman...of known hosts.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+LOCAL_SSH_OK 
+rescue-host-01\rescueuser
+C:\
+
+--- 空密码/无凭证登录(救援盘默认) ---

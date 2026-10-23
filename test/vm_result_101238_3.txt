@@ -1,0 +1,23 @@
+﻿[1_ipv4] 172.31.38.211, fe80::fc74:7c67:83ca:f786
+[1_gateway] 172.31.32.1
+[1_ping_loopback] OK(有 TTL 回包)
+[1_ping_host] OK(有 TTL 回包)
+[1_ping_gw] OK(有 TTL 回包)
+[1_host_8000_tcp] 可连通(TCP)
+[1_firewall] PE 有 mpssvc.dll, 默认未启动(未启服务则不挡)
+[2_boot_log] ==== startnet v6 begin ====  || [1] wpeinit err=0  ||  || Windows IP Configuration ||  ||    Host Name . . . . . . . . . . . . : minint-fg8j2ma ||    Primary Dns Suffix  . . . . . . . :  ||    Node Type . . . . . . . . . . . . : Mixed ||    IP Routing Enabled. . . . . . . . : No ||    WINS Proxy Enabled. . . . . . . . : No ||    DNS Suffix Search List. . . . . . : mshome.net ||  || Ethernet adapter Ethernet: ||  ||    Connection-specific DNS Suffix  . : mshome.net ||    Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter ||    Physical Address. . . . . . . . . : 00-15-5D-4E-10-99 ||    DHCP Enabled. . . . . . . . . . . : Yes ||    Autoconfiguration Enabled . . . . : Yes ||    Link-local IPv6 Address . . . . . : fe80::fc74:7c67:83ca:f786%2(Preferred)
+[2_in_image] X:\SSH\pe-sshd.exe 3773952 字节
+[2_proc] pid=1876
+[2_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    [::]:22                [::]:0                 LISTENING
+[2_srv_log] 2026/10/04 10:10:53 已生成主机密钥 X:\SSH\pe_host_ed25519 || 2026/10/04 10:10:53 已加载 1 把授权公钥 || 2026/10/04 10:10:53 pe-sshd 监听 0.0.0.0:22 认证=空密码+公钥 (hostkey=X:\SSH\pe_host_ed25519 authkeys=X:\SSH\authorized_keys shell=X:\Windows\System32\cmd.exe)
+[2_key_bytes] 399
+[2_ssh_key] T17_KEY_OK X:\ Microsoft Windows [Version 10.0.26100.1] Warning: Permanently added '127.0.0.1' (ED25519) to the list of known hosts.
+[2_ssh_anon] T17_ANON_OK X:\
+[3_sunlogin] 开机自启存活 pid=1192,1844,1896
+[3_dlls] comctl32.dll=687KB msdmo.dll=34KB pdh.dll=308KB
+[4_toml_bytes] 221
+[4_frpc_proc] pid=728
+[4_frpc_log] 2026-10-04 10:12:27.950 [I] [sub/root.go:194] start frpc service for config file [X:\Desktop\Frp\frpc_test17.toml] with aggregated configuration || 2026-10-04 10:12:27.950 [I] [client/service.go:312] try to connect to server... || 2026-10-04 10:12:27.970 [I] [client/service.go:332] [da1e9a68e2ae3810] login to server success, get run id [da1e9a68e2ae3810] || 2026-10-04 10:12:27.970 [I] [proxy/proxy_manager.go:183] [da1e9a68e2ae3810] proxy added: [pe-ssh16] || 2026-10-04 10:12:27.975 [I] [client/control.go:174] [da1e9a68e2ae3810] [pe-ssh16] start proxy success
+[5_desktop] pid=1956
+[F_verdict] 网络OK / SSH公钥登录OK / SSH空密码登录OK / 向日葵OK / frpc在跑(主机再验 ssh -p 6000)

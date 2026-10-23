@@ -1,0 +1,9 @@
+﻿frps=已在运行(复用)
+frpc_alive=True sshd_alive=True
+listen_6001=TCP    0.0.0.0:6001           0.0.0.0:0              LISTENING
+  TCP    [::]:6001              [::]:0                 LISTENING
+frpc_out=[1;34m2026-10-04 09:19:59.728 [I] [sub/root.go:194] start frpc service for config file [D:\QoderProject\鍥藉唴鐗圽鐢熸垚winpe\build\tunnel\frpc_local.toml] with aggregated configuration [0m[1;34m2026-10-04 09:19:59.775 [I] [client/service.go:312] try to connect to server... [0m[1;34m2026-10-04 09:19:59.807 [I] [client/service.go:332] [3053938484f4b70d] login to server success, get run id [3053938484f4b70d] [0m[1;34m2026-10-04 09:19:59.834 [I] [proxy/proxy_manager.go:183] [3053938484f4b70d] proxy added: [pe-ssh-local] [0m[1;34m2026-10-04 09:19:59.864 [I] [client/control.go:174] [3053938484f4b70d] [pe-ssh-local] start proxy success [0m 
+tunnel_key_output=TUNNEL_KEY_OK rescue-host-01\rescueuser C:\ Warning: Permanently added '[127.0.0.1]:6001' (ED25519) to the list of known hosts. 
+tunnel_anon_output=TUNNEL_ANON_OK rescue-host-01\rescueuser 
+server_log=2026/10/04 09:19:54 已生成主机密钥 D:\QoderProject\国内版\生成winpe\build\tunnel\hk || 2026/10/04 09:19:54 已加载 1 把授权公钥 || 2026/10/04 09:19:54 pe-sshd 监听 127.0.0.1:2222 认证=空密码+公钥 (hostkey=D:\QoderProject\国内版\生成winpe\build\tunnel\hk authkeys=D:\QoderProject\国内版\生成winpe\test\share\authorized_keys shell=C:\Windows\System32\cmd.exe) || 2026/10/04 09:20:04 已连接 127.0.0.1:60541 user=Administrator client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 09:20:04 会话开始: user=Administrator cmd="echo TUNNEL_KEY_OK && whoami && cd" || 2026/10/04 09:20:04 会话结束 127.0.0.1:60541 || 2026/10/04 09:20:04 已连接 127.0.0.1:60543 user=rescue client="SSH-2.0-OpenSSH_for_Windows_9.5" || 2026/10/04 09:20:04 会话开始: user=rescue cmd="echo TUNNEL_ANON_OK && whoami" || 2026/10/04 09:20:05 会话结束 127.0.0.1:60543
+verdict=隧道公钥登录 通过 / 隧道空密码登录 通过 / 隧道端口 已映射

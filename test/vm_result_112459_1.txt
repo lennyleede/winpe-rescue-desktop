@@ -1,0 +1,43 @@
+===== A. 取 wifi.exe =====
+  DL wifi.exe OK 1399296 字节
+===== B. wlansvc 依赖链 (当前注册表: 上一轮热修后 RpcSs-only) =====
+--- deps wlansvc ---
+  wlansvc: OpenService 5 ERROR_ACCESS_DENIED
+--- svc info wlansvc ---
+  FAIL OpenService(wlansvc): 5 ERROR_ACCESS_DENIED
+--- svc start wlansvc ---
+  FAIL StartService 5 ERROR_ACCESS_DENIED
+--- svc info wlansvc (start 之后) ---
+  FAIL OpenService(wlansvc): 5 ERROR_ACCESS_DENIED
+===== C. wcmsvc / nsis / RpcSs 逐个看 =====
+--- svc info wcmsvc ---
+  FAIL OpenService(wcmsvc): 1060 ERROR_SERVICE_DOES_NOT_EXIST
+--- svc info nsi ---
+  FAIL OpenService(nsi): 5 ERROR_ACCESS_DENIED
+--- svc info RpcSs ---
+  FAIL OpenService(RpcSs): 5 ERROR_ACCESS_DENIED
+--- svc info Dhcp ---
+  FAIL OpenService(Dhcp): 5 ERROR_ACCESS_DENIED
+--- svc info dot3svc ---
+  FAIL OpenService(dot3svc): 5 ERROR_ACCESS_DENIED
+--- svc info BFE ---
+  FAIL OpenService(BFE): 5 ERROR_ACCESS_DENIED
+--- svc info mpssvc ---
+  FAIL OpenService(mpssvc): 5 ERROR_ACCESS_DENIED
+--- deps wcmsvc ---
+  wcmsvc: OpenService 1060 ERROR_SERVICE_DOES_NOT_EXIST
+--- svc start wcmsvc ---
+  FAIL StartService 1060 ERROR_SERVICE_DOES_NOT_EXIST
+===== D. 起服务后再看一次链 =====
+--- deps wlansvc (第二轮) ---
+  wlansvc: OpenService 5 ERROR_ACCESS_DENIED
+===== E. wlanapi 能不能打开 =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== F. 有没有 svchost 真的加载了 wlansvc.dll / wcmsvc.dll =====
+  没有任何 svchost 加载 wlansvc.dll/wcmsvc.dll
+===== G. 服务键清单里到底有哪些 wlan/wifi/wcm 相关 =====
+  服务键总数=367
+  模糊匹配=dot3svc,nativewifip,NDIS,NdisTapi,Ndisuio,NdisVirtualBus,NdisWan,ndiswanlegacy,nsi,nsiproxy,nwifi,wcmsvc,wlansvc
+===== 诊断完毕 =====

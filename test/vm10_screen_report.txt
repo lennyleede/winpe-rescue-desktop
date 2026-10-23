@@ -1,0 +1,5 @@
+﻿===== 控制台截图 2026-10-07 15:29:50 isAdmin=True =====
+步骤1 OK: Name=5C975297-66EF-4757-94D9-A6E5186A54A1 EnabledState=2 HealthState=5
+步骤2 引用路径 = root\virtualization\v2:Msvm_ComputerSystem.CreationClassName="Msvm_ComputerSystem",Name="5C975297-66EF-4757-94D9-A6E5186A54A1"
+步骤2 失败: 没有 Msvm_VideoHead(Gen1/没有合成显卡时会这样)
+  试探: 

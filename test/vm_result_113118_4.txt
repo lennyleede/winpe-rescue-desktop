@@ -1,0 +1,36 @@
+A. DL wifi.exe OK 1399296
+===== B. WMI: 谁依赖 wlansvc (DependentSystem=wlansvc => Antecedent 是前置) =====
+  WQL 失败: The specified Class does not exist.
+===== C. WMI: 反向 (wlansvc 是谁的前置) =====
+  RpcSs state=Running
+===== D. 注册表里 wlansvc 现在的值 (X: 是易失的, 这是上一轮热修后的状态) =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  Imagepath = X:\windows\System32\svchost.exe -k PEWLan -p
+  ObjectName = LocalSystem
+  Group = TDI
+  DependOnService = RpcSs
+  ServiceSidType = 1
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeImpersonatePrivilege;SeAuditPrivilege;SeTcbPrivilege;SeDebugPrivilege;SeLoadDriverPrivilege
+  Parameters\ServiceDll = X:\windows\System32\wlansvc.dll
+  文件 X:\Windows\System32\wlansvc.dll 存在=True
+  文件 X:\Windows\System32\wlanapi.dll 存在=True
+  文件 X:\Windows\System32\drivers\nwifi.sys 存在=True
+===== E. SCM 缓存里的配置 (这次带 sechost 回退) =====
+--- svc info wlansvc ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- svc info dot3svc ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- svc info Dhcp ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- deps wlansvc ---
+  wlansvc: QueryServiceConfig 1783 The stub received bad data.
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+--- svc info wlansvc 之后 ---
+  FAIL QueryServiceConfig: 1783 The stub received bad data.
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== 诊断 v3 完毕 =====

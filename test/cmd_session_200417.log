@@ -1,0 +1,176 @@
+﻿﻿===== 20:07:48  iwr -UseBasicParsing -Uri http://172.31.32.1:8000/v.ps1 -OutFile X:\v12.ps1; & X:\v12.ps1
+(耗时 30s)
+>>> X:\verify11.txt ??? (VM ????), ?????????
+[P_conhost.exe] 978944
+[P_csrss.exe] 38576
+[P_wininit.exe] 563456
+[P_user32.dll] 1852616
+[P_sessions] csrss:508:S0 csrss:588:S1 services:680:S0 smss:420:S0 winlogon:664:S1
+[P_cim] 10.0.26100
+[C_copy] 24 ??????? X:\Windows\System32\OpenSSH
+[C_cfg] HostKey X:\Windows\System32\OpenSSH\ssh_host_rsa_key ; HostKey X:\Windows\System32\OpenSSH\ssh_host_ecdsa_key ; HostKey X:\Windows\System32\OpenSSH\ssh_host_ed25519_key ; AuthorizedKeysFile X:\Windows\System32\OpenSSH\administrators_authorized_keys ; Subsystem sftp X:\Windows\System32\OpenSSH\sftp-server.exe
+[E_reg] ??? sshd.exe ? start/stop trace
+[S_parent_procs] 
+[L_sys32] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[E_start] pid=808 ppid=1128
+[E_stop] pid=1932 ppid=0 ExitStatus=0xFFFFFFFF ;; pid=808 ppid=0 ExitStatus=0x00000001
+[S_srv_tail] Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key' are too open. || It is required that your private key files are NOT accessible by others. || This private key will be ignored. || Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions || Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key || sshd: no hostkeys available -- exiting.
+[L_srcpath] Connection reset by 127.0.0.1 port 22
+[O_start] pid=808 ppid=1128 ;; pid=1956 ppid=1128 ;; pid=1708 ppid=1956
+[O_stop] pid=1932 ExitStatus=0xFFFFFFFF ;; pid=808 ExitStatus=0x00000001 ;; pid=1708 ExitStatus=0xC0000142 ;; pid=1956 ExitStatus=0x000000FF
+[D_sshd_running] YES
+>>> ???????
+
+
+﻿===== 20:22:14  iwr -UseBasicParsing -Uri http://172.31.32.1:8000/v.ps1 -OutFile X:\v13.ps1; & X:\v13.ps1
+(耗时 29s)
+[A_strictmodes] ok
+[A_acl] σ╖▓σ»╣Θ╜É 1 Σ╕¬: sshd_config_default
+[A_acl_after] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[B_t_dst] sshd.exe : Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_rsa_key.
+At X:\v13.ps1:43 char:16
++ ... L 'B_t_dst' ((& "$DST\sshd.exe" -t -f "$DST\sshd_config" 2>&1 | Out-S ...
++                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Bad permissions...h_host_rsa_key.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_rsa_key
+Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_ecdsa_key.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ecdsa_key
+Bad permissions. Try removing permissions for user: BUILTIN\\Users (S-1-5-32-545) on file 
+X:/Windows/System32/OpenSSH/ssh_host_ed25519_key.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions for 'X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions
+Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key
+sshd: no hostkeys available -- exiting.
+[TRAP] The term 'X:\OpenSSH\sshd_config_default\sshd_config\ssh_host_rsa_key\ssh_host_ecdsa_key\ssh_host_ed25519_key\administrators_authorized_keys\sshd.exe' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. @line44
+[L_sys32_fixed] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[C_stop] pid=1812 ExitStatus=0xFFFFFFFF ;; pid=1952 ExitStatus=0x00000001
+[C_srv_tail] It is required that your private key files are NOT accessible by others. || This private key will be ignored. || Unable to load host key "X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key": bad permissions || Unable to load host key: X:\\Windows\\System32\\OpenSSH\\ssh_host_ed25519_key || sshd: no hostkeys available -- exiting.
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line67
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line71
+[TRAP] The term 'X:\OpenSSH\sshd_config_default\sshd_config\ssh_host_rsa_key\ssh_host_ecdsa_key\ssh_host_ed25519_key\administrators_authorized_keys\ssh.exe' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again. @line16
+[D_child_cmdlines] 
+[TRAP] This command cannot be run due to the error: The system cannot find the file specified. @line83
+[E_sshd_running] NO
+>>> τ╗ôµ₧£σ╖▓σ¢₧Σ╝áΣ╕╗µ£║
+
+
+﻿===== 20:24:51  iwr -UseBasicParsing -Uri http://172.31.32.1:8000/v.ps1 -OutFile X:\v14.ps1; & X:\v14.ps1
+(耗时 28s)
+[A_keygen] 
+[A_key_exists] YES
+[A_key_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+[A_ak_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[A_cfg] Port 22 ; ListenAddress 0.0.0.0 ; HostKey  ; X:\Windows\System32\OpenSSH\ssh_host_t14_key ; AuthorizedKeysFile  ; X:\Windows\System32\OpenSSH\administrators_authorized_keys ; PermitRootLogin yes ; PasswordAuthentication no ; PubkeyAuthentication yes ; StrictModes no ; LogLevel DEBUG3 ; PidFile X:\sshd_t14.pid ; Subsystem sftp  ; X:\Windows\System32\OpenSSH\sftp-server.exe
+[B_t] sshd.exe : X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 3: no argument after keyword "HostKey"
+At X:\v14.ps1:48 char:12
++ AL 'B_t' ((& "$Dst\sshd.exe" -t -f $Cfg 2>&1 | Out-String).Trim())
++            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (X:\\Windows\\Sy...yword "HostKey":String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 4: no argument after keyword 
+"X:\\Windows\\System32\\OpenSSH\\ssh_host_t14_key"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 5: no argument after keyword "AuthorizedKeysFile"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 6: no argument after keyword 
+"X:\\Windows\\System32\\OpenSSH\\administrators_authorized_keys"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 13: Missing subsystem command.
+[C_listening] 
+[L_sys32_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[C_stop] pid=1648 ExitStatus=0x000000FF
+[C_srv_tail] X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 3: no argument after keyword "HostKey" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 4: no argument after keyword "X:\\Windows\\System32\\OpenSSH\\ssh_host_t14_key" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 5: no argument after keyword "AuthorizedKeysFile" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 6: no argument after keyword "X:\\Windows\\System32\\OpenSSH\\administrators_authorized_keys" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 13: Missing subsystem command.
+[L_root_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[D_srv_tail] X:\\sshd_t14_src.config line 4: no argument after keyword "X:\\OpenSSH\\ssh_host_t14_key" || X:\\sshd_t14_src.config line 5: no argument after keyword "AuthorizedKeysFile" || X:\\sshd_t14_src.config line 6: no argument after keyword "X:\\OpenSSH\\administrators_authorized_keys" || X:\\sshd_t14_src.config line 13: Missing subsystem command.
+[E_sshd_running] YES
+>>> τ╗ôµ₧£σ╖▓σ¢₧Σ╝áΣ╕╗µ£║
+
+
+﻿===== 20:26:48  iwr -UseBasicParsing -Uri http://172.31.32.1:8000/v.ps1 -OutFile X:\v14b.ps1; & X:\v14b.ps1
+(耗时 25s)
+[A_keygen] 
+[A_key_exists] YES
+[A_key_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+[A_ak_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[A_cfg] Port 22 ; ListenAddress 0.0.0.0 ; HostKey X:\Windows\System32\OpenSSH\ssh_host_t14_key ; AuthorizedKeysFile X:\Windows\System32\OpenSSH\administrators_authorized_keys ; PermitRootLogin yes ; PasswordAuthentication no ; PubkeyAuthentication yes ; StrictModes no ; LogLevel DEBUG3 ; PidFile X:\sshd_t14.pid ; Subsystem sftp X:\Windows\System32\OpenSSH\sftp-server.exe
+[B_t] 
+[C_listening] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+[L_sys32_t14] Connection reset by 127.0.0.1 port 22
+[C_stop] pid=1932 ExitStatus=0xFFFFFFFF ;; pid=1564 ExitStatus=0xC0000142 ;; pid=516 ExitStatus=0x000000FF
+[C_srv_tail] debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 || debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 || debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1564
+[L_root_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[D_srv_tail] debug1: sshd version OpenSSH_for_Windows_9.5, LibreSSL 3.8.2 || debug1: get_passwd: lookup_sid() failed: 1332. || Unable to load host key: X:\\OpenSSH\\ssh_host_t14_key || sshd: no hostkeys available -- exiting.
+[E_sshd_running] YES
+>>> τ╗ôµ₧£σ╖▓σ¢₧Σ╝áΣ╕╗µ£║
+
+
+﻿===== 22:49:31  $c=New-Object System.Net.Sockets.TcpClient; $ar=$ar=$c.BeginConnect('172.31.32.1',7000,$null,$null); $ok=$ar.AsyncWaitHandle.WaitOne(3000); 'frps_7000 reachable=' + $ok + ' connected=' + $c.Connected; $c.Close()
+(耗时 5s)
+frps_7000 reachable=True connected=True
+
+
+﻿===== 23:30:03  iwr -UseBasicParsing http://172.31.32.1:8000/file/vm_test15.ps1 -OutFile X:\t15.ps1; & X:\t15.ps1
+(耗时 343s)
+[A_ipv4] 172.31.38.211, fe80::3abb:d8a2:19d7:5c95
+[A_gateway] 172.31.32.1
+[A_ping_loopback] OK
+[A_ping_host] OK
+[A_ping_gw] OK
+[A_tcp_stack] TCP/IP µáêµ¡úσ╕╕(µ£ë LISTENING µ¥íτ¢«)
+[B_sizes] exe=3766784 ak=94 tk=399 frpc_toml=219
+[B_ak_head] ssh-ed25519 AAAAC3Nz
+[B_proc] pid=796
+[B_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    [::]:22                [::]:0                 LISTENING
+[B_hostkey] σ╖▓τöƒµêÉ 400 σ¡ùΦèé
+[B_log_tail] 
+[C_ssh_loopback] ssh.exe : Connection reset by 127.0.0.1 port 22
+At X:\t15.ps1:56 char:6
++ $r = & X:\OpenSSH\ssh.exe -o StrictHostKeyChecking=no -o UserKnownHos ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+[C_has_OK] NO
+[C_srv_log] 
+[D_frpc_proc] pid=1596
+[D_frpc_log] 2026-10-03 23:29:55.632 [I] [sub/root.go:194] start frpc service for config file [X:\Desktop\Frp\frpc_test.toml] with aggregated configuration || 2026-10-03 23:29:55.636 [I] [client/service.go:312] try to connect to server... || 2026-10-03 23:29:57.441 [I] [client/service.go:332] [7da361d4a48b4788] login to server success, get run id [7da361d4a48b4788] || 2026-10-03 23:29:57.441 [I] [proxy/proxy_manager.go:183] [7da361d4a48b4788] proxy added: [pe-ssh] || 2026-10-03 23:29:57.486 [I] [client/control.go:174] [7da361d4a48b4788] [pe-ssh] start proxy success
+[E_sunlogin] µ£¬Φ┐ÉΦíî
+>>> τ╗ôµ₧£σ╖▓σ¢₧Σ╝áΣ╕╗µ£║
+
+

@@ -1,0 +1,30 @@
+﻿[A_keygen] 
+[A_key_exists] YES
+[A_key_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+[A_ak_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[A_cfg] Port 22 ; ListenAddress 0.0.0.0 ; HostKey  ; X:\Windows\System32\OpenSSH\ssh_host_t14_key ; AuthorizedKeysFile  ; X:\Windows\System32\OpenSSH\administrators_authorized_keys ; PermitRootLogin yes ; PasswordAuthentication no ; PubkeyAuthentication yes ; StrictModes no ; LogLevel DEBUG3 ; PidFile X:\sshd_t14.pid ; Subsystem sftp  ; X:\Windows\System32\OpenSSH\sftp-server.exe
+[B_t] sshd.exe : X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 3: no argument after keyword "HostKey"
+At X:\v14.ps1:48 char:12
++ AL 'B_t' ((& "$Dst\sshd.exe" -t -f $Cfg 2>&1 | Out-String).Trim())
++            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (X:\\Windows\\Sy...yword "HostKey":String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 4: no argument after keyword 
+"X:\\Windows\\System32\\OpenSSH\\ssh_host_t14_key"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 5: no argument after keyword "AuthorizedKeysFile"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 6: no argument after keyword 
+"X:\\Windows\\System32\\OpenSSH\\administrators_authorized_keys"
+X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 13: Missing subsystem command.
+[C_listening] 
+[L_sys32_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[C_stop] pid=1648 ExitStatus=0x000000FF
+[C_srv_tail] X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 3: no argument after keyword "HostKey" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 4: no argument after keyword "X:\\Windows\\System32\\OpenSSH\\ssh_host_t14_key" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 5: no argument after keyword "AuthorizedKeysFile" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 6: no argument after keyword "X:\\Windows\\System32\\OpenSSH\\administrators_authorized_keys" || X:\\Windows\\System32\\OpenSSH\\sshd_t14.config line 13: Missing subsystem command.
+[L_root_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[D_srv_tail] X:\\sshd_t14_src.config line 4: no argument after keyword "X:\\OpenSSH\\ssh_host_t14_key" || X:\\sshd_t14_src.config line 5: no argument after keyword "AuthorizedKeysFile" || X:\\sshd_t14_src.config line 6: no argument after keyword "X:\\OpenSSH\\administrators_authorized_keys" || X:\\sshd_t14_src.config line 13: Missing subsystem command.
+[E_sshd_running] YES

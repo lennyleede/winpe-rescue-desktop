@@ -1,0 +1,446 @@
+﻿===== host_pktmon 2026-10-04 23:17:58 =====
+isAdmin=True  DryRun=False
+host iface ip check: 192.168.100.1
+
+===== 1. 清筛选器并只留 PE-INT 相关的包 =====
+  宸插垹闄ゆ墍鏈夌瓫閫夊櫒銆?
+  宸叉坊鍔犵瓫閫夊櫒銆?
+  宸叉坊鍔犵瓫閫夊櫒銆?
+  鏁版嵁鍖呯瓫閫夊櫒:
+       # 鍚嶇О    EtherType IP 鍦板潃         
+       - --    --------- -----         
+       1 peint           192.168.100.1 
+                         192.168.100.2 
+       2 arp   ARP                     
+
+===== 1b. 流量前的计数器基线(和第 3 节对比才知道这轮丢了多少) =====
+  鎵€鏈夎鏁板櫒閮戒负 0銆?
+  status: 
+  status: 鏁版嵁鍖呯洃瑙嗗櫒娌℃湁杩愯銆?
+
+===== 2. 开始捕获 + 制造流量(4 个 ping + 1 次 tcp22) =====
+  
+  璁板綍绋嬪簭鍙傛暟:
+      璁板綍绋嬪簭鍚嶇О:        PktMon
+      鏃ュ織妯″紡:       寰幆
+      鏃ュ織鏂囦欢:           D:\QoderProject\鍥藉唴鐗圽鐢熸垚winpe\test\pktmon.etl
+      鏈€澶ф枃浠跺ぇ灏?      512 MB
+      宸茬敤鍐呭瓨:        256 MB
+  
+  鏀堕泦鐨勬暟鎹?
+      鏁版嵁鍖呰鏁板櫒锛屾暟鎹寘鎹曡幏
+  
+  鎹曡幏绫诲瀷:
+      鎵€鏈夋暟鎹寘
+  
+  鐩戣鐨勭粍浠?
+      鍏ㄩ儴
+  
+  鏁版嵁鍖呯瓫閫夊櫒:
+       # 鍚嶇О    EtherType IP 鍦板潃         
+       - --    --------- -----         
+       1 peint           192.168.100.1 
+                         192.168.100.2 
+       2 arp   ARP                     
+  ping| 
+  ping| 正在 Ping 192.168.100.2 从 192.168.100.1 具有 32 字节的数据:
+  ping| 请求超时。
+  ping| 请求超时。
+  ping| 请求超时。
+  ping| 请求超时。
+  ping| 
+  ping| 192.168.100.2 的 Ping 统计信息:
+  ping|  数据包: 已发送 = 4，已接收 = 0，丢失 = 4 (100% 丢失)，
+  tcp SYN 无回应
+  姝ｅ湪鍒锋柊鏃ュ織...
+  姝ｅ湪鍚堝苟鍏冩暟鎹?..
+  鏃ュ織鏂囦欢: D:\QoderProject\鍥藉唴鐗圽鐢熸垚winpe\test\pktmon.etl (鏃犱簨浠朵涪澶?
+
+===== 3. 组件计数器(含丢包原因) =====
+  鎵€鏈夎鏁板櫒閮戒负 0銆?
+
+===== 4. 组件清单(把组件 ID 对上网卡) =====
+  
+  缃戠粶閫傞厤鍣?
+   ID MAC 鍦板潃 鍚嶇О 
+   -- ------ -- 
+   16 F8-75-A4-DF-18-74 Intel(R) Ethernet Connection (6) I219-V 
+   17 D8-3B-BF-36-71-F3 Intel(R) Wireless-AC 9260 160MHz 
+   15 D8-3B-BF-36-71-F7 Bluetooth Device (Personal Area Network) 
+   153 00-15-5D-4E-10-99 WinPE-Test 
+   152 00-15-5D-09-7B-16 vEthernet (Default Switch) 
+   155 00-15-5D-00-69-06 vEthernet (PE-INT) 
+  
+
+===== 5. 包级明细 =====
+  姝ｅ湪澶勭悊...
+  
+  宸叉牸寮忓寲浜嬩欢鏁?    1464
+  宸茶缃牸寮忕殑鏂囦欢:      D:\QoderProject\鍥藉唴鐗圽鐢熸垚winpe\test\pktmon_pkt.txt
+  etl2txt 行数=1742
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242318400 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 2，方向 Tx ，类型 以太网 ，组件 18，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242324300 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 3，方向 Tx ，类型 以太网 ，组件 18，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242326700 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 4，方向 Tx ，类型 以太网 ，组件 20，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242328400 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 5，方向 Tx ，类型 以太网 ，组件 20，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242330100 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 6，方向 Tx ，类型 以太网 ，组件 21，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242331700 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 7，方向 Tx ，类型 以太网 ，组件 21，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242333200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > [06]2C1C.133C::2026-10-04 23:18:02.242333200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242334800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242334800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > [06]2C1C.133C::2026-10-04 23:18:02.242334800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242336200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242336200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242344500 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 11，方向 Tx ，类型 以太网 ，组件 23，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242346100 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 12，方向 Tx ，类型 以太网 ，组件 24，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242350600 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 13，方向 Tx ，类型 以太网 ，组件 24，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242352900 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242363600 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 15，方向 Tx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242365200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 16，方向 Tx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242366600 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 17，方向 Tx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242368000 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 18，方向 Tx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242375200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 19，方向 Tx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242376600 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 20，方向 Tx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242377800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 21，方向 Tx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242379900 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > [06]2C1C.133C::2026-10-04 23:18:02.242379900 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242388800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242388800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242390200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 24，方向 Rx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242391800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 25，方向 Rx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242393600 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 26，方向 Rx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242398100 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 27，方向 Rx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242399400 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 28，方向 Rx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242400300 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 29，方向 Rx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242403200 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 30，方向 Rx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [06]2C1C.133C::2026-10-04 23:18:02.242407800 [Microsoft-Windows-PktMon] PktGroupId 1688849860263937，PktNumber 1，出现 31，方向 Rx ，类型 以太网 ，组件 153，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366704500 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 1，方向 Tx ，类型 以太网 ，组件 85，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366708300 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 2，方向 Tx ，类型 以太网 ，组件 18，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366710200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 3，方向 Tx ，类型 以太网 ，组件 18，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366710900 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 4，方向 Tx ，类型 以太网 ，组件 20，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366711800 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 5，方向 Tx ，类型 以太网 ，组件 20，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366712400 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 6，方向 Tx ，类型 以太网 ，组件 21，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366713100 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 7，方向 Tx ，类型 以太网 ，组件 21，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366713600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:03.366713600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366714200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366714200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:03.366714200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366714700 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366714700 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366718200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 11，方向 Tx ，类型 以太网 ，组件 23，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366718800 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 12，方向 Tx ，类型 以太网 ，组件 24，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366721800 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 13，方向 Tx ，类型 以太网 ，组件 24，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366722600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:03.366722600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366726600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 15，方向 Tx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366726600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 15，方向 Tx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366727100 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 16，方向 Tx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366727600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 17，方向 Tx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366728000 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 18，方向 Tx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366730700 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 19，方向 Tx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366731200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 20，方向 Tx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366731600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 21，方向 Tx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366732200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:03.366732200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366735200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366735200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366735700 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 24，方向 Rx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366736200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 25，方向 Rx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366736800 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 26，方向 Rx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366738200 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 27，方向 Rx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366738700 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 28，方向 Rx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366738900 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 29，方向 Rx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366739900 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 30，方向 Rx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:03.366741600 [Microsoft-Windows-PktMon] PktGroupId 562949953421313，PktNumber 1，出现 31，方向 Rx ，类型 以太网 ，组件 153，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 862, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855367300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 1，方向 Tx ，类型 以太网 ，组件 85，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855371400 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 2，方向 Tx ，类型 以太网 ，组件 18，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855377600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 3，方向 Tx ，类型 以太网 ，组件 18，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855379800 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 4，方向 Tx ，类型 以太网 ，组件 20，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855381600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 5，方向 Tx ，类型 以太网 ，组件 20，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855383500 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 6，方向 Tx ，类型 以太网 ，组件 21，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855385800 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 7，方向 Tx ，类型 以太网 ，组件 21，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855387200 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:04.855387200 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855407600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855407600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:04.855407600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855409100 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855409100 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855414300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 11，方向 Tx ，类型 以太网 ，组件 23，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855415900 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 12，方向 Tx ，类型 以太网 ，组件 24，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855420200 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 13，方向 Tx ，类型 以太网 ，组件 24，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855422700 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:04.855422700 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855431300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 15，方向 Tx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855431300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 15，方向 Tx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855432600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 16，方向 Tx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855433900 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 17，方向 Tx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855435300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 18，方向 Tx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855441300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 19，方向 Tx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855442600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 20，方向 Tx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855443800 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 21，方向 Tx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855445300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:04.855445300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 22，方向 Tx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855452900 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855452900 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 23，方向 Rx ，类型 以太网 ，组件 2，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855454300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 24，方向 Rx ，类型 以太网 ，组件 27，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855456000 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 25，方向 Rx ，类型 以太网 ，组件 27，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855457600 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 26，方向 Rx ，类型 以太网 ，组件 26，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855462200 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 27，方向 Rx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > [02]2C1C.133C::2026-10-04 23:18:04.855462200 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 27，方向 Rx ，类型 以太网 ，组件 26，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855463500 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 28，方向 Rx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855463500 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 28，方向 Rx ，类型 以太网 ，组件 25，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855464300 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 29，方向 Rx ，类型 以太网 ，组件 25，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855466800 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 30，方向 Rx ，类型 以太网 ，组件 87，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [02]2C1C.133C::2026-10-04 23:18:04.855470900 [Microsoft-Windows-PktMon] PktGroupId 562949953421314，PktNumber 1，出现 31，方向 Rx ，类型 以太网 ，组件 153，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 863, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363308100 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 1，方向 Tx ，类型 以太网 ，组件 85，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363312900 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 2，方向 Tx ，类型 以太网 ，组件 18，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363315600 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 3，方向 Tx ，类型 以太网 ，组件 18，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363316400 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 4，方向 Tx ，类型 以太网 ，组件 20，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363316900 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 5，方向 Tx ，类型 以太网 ，组件 20，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363317600 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 6，方向 Tx ，类型 以太网 ，组件 21，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363318200 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 7，方向 Tx ，类型 以太网 ，组件 21，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363318800 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > [03]2C1C.133C::2026-10-04 23:18:06.363318800 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 8，方向 Tx ，类型 以太网 ，组件 22，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363319400 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363319400 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > [03]2C1C.133C::2026-10-04 23:18:06.363319400 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 9，方向 Tx ，类型 以太网 ，组件 22，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363320200 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363320200 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 10，方向 Tx ，类型 以太网 ，组件 23，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363323600 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 11，方向 Tx ，类型 以太网 ，组件 23，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363324500 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 12，方向 Tx ，类型 以太网 ，组件 24，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363326200 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 13，方向 Tx ，类型 以太网 ，组件 24，边缘 2，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+  > 00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+    [03]2C1C.133C::2026-10-04 23:18:06.363327000 [Microsoft-Windows-PktMon] PktGroupId 844424930131969，PktNumber 1，出现 14，方向 Tx ，类型 以太网 ，组件 1，边缘 1，筛选器 1，OriginalSize 74，LoggedSize 74
+    00-15-5D-00-69-06 > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 864, length 40
+
+明细全文在: D:\QoderProject\国内版\生成winpe\test\pktmon_pkt.txt
+
+===== 6. 收尾(清筛选器, 别留会话) =====
+  宸插垹闄ゆ墍鏈夌瓫閫夊櫒銆?
+  unload: PktMon 椹卞姩绋嬪簭宸插嵏杞姐€?

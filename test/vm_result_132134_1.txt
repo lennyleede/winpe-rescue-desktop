@@ -1,0 +1,53 @@
+===== 0. 注入的文件在不在 =====
+  wlanapi.dll = 473224
+  wlansvc.dll = 2657280
+  wlanmsm.dll = 436224
+  wlanext.exe = 103424
+  wcmsvc.dll = 994816
+  dmcmnutils.dll = 525968
+  mdmregistration.dll = 422400
+  wci.dll = 27648
+  netshell.dll = 610304
+  drivers\nwifi.sys = 758784
+  drivers\ndisuio.sys = 102400
+  wifi.exe = 1400320
+===== 1. 烘焙进镜像的 wlansvc 键 =====
+  Type = 32
+  Start = 3
+  ErrorControl = 1
+  Group = TDI
+  ImagePath = X:\windows\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  ObjectName = LocalSystem
+  ServiceSidType = 1
+  DependOnService = RpcSs
+  RequiredPrivileges = SeChangeNotifyPrivilege;SeImpersonatePrivilege;SeAuditPrivilege;SeTcbPrivilege;SeDebugPrivilege;SeLoadDriverPrivilege
+  Parameters.ServiceDll = X:\windows\System32\wlansvc.dll
+  Parameters.ServiceMain = WlanSvcMain
+  Parameters.ServiceDllUnloadOnStop = 1
+  wcmsvc 键存在 = True
+  nativewifip 键存在 = True
+  nwifi 残留键 = False
+  PEWLan 残留组 = False
+  组 LocalSystemNetworkRestricted = hidserv,svsvc,Netman,dot3svc,wlansvc
+  组 LocalServiceNetworkRestricted = TimeBrokerSvc,eventlog,WinHttpAutoProxySvc,LmHosts,DHCP,wcmsvc
+===== 2. 用 wifi.exe 起服务 =====
+  [start-wcmsvc] FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+  [start-wlansvc] StartService OK
+  [info-wlansvc] state=(0) pid=0 exit=0 specific=0 checkpoint=0 waithint=0
+  [info-wlansvc] QueryServiceStatusEx: 124 The system call level is not correct.
+  [info-wlansvc] (config Φ»╗Σ╕ìσê░: 1783 The stub received bad data.)
+  [info-wcmsvc] state=(0) pid=0 exit=0 specific=0 checkpoint=0 waithint=0
+  [info-wcmsvc] QueryServiceStatusEx: 124 The system call level is not correct.
+  [info-wcmsvc] (config Φ»╗Σ╕ìσê░: 1783 The stub received bad data.)
+===== 3. WMI 侧状态 + svchost 里加载了没 =====
+  wlansvc State=Stopped PID=0 StartMode=Manual ExitCode=2148270086
+  wcmsvc State=Stopped PID=0 StartMode=Manual ExitCode=1068
+  加载了 wlansvc/wcmsvc 的 svchost: 无
+===== 4. wlanapi 能不能打开句柄(最关键) =====
+  [status] FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  [status] HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+  [deps] wlansvc: state=(0) pid=0 exit=0 (config Φ»╗Σ╕ìσê░)
+===== 5. 事件日志(取最近的 Service Control Manager) =====
+  Get-WinEvent 不可用: Could not retrieve information about the System log. Error: The system cannot find the file specified.
+===== 结论 =====
+  wlansvc 最终状态 = Stopped / 接口枚举见上面 [status]

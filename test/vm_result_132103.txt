@@ -1,0 +1,29 @@
+﻿[A0_sshd_killed] OK
+[A1_debug_sshd_alive] YES pid=1412
+[A1_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+[A2_authkeys] 2 行; 权限=BUILTIN\Administrators Allow  FullControl
+NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+NT AUTHORITY\Authenticated Users Allow  Modify, Synchronize
+[A2_hostkeys] ssh_host_rsa_key,ssh_host_ecdsa_key,ssh_host_ed25519_key
+[A3_client_tail] debug1: Authenticating to 127.0.0.1:22 as 'admin' // debug3: Failed to open file:X:/known_hosts error:2 // debug1: load_hostkeys: fopen X:\\known_hosts: No such file or directory // debug3: Failed to open file:X:/ProgramData/ssh/ssh_known_hosts error:2 // debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts: No such file or directory // debug3: Failed to open file:X:/ProgramData/ssh/ssh_known_hosts2 error:2 // debug1: load_hostkeys: fopen __PROGRAMDATA__\\ssh/ssh_known_hosts2: No such file or directory // debug3: order_hostkeyalgs: no algorithms matched; accept original // debug3: send packet: type 20 // debug1: SSH2_MSG_KEXINIT sent // debug3: send - WSASend() ERROR:10054, io:000002EF3921B3A0 // Connection reset by 127.0.0.1 port 22
+[A4_server_dbg_tail] debug1: sshd version OpenSSH_for_Windows_9.5, LibreSSL 3.8.2 // debug1: get_passwd: lookup_sid() failed: 1332. // debug1: private host key #0: ssh-rsa SHA256:kcoKH5ZS958MG6zizBr4T8OHsYctZcyyn5Ku+J2X+1o // debug1: private host key #1: ecdsa-sha2-nistp256 SHA256:kUulr8fDCnBXHnfDUV7asDNgjKYd/GH3UvCFEw6y3I8 // debug1: private host key #2: ssh-ed25519 SHA256:6CZDAw52jzX/zSUO5oQulFxt7FTz0K5p45z4kq9g49I // debug1: rexec_argv[0]='X:\\OpenSSH\\sshd.exe' // debug1: rexec_argv[1]='-f' // debug1: rexec_argv[2]='X:\\OpenSSH\\sshd_config' // debug1: rexec_argv[3]='-d' // debug1: rexec_argv[4]='-e' // debug1: Bind to port 22 on 0.0.0.0. // Server listening on 0.0.0.0 port 22. // debug1: Server will not fork when running in debugging mode. // Connection from 127.0.0.1 port 49712 on 127.0.0.1 port 22 // debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 // debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 // debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 // debug1: monitor_read_log: child log fd closed // debug1: do_cleanup // debug1: Killing privsep child 1648
+[A5_dbg_sshd_after_conn] EXITED code=
+[A6_prod_alive] YES
+[A7_conn1] ssh.exe : Connection reset by 127.0.0.1 port 22 At X:\v2.ps1:39 char:7 + $c1 = & X:\OpenSSH\ssh.exe -o StrictHostKeyChecking=no -o UserKnownHo ... + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError
+[A8_conn2] ssh.exe : Connection reset by 127.0.0.1 port 22 At X:\v2.ps1:41 char:7 + $c2 = & X:\OpenSSH\ssh.exe -o StrictHostKeyChecking=no -o UserKnownHo ... + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError
+[A9_prod_log] 
+[B1_sunlogin_alive_6s] NO exit=-1073741515
+[B2_sunlogin_procs] 
+[B3_sunlogin_newfiles] 无新文件
+[B4_sunlogin_traces] X:\Sunlogin | X:\Sunlogin\SunloginSOS.exe
+[B5_missing_dlls] 无缺失(常规依赖)
+[C1_HKLM:\SYSTEM\CurrentControlSet\Services\wlansvc] Start=3 Type=32 Image=X:\windows\System32\svchost.exe -k PEWLan Dll=X:\windows\System32\wlansvc.dll
+[C1_HKLM:\SYSTEM\ControlSet001\Services\wlansvc] Start=3 Type=32 Image=X:\windows\System32\svchost.exe -k PEWLan Dll=X:\windows\System32\wlansvc.dll
+[C2_activecontrolset] 1
+[C3_svc_count] 365
+[C4_lanish_services] dot3svc,LanmanServer,LanmanWorkstation,NDIS,NdisTapi,Ndisuio,NdisVirtualBus,NdisWan,ndiswanlegacy,RpcSs,wlansvc
+[C5_svchost_group] %SystemRoot%\System32\wlansvc.dll
+[C6_net_start] net.exe : The service name is invalid. At X:\v2.ps1:76 char:7 + $ns = & net start wlansvc 2>&1 | Out-String + ~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (The service name is invalid.:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError More help is available by typing NET HELPMSG 2185.
+[C7_rpcss] svchost
+[C8_loaded_wlan_modules] 无 svchost 加载 wlansvc.dll

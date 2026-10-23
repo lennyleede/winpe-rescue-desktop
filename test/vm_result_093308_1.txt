@@ -1,0 +1,25 @@
+﻿[A_ipv4] 172.31.38.211, fe80::3abb:d8a2:19d7:5c95
+[A_gateway] 172.31.32.1
+[A_ping_loopback] OK
+[A_ping_host] OK
+[A_ping_gw] OK
+[A_host_8000_tcp] 可连通(TCP)
+[A_tcp_stack] TCP/IP 栈正常(有 LISTENING 条目)
+[DL_fail_pe-sshd.exe] The requested operation cannot be performed on a file with a user-mapped section open.
+[B_sizes] exe=0 ak=94 tk=399 frpc_toml=219
+[B_ak_head] ssh-ed25519 AAAAC3Nz
+[B_proc] pid=1888
+[B_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    [::]:22                [::]:0                 LISTENING
+[B_hostkey] 已生成 400 字节
+[B_log_tail] 
+[C_ssh_key] Connection reset by 127.0.0.1 port 22
+[C_key_has_OK] NO
+[C_ssh_anon] Connection reset by 127.0.0.1 port 22
+[C_anon_has_OK] NO
+[C_srv_log] 
+[D_frpc_proc] pid=2016
+[D_frpc_log] 2026-10-04 09:32:55.890 [I] [sub/root.go:194] start frpc service for config file [X:\Desktop\Frp\frpc_test.toml] with aggregated configuration || 2026-10-04 09:32:55.890 [I] [client/service.go:312] try to connect to server... || 2026-10-04 09:32:55.899 [I] [client/service.go:332] [e130543af9897c75] login to server success, get run id [e130543af9897c75] || 2026-10-04 09:32:55.899 [I] [proxy/proxy_manager.go:183] [e130543af9897c75] proxy added: [pe-ssh] || 2026-10-04 09:32:55.902 [I] [client/control.go:174] [e130543af9897c75] [pe-ssh] start proxy success
+[E_sunlogin] 未运行
+[F_verdict] 公钥登录失败 / 空密码登录失败 / frpc 见 D_frpc_log / 向日葵没跑

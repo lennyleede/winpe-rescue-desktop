@@ -1,0 +1,45 @@
+===== vm_coldboot_accept 14:19:46  只读验收  窗口=20s =====
+
+### 0. 本机身份与网络(证明是从新 ISO 起来的 PE)
+  COMPUTERNAME=WINPE  Build=26100
+  LastBoot=10/05/2026 14:15:43   现在=10/05/2026 14:19:49
+  IPv4 Address. . . . . . . . . . . : 192.168.100.2
+
+### 1. 镜像里到底有没有开机脚本(证明 build.ps1 的复制清单生效)
+  X:\Windows\System32\fw_off.ps1 存在=True  大小=2995
+
+### 2. 离线注册表那条路(烘进 boot.wim 的值, 开机即生效)
+  MpsSvc Start       = 4   (期望 4=Disabled)
+  DomainProfile EnableFirewall = 0   (期望 0)
+  StandardProfile EnableFirewall = 0   (期望 0)
+  PublicProfile EnableFirewall = 0   (期望 0)
+  MpsSvc State=Stopped StartMode=Disabled ExitCode=0x00000435
+  BFE    State=Running StartMode=Auto ExitCode=0x00000000
+
+### 3. 运行时策略的真值(FwPolicy2 只读)
+  FwPolicy2 不可用: There are no more endpoints available from the endpoint mapper. (Exception from HRESULT: 0x800706D9)  (MpsSvc 被禁用时这是预期表现)
+
+### 4. 开机脚本留下的痕迹(证明 [1b] 段真跑过)
+  -- boot.log 里 [1b]/fw_off 相关 2 行 --
+    fw_off verdict=failed
+    [1b] fw_off attempted (ÏêÇé X:\fw_off.log, ½áÂÛ X:\status.txt Àï fw_off=)
+  -- X:\fw_off.log 末 4 行 --
+    14:16:03 FwPolicy2 OK 规则数=
+    14:16:04 FwPolicy2 不可用: There are no more endpoints available from the endpoint mapper. (Exception from HRESULT: 0x800706D9)
+    14:16:06 MpsSvc State=Stopped StartMode=Disabled
+    14:16:06 BFE State=Running StartMode=Auto
+  -- X:\status.txt 末 5 行 --
+    # startnet autostart record 
+    fw_off=failed
+    pe-sshd.exe=started 
+    frpc.exe=manual 
+    sunloginsos.exe=started 
+
+### 5. 入站连通性观察窗 20 秒(这段时间主机侧请持续 ping 与探 22 端口)
+  [14:19:51] 前: Passive Opens = 835 | Segments Received = 3422 | Passive Opens = 0 | Segments Received = 0
+  [14:20:11] 后: Passive Opens = 1492 | Segments Received = 6055 | Passive Opens = 0 | Segments Received = 0
+  说明: 防火墙关着 -> 主机的 ping 会让 Echo Replies Sent 增长、TCP SYN 会让 Passive Opens 增长
+
+### 6. 判定
+  离线注册表生效: MpsSvc 开机就是 Stopped/Disabled —— 防火墙这条服务被彻底禁掉了
+  [14:20:12] 结束

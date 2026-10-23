@@ -1,0 +1,22 @@
+﻿[W_v95_procs] 
+[W_v95_dialog] 无弹窗
+[W_v95_client] out=[] err=[Connection reset by 127.0.0.1 port 22]
+[W_v95_srv_tail] debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || ssh_msg_send: write: Unknown error || send_idexch_state: ssh_msg_send failed || debug1: do_cleanup || debug1: Killing privsep child 1372
+[2_zip] 下载 3225KB
+[2_files] FixHostFilePermissions.ps1,FixUserFilePermissions.ps1,install-sshd.ps1,libcrypto.dll,openssh-events.man,OpenSSHUtils.psd1,OpenSSHUtils.psm1,scp.exe,sftp.exe,sftp-server.exe,ssh.exe,ssh-add.exe,ssh-agent.exe,sshd.exe,sshd_config_default,ssh-keygen.exe,ssh-keyscan.exe,ssh-shellhost.exe,uninstall-sshd.ps1
+[2_version] sshd.exe : unknown option -- V
+At X:\v10.ps1:60 char:20
++   AL '2_version' ((& X:\OpenSSH-Win64\sshd.exe -V 2>&1 | Out-String). ...
++                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (unknown option -- V:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+OpenSSH_for_Windows_7.7p1, LibreSSL 2.6.4
+usage: sshd [-46DdeiqTt] [-C connection_spec] [-c host_cert_file]
+            [-E log_file] [-f config_file] [-g login_grace_time]
+            [-h host_key_file] [-o option] [-p port] [-u len]
+[W_v77_procs] sshd:916 +0..0ms
+[W_v77_dialog] 无弹窗
+[W_v77_client] out=[] err=[Connection reset by 127.0.0.1 port 2222]
+[W_v77_srv_tail] debug1: match: OpenSSH_for_Windows_7.7 pat OpenSSH* compat 0x04000000 || debug1: Local version string SSH-2.0-OpenSSH_for_Windows_7.7 || debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1896
+[3_sshd_running] YES

@@ -1,0 +1,71 @@
+﻿===== HtaTypingDebug phase=ctf 17:41:53 目标=Administrator@172.17.40.212 =====
+  宿主 ctfmon = 11264 字节, 版本 10.0.19041.4522
+----------   上传 -> X:\Windows\System32\ctfmon.exe ----------
+  (rc=0 用时=6s 行数=1)
+  11264
+----------   落盘确认 ----------
+  (rc=0 用时=6s 行数=1)
+  11264
+----------   在控制台会话里启动 ctfmon ----------
+  (rc=0 用时=8s 行数=2)
+  started
+  ctfmon pid=2620
+----------   重跑文档模式对照(带 ctfmon) ----------
+  (rc=0 用时=53s 行数=53)
+  ##### V1 HTA??(?x-ua-compatible) -> X:\fpCTRL.hta
+    pid=1484 ?? -> ??=0x1500A2(mshta/1484)
+    [??1] ??? qrs (?? 2s ???? focus t1)
+    [??2] ??? tuv (???? 4s ? focus)
+    [??3] ???? t1 ?? + ??? wxy
+      ?? 204,172 ??? wxy
+    ---- ?? ----
+     5:43:44 PM [boot] script parsing ok??5:43:44 PM [boot] script parsed to end??5:43:44 PM [focusin] in -> BODY??5:43:44 PM [poll] t1=[] active=BODY??5:43:45 PM [doc-key] keyCode=81 target=BODY active=BODY??5:43:45 PM [mode] docMode=7 compat=CSS1Compat active=BODY origin=69,88??5:43:45 PM [rect] t1 center=204,172 (w=234 h=36 left=18 top=66)??5:43:45 PM [css] css??????5:43:45 PM [doc-key] keyCode=82 target=BODY active=BODY??5:43:45 PM [doc-key] keyCode=83 target=BODY active=BODY??5:43:46 PM [focusin] in -> #t1??5:43:46 PM [jsf] #1 focus -> active=t1 (before=BODY) value=[]??5:43:46 PM [poll] t1=[] active=t1??5:43:46 PM [foc] t1 focus event??5:43:47 PM [el-key] t1 keydown keyCode=84??5:43:47 PM [doc-key] keyCode=84 target=#t1 active=t1??5:43:47 PM [el-key] t1 keyup value=[t]??5:43:47 PM [el-key] t1 keydown keyCode=85??5:43:47 PM [doc-key] keyCode=85 target=#t1 active=t1??5:43:47 PM [el-key] t1 keyup value=[tu]??5:43:47 PM [poll] t1=[tu] active=t1??5:43:47 PM [el-key] t1 keydown keyCode=86??5:43:47 PM [doc-key] keyCode=86 target=#t1 active=t1??5:43:47 PM [el-key] t1 keyup value=[tuv]??5:43:47 PM [poll] t1=[tuv] active=t1??5:43:48 PM [jsf] #2 focus -> active=t1 (before=t1) value=[tuv]??5:43:49 PM [mouse] down on #t1 client=135,84??5:43:50 PM [el-key] t1 keydown keyCode=87??5:43:50 PM [doc-key] keyCode=87 target=#t1 active=t1??5:43:50 PM [el-key] t1 keyup value=[tuvw]??5:43:50 PM [jsf] #3 focus -> active=t1 (before=t1) value=[tuvw]??5:43:50 PM [el-key] t1 keydown keyCode=88??5:43:50 PM [doc-key] keyCode=88 target=#t1 active=t1??5:43:50 PM [el-key] t1 keyup value=[tuvwx]??5:43:50 PM [poll] t1=[tuvwx] active=t1??5:43:50 PM [el-key] t1 keydown keyCode=89??5:43:50 PM [doc-key] keyCode=89 target=#t1 active=t1??5:43:50 PM [el-key] t1 keyup value=[tuvwxy]??5:43:50 PM [poll] t1=[tuvwxy] active=t1??5:43:52 PM [jsf] #4 focus -> active=t1 (before=t1) value=[tuvwxy]
+    ??: focus()???t1=True ??????=True ????=True
+  ##### V2 IE=8 -> X:\fpIE8.hta
+    pid=2692 ?? -> ??=0x1F00A4(mshta/2692)
+    [??1] ??? qrs (?? 2s ???? focus t1)
+    [??2] ??? tuv (???? 4s ? focus)
+    [??3] ???? t1 ?? + ??? wxy
+      ?? 224,206 ??? wxy
+    ---- ?? ----
+     5:43:53 PM [boot] script parsing ok??5:43:53 PM [boot] script parsed to end??5:43:53 PM [focusin] in -> BODY??5:43:53 PM [poll] t1=[] active=BODY??5:43:54 PM [doc-key] keyCode=81 target=BODY active=BODY??5:43:54 PM [doc-key] keyCode=82 target=BODY active=BODY??5:43:54 PM [doc-key] keyCode=83 target=BODY active=BODY??5:43:54 PM [mode] docMode=8 compat=CSS1Compat active=BODY origin=91,110??5:43:54 PM [rect] t1 center=224,206 (w=234 h=36 left=16 top=78)??5:43:54 PM [css] css??????5:43:55 PM [focusin] in -> #t1??5:43:55 PM [jsf] #1 focus -> active=t1 (before=BODY) value=[]??5:43:55 PM [poll] t1=[] active=t1??5:43:55 PM [foc] t1 focus event??5:43:56 PM [el-key] t1 keydown keyCode=84??5:43:56 PM [doc-key] keyCode=84 target=#t1 active=t1??5:43:56 PM [el-key] t1 keyup value=[t]??5:43:56 PM [el-key] t1 keydown keyCode=85??5:43:56 PM [doc-key] keyCode=85 target=#t1 active=t1??5:43:56 PM [el-key] t1 keyup value=[tu]??5:43:56 PM [el-key] t1 keydown keyCode=86??5:43:56 PM [doc-key] keyCode=86 target=#t1 active=t1??5:43:56 PM [el-key] t1 keyup value=[tuv]??5:43:56 PM [poll] t1=[tuv] active=t1??5:43:57 PM [jsf] #2 focus -> active=t1 (before=t1) value=[tuv]??5:43:58 PM [mouse] down on #t1 client=131,94??5:43:59 PM [el-key] t1 keydown keyCode=87??5:43:59 PM [doc-key] keyCode=87 target=#t1 active=t1??5:43:59 PM [el-key] t1 keyup value=[tuvw]??5:43:59 PM [el-key] t1 keydown keyCode=88??5:43:59 PM [doc-key] keyCode=88 target=#t1 active=t1??5:43:59 PM [el-key] t1 keyup value=[tuvwx]??5:43:59 PM [el-key] t1 keydown keyCode=89??5:43:59 PM [doc-key] keyCode=89 target=#t1 active=t1??5:43:59 PM [el-key] t1 keyup value=[tuvwxy]??5:43:59 PM [jsf] #3 focus -> active=t1 (before=t1) value=[tuvwxy]??5:43:59 PM [poll] t1=[tuvwxy] active=t1??5:44:01 PM [jsf] #4 focus -> active=t1 (before=t1) value=[tuvwxy]
+    ??: focus()???t1=True ??????=True ????=True
+  ##### V3 IE=9 -> X:\fpIE9.hta
+    pid=2920 ?? -> ??=0x2000A4(mshta/2920)
+    [??1] ??? qrs (?? 2s ???? focus t1)
+    [??2] ??? tuv (???? 4s ? focus)
+    [??3] ???? t1 ?? + ??? wxy
+      ?? 246,227 ??? wxy
+    ---- ?? ----
+     5:44:02 PM [boot] script parsing ok??5:44:02 PM [boot] script parsed to end??5:44:03 PM [poll] t1=[] active=null??5:44:03 PM [doc-key] keyCode=81 target=undefined active=null??5:44:03 PM [doc-key] keyCode=82 target=undefined active=null??5:44:03 PM [doc-key] keyCode=83 target=undefined active=null??5:44:03 PM [mode] docMode=9 compat=CSS1Compat active=null origin=113,132??5:44:03 PM [rect] t1 center=246,227 (w=234 h=34.37000274658203 left=16 top=78)??5:44:03 PM [css] gradient=false radius=true rgba=true shadow=true??5:44:04 PM [jsf] #1 focus -> active=null (before=null) value=[]??5:44:05 PM [doc-key] keyCode=84 target=undefined active=null??5:44:05 PM [doc-key] keyCode=85 target=undefined active=null??5:44:05 PM [doc-key] keyCode=86 target=undefined active=null??5:44:06 PM [jsf] #2 focus -> active=null (before=null) value=[]??5:44:07 PM [focusin] in -> undefined??5:44:07 PM [mouse] down on #t1 client=133,95??5:44:08 PM [doc-key] keyCode=87 target=undefined active=null??5:44:08 PM [doc-key] keyCode=88 target=undefined active=null??5:44:08 PM [doc-key] keyCode=89 target=undefined active=null??5:44:08 PM [jsf] #3 focus -> active=null (before=null) value=[]??5:44:10 PM [jsf] #4 focus -> active=null (before=null) value=[]
+    ??: focus()???t1=False ??????=False ????=False
+  ##### V4 IE=10 -> X:\fpIE10.hta
+    pid=2696 ?? -> ??=0x1800AA(mshta/2696)
+    [??1] ??? qrs (?? 2s ???? focus t1)
+    [??2] ??? tuv (???? 4s ? focus)
+    [??3] ???? t1 ?? + ??? wxy
+      ?? 269,251 ??? wxy
+    ---- ?? ----
+     5:44:11 PM [boot] script parsing ok??5:44:11 PM [boot] script parsed to end??5:44:12 PM [poll] t1=[] active=null??5:44:12 PM [doc-key] keyCode=81 target=undefined active=null??5:44:12 PM [doc-key] keyCode=82 target=undefined active=null??5:44:12 PM [doc-key] keyCode=83 target=undefined active=null??5:44:13 PM [mode] docMode=10 compat=CSS1Compat active=null origin=136,155??5:44:13 PM [rect] t1 center=269,251 (w=234 h=34.37000274658203 left=16 top=78.3699951171875)??5:44:13 PM [css] gradient=true radius=true rgba=true shadow=true??5:44:13 PM [jsf] #1 focus -> active=null (before=null) value=[]??5:44:14 PM [doc-key] keyCode=84 target=undefined active=null??5:44:14 PM [doc-key] keyCode=85 target=undefined active=null??5:44:14 PM [doc-key] keyCode=86 target=undefined active=null??5:44:15 PM [jsf] #2 focus -> active=null (before=null) value=[]??5:44:16 PM [focusin] in -> undefined??5:44:16 PM [mouse] down on #t1 client=133,96??5:44:17 PM [doc-key] keyCode=87 target=undefined active=null??5:44:17 PM [doc-key] keyCode=88 target=undefined active=null??5:44:17 PM [doc-key] keyCode=89 target=undefined active=null??5:44:17 PM [jsf] #3 focus -> active=null (before=null) value=[]??5:44:19 PM [jsf] #4 focus -> active=null (before=null) value=[]
+    ??: focus()???t1=False ??????=False ????=False
+  ##### V5 IE=edge -> X:\fpEDGE.hta
+    pid=2576 ?? -> ??=0x1100AE(mshta/2576)
+    [??1] ??? qrs (?? 2s ???? focus t1)
+    [??2] ??? tuv (???? 4s ? focus)
+    [??3] ???? t1 ?? + ??? wxy
+      ?? 291,273 ??? wxy
+    ---- ?? ----
+     5:44:20 PM [boot] script parsing ok??5:44:20 PM [boot] script parsed to end??5:44:21 PM [poll] t1=[] active=null??5:44:21 PM [doc-key] keyCode=81 target=HTML active=null??5:44:22 PM [doc-key] keyCode=82 target=HTML active=null??5:44:22 PM [doc-key] keyCode=83 target=HTML active=null??5:44:22 PM [mode] docMode=11 compat=CSS1Compat active=null origin=158,177??5:44:22 PM [rect] t1 center=291,273 (w=234 h=34.37000274658203 left=16 top=78.3699951171875)??5:44:22 PM [css] gradient=true radius=true rgba=true shadow=true??5:44:22 PM [jsf] #1 focus -> active=null (before=null) value=[]??5:44:23 PM [doc-key] keyCode=84 target=HTML active=null??5:44:23 PM [doc-key] keyCode=85 target=HTML active=null??5:44:24 PM [doc-key] keyCode=86 target=HTML active=null??5:44:24 PM [jsf] #2 focus -> active=null (before=null) value=[]??5:44:25 PM [focusin] in -> HTML??5:44:25 PM [mouse] down on #t1 client=133,96??5:44:26 PM [doc-key] keyCode=87 target=HTML active=null??5:44:26 PM [doc-key] keyCode=88 target=HTML active=null??5:44:26 PM [doc-key] keyCode=89 target=HTML active=null??5:44:26 PM [jsf] #3 focus -> active=null (before=null) value=[]??5:44:28 PM [jsf] #4 focus -> active=null (before=null) value=[]
+    ??: focus()???t1=False ??????=False ????=False
+  
+  ===== ?? =====
+    CTRL  focus=True keydown=True ??=True
+    IE8  focus=True keydown=True ??=True
+    IE9  focus=False keydown=False ??=False
+    IE10  focus=False keydown=False ??=False
+    EDGE  focus=False keydown=False ??=False
+  ===== ?? 17:44:29.991 =====
+----------   收尾: 关掉 ctfmon ----------
+  (rc=0 用时=6s 行数=1)
+  killed
+结果文件 = D:\QoderProject\国内版\生成winpe\test\vm10_htadbg_ctf.txt

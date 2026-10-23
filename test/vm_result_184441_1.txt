@@ -1,0 +1,66 @@
+### 1. 本机 IP / 网卡
+  Windows IP Configuration
+  Ethernet adapter Ethernet:
+  Connection-specific DNS Suffix  . : DHCP HOST
+  Link-local IPv6 Address . . . . . : fe80::b77d:d4f2:a691:caf6%2
+  IPv4 Address. . . . . . . . . . . : 192.168.0.108
+  Subnet Mask . . . . . . . . . . . : 255.255.255.0
+  Default Gateway . . . . . . . . . : 192.168.0.1
+  => 取到的 IPv4: 192.168.0.108
+### 2. 谁在监听 (重点看 0.0.0.0:22)
+  TCP 0.0.0.0:22 0.0.0.0:0 LISTENING 1844
+  TCP 0.0.0.0:135 0.0.0.0:0 LISTENING 920
+  TCP 0.0.0.0:445 0.0.0.0:0 LISTENING 4
+  TCP 127.0.0.1:49670 0.0.0.0:0 LISTENING 1072
+  TCP 192.168.0.108:139 0.0.0.0:0 LISTENING 4
+  TCP [::]:22 [::]:0 LISTENING 1844
+  TCP [::]:135 [::]:0 LISTENING 920
+  TCP [::]:445 [::]:0 LISTENING 4
+### 3. 关键进程
+  (没匹配到)
+### 4. 端口连通: 回环/本机IP/主机 (区分"服务没起"和"包进不来")
+  tcp 127.0.0.1:22            -> OPEN
+  tcp 192.168.0.108:22            -> OPEN
+  tcp 192.168.0.106:8000(主机)  -> OPEN
+  tcp 192.168.0.1:80(路由器)     -> OPEN
+### 5. ping
+  ping 192.168.0.106 : Reply from 192.168.0.106: bytes=32 time<1ms TTL=128 | Reply from 192.168.0.106: bytes=32 time<1ms TTL=128 | Ping statistics for 192.168.0.106: |     Packets: Sent = 2, Received = 2, Lost = 0 (0% loss), | Approximate round trip times in milli-seconds: |     Minimum = 0ms, Maximum = 0ms, Average = 0ms
+  ping 192.168.0.1 : Reply from 192.168.0.1: bytes=32 time<1ms TTL=64 | Reply from 192.168.0.1: bytes=32 time<1ms TTL=64 | Ping statistics for 192.168.0.1: |     Packets: Sent = 2, Received = 2, Lost = 0 (0% loss), | Approximate round trip times in milli-seconds: |     Minimum = 0ms, Maximum = 0ms, Average = 0ms
+  arp: Interface: 192.168.0.108 --- 0x2 ; 192.168.0.1 8c-a6-df-e8-c8-ee dynamic ; 192.168.0.106 f8-75-a4-df-18-74 dynamic ; 192.168.0.255 ff-ff-ff-ff-ff-ff static 
+### 6. 防火墙是否在这份 PE 里活着 (WinPE 正常没有)
+  sc query mpssvc : 
+  sc qc mpssvc    : 
+  sc query bfe : 
+  sc qc bfe    : 
+  netsh advfirewall : The following command was not found: advfirewall show allprofiles state.
+### 7. 日志尾巴
+  -- X:\sshd.log --
+  2026/10/04 18:08:51 已生成主机密钥 X:\SSH\pe_host_ed25519
+  2026/10/04 18:08:51 已加载 1 把授权公钥
+  2026/10/04 18:08:51 pe-sshd 监听 0.0.0.0:22 认证=空密码+公钥 (hostkey=X:\SSH\pe_host_ed25519 authkeys=X:\SSH\authorized_keys shell=X:\Windows\System32\cmd.exe)
+  2026/10/04 18:44:36 握手失败 192.168.0.108:49678: read tcp 192.168.0.108:22->192.168.0.108:49678: wsarecv: An established connection was aborted by the software in your host machine.
+  2026/10/04 18:44:36 握手失败 127.0.0.1:49677: read tcp 127.0.0.1:22->127.0.0.1:49677: wsarecv: An existing connection was forcibly closed by the remote host.
+  -- X:\status.txt --
+  # startnet autostart record 
+  pe-sshd.exe=started 
+  frpc.exe=manual 
+  sunloginsos.exe=started 
+  -- X:\boot.log --
+  StartService OK
+    state=(0) pid=0 exit=0 specific=0 checkpoint=0 waithint=0
+    QueryServiceStatusEx: 124 The system call level is not correct.
+    (config 读不到: 1783 The stub received bad data.)
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+  [5] wlan done err=0 
+  The Windows Management Instrumentation service is starting.
+  The Windows Management Instrumentation service was started successfully.
+  
+  [6] winmgmt tried 
+  [7] desktop launched 
+### 8. X:\SSH 目录
+  authorized_keys  94
+  pe-sshd.exe  3773952
+  pe_host_ed25519  400
+### 9. 版本
+  build=26100

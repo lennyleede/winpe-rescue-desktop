@@ -1,0 +1,148 @@
+﻿isAdmin=True
+--- state: now ---
+  hostvnic Container NIC 948723fe switch=Default Switch mac=00155DF69C08
+  nic vEthernet (Default Switch) 2 | Hyper-V Virtual Ethernet Adapter #2 | Up | 00-15-5D-F6-9C-08
+  nic 蓝牙网络连接 | Bluetooth Device (Personal Area Network) | Disconnected | D8-3B-BF-36-71-F7
+  nic WLAN | Intel(R) Wireless-AC 9260 160MHz | Disconnected | D8-3B-BF-36-71-F3
+  nic vEthernet (PE-EXT) 2 | Hyper-V Virtual Ethernet Adapter #3 |  | F8-75-A4-DF-18-74
+  nic 以太网 | Intel(R) Ethernet Connection (6) I219-V | Up | F8-75-A4-DF-18-74
+  nic vEthernet (Default Switch) | Hyper-V Virtual Ethernet Adapter |  | 00-15-5D-AA-87-3E
+  ip 以太网 = 192.168.0.106/24
+  switch Default Switch type=Internal uplink= allowMgmtOS=True
+  vm PE-TEST state=Off nic=网络适配器 switch=Default Switch mac=00155D006900 macSpoof=Off
+  vm WinPE-Test state=Running nic=网络适配器 switch=Default Switch mac=00155D4E1099 macSpoof=On
+
+===== 1) 把 external 交换机重新绑回有线网卡并恢复宿主共享 (以太网) =====
+Set-VMSwitch 完成
+--- state: after rebind ---
+  hostvnic Container NIC 948723fe switch=Default Switch mac=00155DF69C08
+  nic vEthernet (Default Switch) 2 | Hyper-V Virtual Ethernet Adapter #2 | Up | 00-15-5D-F6-9C-08
+  nic 蓝牙网络连接 | Bluetooth Device (Personal Area Network) | Disconnected | D8-3B-BF-36-71-F7
+  nic WLAN | Intel(R) Wireless-AC 9260 160MHz | Disconnected | D8-3B-BF-36-71-F3
+  nic vEthernet (PE-EXT) 2 | Hyper-V Virtual Ethernet Adapter #3 |  | F8-75-A4-DF-18-74
+  nic 以太网 | Intel(R) Ethernet Connection (6) I219-V | Up | F8-75-A4-DF-18-74
+  nic vEthernet (Default Switch) | Hyper-V Virtual Ethernet Adapter |  | 00-15-5D-AA-87-3E
+  ip 以太网 = 192.168.0.106/24
+  switch Default Switch type=Internal uplink= allowMgmtOS=True
+  vm PE-TEST state=Off nic=网络适配器 switch=Default Switch mac=00155D006900 macSpoof=Off
+  vm WinPE-Test state=Running nic=网络适配器 switch=Default Switch mac=00155D4E1099 macSpoof=On
+  主机联网自检:  正在 Ping 223.5.5.5 具有 32 字节的数据: 来自 223.5.5.5 的回复: 字节=32 时间=14ms TTL=51 来自 223.5.5.5 的回复: 字节=32 时间=14ms TTL=51 223.5.5.5 的 Ping 统计信息: 数据包: 已发送 = 2，已接收 = 2，丢失 = 0 (0% 丢失)， 往返行程的估计时间(以毫秒为单位): 最短 = 14ms，最长 = 14ms，平均 = 14ms
+
+===== 2) 重启 WinPE-Test 拿干净链路 =====
+Restart-VM 已发出
+等 PE 起来(wpeinit + pe-sshd + 桌面), 45 秒
+
+===== 3) 找回 pe-sshd 的地址 =====
+第 1 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 2 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 3 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 4 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 5 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 6 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 7 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+第 8 轮扫描:
+  scan: 待扫 253 个 end point ...
+  scan: 没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+  scan: --- 本机 IPv4 与默认路由(核对网段用) ---
+  scan:   以太网                              192.168.0.106/24
+  scan:   vEthernet (Default Switch) 2     172.26.16.1/20
+  scan:   Loopback Pseudo-Interface 1      127.0.0.1/8
+  scan: --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+  scan:   192.168.0.1           8c-a6-df-e8-c8-ee     动态
+  scan:   192.168.0.101         b4-f1-8c-4e-32-6c     动态
+  scan:   192.168.0.103         2c-57-31-06-0a-64     动态
+  scan:   192.168.0.105         b8-27-eb-86-fb-32     动态
+  scan:   192.168.0.107         34-5a-60-0b-25-60     动态
+  scan:   192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+没扫到 pe-sshd 在听 22 (PE 可能没起来或没拿到地址)

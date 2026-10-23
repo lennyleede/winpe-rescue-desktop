@@ -1,0 +1,17 @@
+﻿===== HtaTypingDebug phase=ie8 20:31:00 目标=Administrator@172.17.40.212 =====
+---------- IE8. 面板端到端自测(真鼠标 + SendKeys) ----------
+  (rc=0 用时=23s 行数=13)
+  ===== IE8 ???? 20:31:25 =====
+  Desktop.hta ??=26990 ??=552
+  META: <meta http-equiv="x-ua-compatible" content="IE=8" />
+  MARKER v10-ie8 = yes
+  DOCMode8 meta = yes
+  selftest.hta = 30320 ??
+    ?????? mshta ?? 1 ?
+    ????? 814,197 (??)
+  ---------- X:\hta_selftest.log ----------
+  docMode=8  ua=4.0 (compatible; MSIE 8.0; Windows NT 10.0; Win64; x64; Trident/7.0; .NET4.0C; .NET4.0E)??css rgba/gradient in IE8 mode: btn bg = #14243c??rect addr = 814,197 winOrigin=0,0??focus() -> active=addr??mousedown -> #addr client=814,197 screen=814,197??blurred -> active=BODY??mousedown -> #addr client=814,197 screen=814,197??after real click -> active=addr??addr value = [frp.example.com]??TYPING = PASS??panel version = SSH / ??? ??? ? frp ???? ? ?? v10-ie8
+  ---------- ?? ----------
+    ???????????
+  done 20:31:43
+结果文件 = D:\QoderProject\国内版\生成winpe\test\vm10_htadbg_ie8.txt

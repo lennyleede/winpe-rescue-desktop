@@ -1,0 +1,117 @@
+===== vm_net_audit 14:26:00  (只读; 不启动/停止任何服务, 不写任何策略) =====
+  -SelfTest: 站点列表与判定逻辑照常跑, 只是这次结果不 POST
+
+### A. 本机地址 / 默认路由 / DNS
+  -- route print 里的 0.0.0.0 行(有没有默认出口就看这两行) --
+    0.0.0.0 0.0.0.0 192.168.0.1 192.168.0.106 35
+
+### B. 关键服务状态(网络栈/解析/防火墙)
+  Dnscache = Running/Auto
+  Dhcp = Running/Auto
+  LanmanWorkstation = Running/Auto
+  LmHosts = Running/Manual
+  Winmgmt = Running/Auto
+  BFE = Running/Auto
+  MpsSvc = Running/Auto
+  SharedAccess = Running/Manual
+  wlansvc = Running/Auto
+  dot3svc = Stopped/Manual
+  NlaSvc = Running/Auto
+
+### C. 出站能力分层(每项最多等 
+  C1 主机 HTTP  192.168.100.1:8000 -> True
+  C2 主机 SMB   192.168.100.1:445  -> True
+  C4 站点 sunlogin.oray.com DNS=111.225.210.56,124.239.228.21,111.225.210.18,124.239.228.14,124.239.228.15,27.128.221.41,106.8.159.7,106.8.159.5,111.225.210.16,106.8.159.10,106.8.159.9,27.128.221.35,27.128.221.39,124.239.228.20,111.225.210.57,27.128.221.34  tcp443=True
+  C4 站点 www.baidu.com DNS=124.237.178.35,124.237.178.212  tcp443=True
+  C3 公网地址 114.114.114.114:53 -> True
+  C3 公网地址 223.5.5.5:53 -> True
+
+### D. 监听与已连接
+  LISTEN TCP 0.0.0.0:135 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:445 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:2179 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:2223 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:3389 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:5040 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:5357 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:8000 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:8001 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:10823 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49664 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49665 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49666 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49667 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49668 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49669 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49674 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:49688 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:14013 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:14016 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:14019 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:14022 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:14023 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:53825 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:60328 0.0.0.0:0 LISTENING
+  LISTEN TCP 172.17.32.1:139 0.0.0.0:0 LISTENING
+  LISTEN TCP 192.168.0.106:139 0.0.0.0:0 LISTENING
+  LISTEN TCP 192.168.100.1:139 0.0.0.0:0 LISTENING
+  LISTEN TCP [::]:135 [::]:0 LISTENING
+  LISTEN TCP [::]:445 [::]:0 LISTENING
+  LISTEN TCP [::]:2179 [::]:0 LISTENING
+  LISTEN TCP [::]:3389 [::]:0 LISTENING
+  LISTEN TCP [::]:5357 [::]:0 LISTENING
+  LISTEN TCP [::]:8001 [::]:0 LISTENING
+  LISTEN TCP [::]:10823 [::]:0 LISTENING
+  LISTEN TCP [::]:49664 [::]:0 LISTENING
+  LISTEN TCP [::]:49665 [::]:0 LISTENING
+  LISTEN TCP [::]:49666 [::]:0 LISTENING
+  LISTEN TCP [::]:49667 [::]:0 LISTENING
+  LISTEN TCP [::]:49668 [::]:0 LISTENING
+  LISTEN TCP [::]:49669 [::]:0 LISTENING
+  LISTEN TCP [::]:49674 [::]:0 LISTENING
+  LISTEN TCP [::]:49688 [::]:0 LISTENING
+  LISTEN TCP [::1]:49675 [::]:0 LISTENING
+  ESTABLISHED 条数=33
+    TCP 127.0.0.1:8001 127.0.0.1:49602 ESTABLISHED
+    TCP 127.0.0.1:8001 127.0.0.1:49619 ESTABLISHED
+    TCP 127.0.0.1:8001 127.0.0.1:49621 ESTABLISHED
+    TCP 127.0.0.1:8001 127.0.0.1:49623 ESTABLISHED
+    TCP 127.0.0.1:8001 127.0.0.1:54972 ESTABLISHED
+    TCP 127.0.0.1:8001 127.0.0.1:55015 ESTABLISHED
+    TCP 127.0.0.1:49602 127.0.0.1:8001 ESTABLISHED
+    TCP 127.0.0.1:49619 127.0.0.1:8001 ESTABLISHED
+
+### E. 相关进程
+Get-ChildItem : 找不到与参数名称“File”匹配的参数。
+所在位置 D:\QoderProject\国内版\生成winpe\test\vm_net_audit.ps1:94 字符: 107
++ ... ') + '  文件数=' + (@(Get-ChildItem 'X:\Sunlogin' -Recurse -File -EA Sil ...
++                                                             ~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Get-ChildItem]，ParameterBindingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+ 
+  X:\Sunlogin 存在=False  文件数=0
+Get-ChildItem : 找不到与参数名称“File”匹配的参数。
+所在位置 D:\QoderProject\国内版\生成winpe\test\vm_net_audit.ps1:95 字符: 46
++ $sl = @(Get-ChildItem 'X:\Sunlogin' -Recurse -File -EA SilentlyContin ...
++                                              ~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Get-ChildItem]，ParameterBindingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand
+ 
+  boot.log 末 6 行:
+Get-Content : 找不到与参数名称“Encoding”匹配的参数。
+所在位置 D:\QoderProject\国内版\生成winpe\test\vm_net_audit.ps1:101 字符: 48
++ foreach ($ln2 in @(& Get-Content 'X:\boot.log' -Encoding Default -Tai ...
++                                                ~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Get-Content]，ParameterBindingException
+    + FullyQualifiedErrorId : NamedParameterNotFound,Microsoft.PowerShell.Commands.GetContentCommand
+ 
+
+### F. 判定(断在哪一层)
+  L1 本机有 IP 且到主机通 = True
+  L2 有默认路由 0.0.0.0   = True
+  L3 域名可解析           = True
+  L4 任意公网端点可达     = True
+  => 链路/路由/公网都通, 那向日葵的问题在应用层(看第 E 节进程与日志)。
+  另: MpsSvc 被离线注册表禁用只影响"别人连进来", 出站方向不受任何限制(本次 C1 能通即为证据)。
+  [14:26:17] 结束
+写 X:\net_audit.txt 失败: 使用“3”个参数调用“WriteAllText”时发生异常:“未能找到路径“X:\net_audit.txt”的一部分。”

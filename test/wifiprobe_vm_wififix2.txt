@@ -1,0 +1,46 @@
+﻿===== A. ????????? DLL =====
+  DL wcmsvc.dll OK 994816
+  DL dmcmnutils.dll OK 525968
+  DL mdmregistration.dll OK 422400
+  DL wci.dll OK 27648
+  DL netshell.dll OK 586240
+===== B. PE ? svchost ? (????: SOFTWARE\...\SVCHOST) =====
+  ??=19 ??=DcomLaunch,defragsvc,LocalService,LocalServiceNetworkRestricted,LocalServiceNoNetwork,LocalServiceNoNetworkFirewall,LocalSystemNetworkRestricted,netprofm,netsvcs,NetworkService,NetworkServiceNetworkRestricted,PEWLan,RPCSS,smbsvcs,smphost,swprv,UserProfileService,utcsvc,WerSvcGroup
+===== C. ??????? =====
+  nativewifip -> system32\DRIVERS\nwifi.sys (file=True)
+  Ndisuio -> system32\drivers\ndisuio.sys (file=True)
+  nsi ?????=True
+  wcmsvc ???
+===== D. wlansvc ??????, ????? RpcSs =====
+  PEWLan=%SystemRoot%\System32\wlansvc.dll
+  wlansvc ImagePath=X:\windows\System32\svchost.exe -k PEWLan -p
+===== E. ????? =====
+  net start wcmsvc => More help is available by typing NET HELPMSG 2185.  [state=???]
+  net start wlansvc => The dependency service or group failed to start.  [state=Stopped pid=0]
+===== F. ?????????? (??? nativewifip ????????? running) =====
+  net start wlansvc => The dependency service or group failed to start.  [state=Stopped pid=0]
+===== G. wlansvc.dll ?????? =====
+  ?? svchost ???? wlansvc.dll/wcmsvc.dll
+===== H. ????? SCM/SideBySide ??? =====
+  System ???? 0 ?
+  Application ???? 0 ?
+===== ??: wlansvc ?? ??? / wcmsvc ??
+RESULT-POSTED
+
+Get-WinEvent : The parameter is incorrect
+At X:\w1.ps1:101 char:11
++   $ev = @(Get-WinEvent -FilterHashtable @{ LogName = $lg } -MaxEvents ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Get-WinEvent], EventLogException
+    + FullyQualifiedErrorId : System.Diagnostics.Eventing.Reader.EventLogException,Microsoft.PowerShell.Commands.GetWi 
+   nEventCommand
+ 
+Get-WinEvent : The parameter is incorrect
+At X:\w1.ps1:101 char:11
++   $ev = @(Get-WinEvent -FilterHashtable @{ LogName = $lg } -MaxEvents ...
++           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Get-WinEvent], EventLogException
+    + FullyQualifiedErrorId : System.Diagnostics.Eventing.Reader.EventLogException,Microsoft.PowerShell.Commands.GetWi 
+   nEventCommand
+ 
+

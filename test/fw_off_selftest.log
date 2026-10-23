@@ -1,0 +1,8 @@
+﻿00:25:44 FwPolicy2 OK 规则数=651
+00:25:44 写之前 Domain=False Private=False Public=False
+00:25:44 SelfTest: 跳过写 profile 1
+00:25:44 SelfTest: 跳过写 profile 2
+00:25:44 SelfTest: 跳过写 profile 4
+00:25:44 写后 Domain=False Private=False Public=False
+00:25:46 MpsSvc State=Running StartMode=Auto
+00:25:48 BFE State=Running StartMode=Auto

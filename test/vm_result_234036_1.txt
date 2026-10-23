@@ -1,0 +1,119 @@
+### A. 防火墙相关服务键是否存在(注册表为准)
+  BFE key=True
+     Start=2 Type=32 ImagePath=X:\windows\system32\svchost.exe -k LocalServiceNoNetwork -p ObjectName=NT AUTHORITY\LocalService DependOnService=RpcSs
+  MpsSvc key=True
+     Start=2 Type=32 ImagePath=X:\windows\system32\svchost.exe -k LocalServiceNoNetworkFirewall -p ObjectName=NT Authority\LocalService DependOnService=mpsdrv/bfe/nsi
+  mpsdrv key=True
+     Start=3 Type=1 ImagePath=System32\drivers\mpsdrv.sys ObjectName=(absent) DependOnService=(absent)
+  RpcSs key=True
+     Start=2 Type=32 ImagePath=X:\windows\system32\svchost.exe -k rpcss -p ObjectName=NT AUTHORITY\NetworkService DependOnService=RpcEptMapper/DcomLaunch
+  Dnscache key=True
+     Start=2 Type=16 ImagePath=X:\windows\system32\svchost.exe -k NetworkService -p ObjectName=NT AUTHORITY\NetworkService DependOnService=nsi/Afd
+  SharedAccess key=True
+     Start=(absent) Type=(absent) ImagePath=(absent) ObjectName=(absent) DependOnService=(absent)
+
+### B. mpsdrv 的开机期过滤器(boot-time filters, 服务没起也会生效)
+  mpsdrv\BootTimeFilters      = (absent)
+  mpsdrv\Parameters 子键       = 
+  BFE\Parameters\Policy 子键   = BootTime,Options,Persistent
+  MpsSvc\Parameters\Service    = ACService,PortKeywords
+  DomainProfile EnableFirewall=1 (键存在=True)
+  StandardProfile EnableFirewall=1 (键存在=True)
+  PublicProfile EnableFirewall=1 (键存在=True)
+
+### C. 驱动/内核组件状态(Win32_SystemDriver)
+  Name=mpsdrv State=Running StartMode=Manual PathName=X:\windows\system32\drivers\mpsdrv.sys
+  Name=NDIS State=Running StartMode=Boot PathName=X:\windows\system32\drivers\ndis.sys
+  Name=NdisTapi State=Stopped StartMode=Manual PathName=X:\windows\system32\DRIVERS\ndistapi.sys
+  Name=Ndisuio State=Stopped StartMode=Manual PathName=X:\windows\system32\drivers\ndisuio.sys
+  Name=NdisVirtualBus State=Running StartMode=Manual PathName=X:\windows\system32\drivers\NdisVirtualBus.sys
+  Name=NdisWan State=Stopped StartMode=Manual PathName=X:\windows\system32\drivers\ndiswan.sys
+  Name=ndiswanlegacy State=Stopped StartMode=Manual PathName=X:\windows\system32\DRIVERS\ndiswan.sys
+  Name=netvsc State=Running StartMode=Manual PathName=X:\windows\system32\drivers\netvsc.sys
+
+### D. 防火墙相关文件在不在
+  bfe.dll = True
+  mpssvc.dll = True
+  fwpkclnt.sys = False
+  wfp.h = False
+  FirewallPolicySnapIn.dll = False
+
+### E. 试着把 BFE / MpsSvc 起来(起来后开机期过滤器会被交互策略替换)
+  net start BFE -> The requested service has already been started. | System.Management.Automation.RemoteException | More help is available by typing NET HELPMSG 2182. | System.Management.Automation.RemoteException
+     Name=BFE State=Running StartMode=Auto StartName=NT AUTHORITY\LocalService ExitCode=0
+  net start MpsSvc -> The requested service has already been started. | System.Management.Automation.RemoteException | More help is available by typing NET HELPMSG 2182. | System.Management.Automation.RemoteException
+     Name=mpssvc State=Running StartMode=Auto StartName=NT Authority\LocalService ExitCode=0
+
+### F. netstat -s 协议栈计数增量(这段时间主机要持续 ping 192.168.100.2)
+  意义: 只有 IPv4/ICMP 的 Received 涨了, 才说明包真进了客户机 TCP/IP 栈; 不涨=网卡/驱动层就没交给栈
+  采集到字段数=58  采样窗口=60s
+  -- 有变化的计数 --
+    IPv4 Statistics / Output Requests  1083 -> 1103
+    IPv4 Statistics / Packets Received  2068 -> 2195
+    IPv4 Statistics / Received Address Errors  288 -> 295
+    IPv4 Statistics / Received Packets Delivered  2278 -> 2398
+    IPv4 Statistics / Received Packets Discarded  1281 -> 1361
+    IPv6 Statistics / Packets Received  1074 -> 1081
+    IPv6 Statistics / Received Address Errors  222 -> 229
+    TCP Statistics for IPv4 / Segments Received  569 -> 649
+    UDP Statistics for IPv4 / Datagrams Received  1303 -> 1321
+    UDP Statistics for IPv4 / Datagrams Sent  888 -> 908
+  -- 全量快照(第二次) --
+    IPv4 Statistics / Datagrams Failing Fragmentation = 0
+    IPv4 Statistics / Datagrams Forwarded = 0
+    IPv4 Statistics / Datagrams Successfully Fragmented = 0
+    IPv4 Statistics / Discarded Output Packets = 0
+    IPv4 Statistics / Fragments Created = 0
+    IPv4 Statistics / Output Packet No Route = 11
+    IPv4 Statistics / Output Requests = 1103
+    IPv4 Statistics / Packets Received = 2195
+    IPv4 Statistics / Reassembly Failures = 0
+    IPv4 Statistics / Reassembly Required = 0
+    IPv4 Statistics / Reassembly Successful = 0
+    IPv4 Statistics / Received Address Errors = 295
+    IPv4 Statistics / Received Header Errors = 0
+    IPv4 Statistics / Received Packets Delivered = 2398
+    IPv4 Statistics / Received Packets Discarded = 1361
+    IPv4 Statistics / Routing Discards = 0
+    IPv4 Statistics / Unknown Protocols Received = 0
+    IPv6 Statistics / Datagrams Failing Fragmentation = 0
+    IPv6 Statistics / Datagrams Forwarded = 0
+    IPv6 Statistics / Datagrams Successfully Fragmented = 0
+    IPv6 Statistics / Discarded Output Packets = 0
+    IPv6 Statistics / Fragments Created = 0
+    IPv6 Statistics / Output Packet No Route = 0
+    IPv6 Statistics / Output Requests = 177
+    IPv6 Statistics / Packets Received = 1081
+    IPv6 Statistics / Reassembly Failures = 0
+    IPv6 Statistics / Reassembly Required = 0
+    IPv6 Statistics / Reassembly Successful = 0
+    IPv6 Statistics / Received Address Errors = 229
+    IPv6 Statistics / Received Header Errors = 0
+    IPv6 Statistics / Received Packets Delivered = 874
+    IPv6 Statistics / Received Packets Discarded = 426
+    IPv6 Statistics / Routing Discards = 0
+    IPv6 Statistics / Unknown Protocols Received = 0
+    TCP Statistics for IPv4 / Active Opens = 6
+    TCP Statistics for IPv4 / Current Connections = 0
+    TCP Statistics for IPv4 / Failed Connection Attempts = 0
+    TCP Statistics for IPv4 / Passive Opens = 2
+    TCP Statistics for IPv4 / Reset Connections = 2
+    TCP Statistics for IPv4 / Segments Received = 649
+    TCP Statistics for IPv4 / Segments Retransmitted = 0
+    TCP Statistics for IPv4 / Segments Sent = 39
+    TCP Statistics for IPv6 / Active Opens = 0
+    TCP Statistics for IPv6 / Current Connections = 0
+    TCP Statistics for IPv6 / Failed Connection Attempts = 0
+    TCP Statistics for IPv6 / Passive Opens = 0
+    TCP Statistics for IPv6 / Reset Connections = 0
+    TCP Statistics for IPv6 / Segments Received = 0
+    TCP Statistics for IPv6 / Segments Retransmitted = 0
+    TCP Statistics for IPv6 / Segments Sent = 0
+    UDP Statistics for IPv4 / Datagrams Received = 1321
+    UDP Statistics for IPv4 / Datagrams Sent = 908
+    UDP Statistics for IPv4 / No Ports = 57
+    UDP Statistics for IPv4 / Receive Errors = 0
+    UDP Statistics for IPv6 / Datagrams Received = 422
+    UDP Statistics for IPv6 / Datagrams Sent = 83
+    UDP Statistics for IPv6 / No Ports = 4
+    UDP Statistics for IPv6 / Receive Errors = 0

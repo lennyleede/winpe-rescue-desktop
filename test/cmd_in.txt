@@ -1,0 +1,1 @@
+iwr -UseBasicParsing http://172.31.32.1:8000/file/vm_test15.ps1 -OutFile X:\t15.ps1; & X:\t15.ps1

@@ -1,0 +1,4 @@
+# 本项目全部按仓库内字节原样 checkout, 禁止 git 换行转换:
+# HTA 门禁要求 CRLF 且 LONE_LF=0, .ps1 要 BOM+CRLF, .cmd 必须 CRLF ——
+# 任何 autocrlf 式的换行改写都会直接搞挂门禁, 所以一律 -text(当二进制对待)。
+* -text

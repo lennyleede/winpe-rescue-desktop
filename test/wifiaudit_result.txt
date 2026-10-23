@@ -1,0 +1,433 @@
+﻿=== 01_ver
+
+Microsoft Windows [Version 10.0.26100.1]
+X:\
+
+Warning: Permanently added '[127.0.0.1]:6000' (ED25519) to the list of known hosts.
+
+
+=== 02_wlanfiles
+wlan.cmd
+wlancfg.dll
+wlansvc.dll
+wlanutil.dll
+nwifi.sys
+
+
+
+=== 03_inflist
+1394.inf
+3ware.inf
+acpi.inf
+acpidev.inf
+acpipagr.inf
+acpitime.inf
+adp80xx.inf
+amdgpio2.inf
+amdi2c.inf
+amdsata.inf
+amdsbs.inf
+AppleSSD.inf
+apps.inf
+apxunit.inf
+arcsas.inf
+b57nd60a.inf
+basicdisplay.inf
+basicrender.inf
+battery.inf
+bfad.inf
+bfadfcoe.inf
+bnxtnd.inf
+buttonconverter.inf
+bxfcoe.inf
+bxois.inf
+cdrom.inf
+cht4nulx64.inf
+cht4sx64.inf
+cht4vx64.inf
+cmbatt.inf
+compdev.inf
+cpu.inf
+c_1394.inf
+c_61883.inf
+c_apo.inf
+c_avc.inf
+c_battery.inf
+c_biometric.inf
+c_bluetooth.inf
+c_camera.inf
+c_cdrom.inf
+c_computeaccelerator.inf
+c_computer.inf
+c_diskdrive.inf
+c_display.inf
+c_dot4.inf
+c_dot4print.inf
+c_extension.inf
+c_fdc.inf
+c_firmware.inf
+c_floppydisk.inf
+c_fsactivitymonitor.inf
+c_fsantivirus.inf
+c_fscfsmetadataserver.inf
+c_fscompression.inf
+c_fscontentscreener.inf
+c_fscontinuousbackup.inf
+c_fscopyprotection.inf
+c_fsencryption.inf
+c_fshsm.inf
+c_fsinfrastructure.inf
+c_fsopenfilebackup.inf
+c_fsphysicalquotamgmt.inf
+c_fsquotamgmt.inf
+c_fsreplication.inf
+c_fssecurityenhancer.inf
+c_fssystem.inf
+c_fssystemrecovery.inf
+c_fsundelete.inf
+c_fsvirtualization.inf
+c_generic.inf
+c_hdc.inf
+c_hidclass.inf
+c_i3c.inf
+c_image.inf
+c_infrared.inf
+c_keyboard.inf
+c_legacydriver.inf
+c_mcx.inf
+c_media.inf
+c_mediumchanger.inf
+c_memory.inf
+c_modem.inf
+c_monitor.inf
+c_mouse.inf
+c_mtd.inf
+c_multifunction.inf
+c_multiportserial.inf
+c_net.inf
+c_netclient.inf
+c_netdriver.inf
+c_netservice.inf
+c_nettrans.inf
+c_nvmedisk.inf
+c_pcmcia.inf
+c_pnpprinters.inf
+c_ports.inf
+c_primitive.inf
+c_printer.inf
+c_processor.inf
+c_proximity.inf
+c_ramdisk.inf
+c_sbp2.inf
+c_scmdisk.inf
+c_scmvolume.inf
+c_scsiadapter.inf
+c_sdhost.inf
+c_securitydevices.inf
+c_smartcard.inf
+c_smartcardfilter.inf
+c_smartcardreader.inf
+c_smrdisk.inf
+c_smrvolume.inf
+c_sslaccel.inf
+c_swcomponent.inf
+c_swdevice.inf
+c_system.inf
+c_tapedrive.inf
+c_ucm.inf
+c_unknown.inf
+c_usb.inf
+c_usbdevice.inf
+c_usbfn.inf
+c_volsnap.inf
+c_volume.inf
+c_wceusbs.inf
+dc21x4vm.inf
+defltbase.inf
+defltrdsh.inf
+defltwk.inf
+devmap.inf
+disk.inf
+dwup-noregkeys.inf
+dwup.inf
+e2xw10x64.inf
+ehstortcgdrv.inf
+elxfcoe.inf
+elxstor.inf
+errata.inf
+errdev.inf
+fdc.inf
+flpydisk.inf
+fontsetup.inf
+genericusbfn.inf
+genpass.inf
+hal.inf
+halextintclpiodma.inf
+halextintcpsedma.inf
+halextpl080.inf
+hdaudbus.inf
+hidbatt.inf
+hiddigi.inf
+hidi2c.inf
+hidinterrupt.inf
+hidserv.inf
+hidspi_km.inf
+hidvhf.inf
+hpsamd.inf
+i3chost.inf
+iagpio.inf
+iai2c.inf
+iaLPSS2i_GPIO2_BXT_P.inf
+iaLPSS2i_GPIO2_CNL.inf
+iaLPSS2i_GPIO2_GLK.inf
+iaLPSS2i_GPIO2_SKL.inf
+iaLPSS2i_I2C_BXT_P.inf
+iaLPSS2i_I2C_CNL.inf
+iaLPSS2i_I2C_GLK.inf
+iaLPSS2i_I2C_SKL.inf
+ialpssi_gpio.inf
+ialpssi_i2c.inf
+iastorav.inf
+iastorv.inf
+input.inf
+ipmidrv.inf
+ipoib6x.inf
+iscsi.inf
+itsas35i.inf
+kdnic.inf
+kdnic_legacy.inf
+keyboard.inf
+lltdio.inf
+lsi_sas.inf
+lsi_sas2i.inf
+lsi_sas3i.inf
+machine.inf
+mausbhost.inf
+mchgr.inf
+megasas2i.inf
+megasas35i.inf
+megasr.inf
+mf.inf
+mlx4_bus.inf
+mpi3drvi.inf
+mshdc.inf
+msmouse.inf
+msports.inf
+mssmbios.inf
+msux64w10.inf
+mtconfig.inf
+mvumis.inf
+ndisimplatform.inf
+ndisimplatformmp.inf
+ndisuio.inf
+ndisvirtualbus.inf
+net1ix64.inf
+net1yx64.inf
+net40i68.inf
+net44amd.inf
+net7400-x64-n650.inf
+net7500-x64-n650f.inf
+net7800-x64-n650f.inf
+net9500-x64-n650f.inf
+netavpna.inf
+netax88179_178a.inf
+netax88772.inf
+netbnad8.inf
+netbvbda.inf
+netbxnd0a.inf
+netbxnda.inf
+netcxrd.inf
+nete1e3e.inf
+nete1g3e.inf
+netefe3e.inf
+netelx.inf
+netevbd0a.inf
+netevbda.inf
+netg664.inf
+netimm.inf
+netip6.inf
+netjme.inf
+netk57a.inf
+netl160a.inf
+netl1c63x64.inf
+netl1e64.inf
+netl260a.inf
+netloop.inf
+netmlx4eth63.inf
+netmlx5.inf
+netmscli.inf
+netmyk64.inf
+netnb.inf
+netnvm64.inf
+netnvma.inf
+netqenda.inf
+netqevbda.inf
+netrasa.inf
+netrass.inf
+netrast.inf
+netrndis.inf
+netrtl64.inf
+netserv.inf
+netsstpa.inf
+nett4x64.inf
+nettcpip.inf
+netvf63a.inf
+netvg63a.inf
+netxex64.inf
+netxix64.inf
+npsvctrig.inf
+nvdimm.inf
+nvmedisk.inf
+nvraid.inf
+pci.inf
+pcmcia.inf
+percsas2i.inf
+percsas3i.inf
+pmem.inf
+prm.inf
+puwk.inf
+pvscsii.inf
+qd3x64.inf
+qefcoe.inf
+qeois.inf
+ql2300.inf
+ql40xx2i.inf
+qlfcoei.inf
+ramdisk.inf
+rawsilo.inf
+rdshup.inf
+rndiscmp.inf
+rspndr.inf
+rt640x64.inf
+rtucx21x64.inf
+rtux64w10.inf
+sbp2.inf
+sceregvl.inf
+scmbus.inf
+scmvolume.inf
+scsidev.inf
+sdbus.inf
+sdstor.inf
+secrecs.inf
+sisraid2.inf
+sisraid4.inf
+smartsamd.inf
+smrdisk.inf
+smrvolume.inf
+spaceport.inf
+stexstor.inf
+stornvme.inf
+storufs.inf
+swenum.inf
+tape.inf
+tpm.inf
+uaspstor.inf
+uefi.inf
+ufxchipidea.inf
+ufxsynopsys.inf
+uiomap.inf
+umbus.inf
+umpass.inf
+unknown.inf
+usb.inf
+usb4devicerouter.inf
+usb4hostrouter.inf
+usbhub3.inf
+usbnet.inf
+usbport.inf
+usbser.inf
+usbstor.inf
+usbxhci.inf
+vdrvroot.inf
+vhdmp.inf
+virtdisk.inf
+volmgr.inf
+volsnap.inf
+volume.inf
+vsmraid.inf
+vstxraid.inf
+wdmaudio.inf
+wdmvsc.inf
+whyperkbd.inf
+wmiacpi.inf
+wnetvsc.inf
+wstorflt.inf
+wstorvsc.inf
+wvmbus.inf
+wvmbushid.inf
+wvmbusvideo.inf
+wvpci.inf
+ykinx64.inf
+
+
+
+=== 04_infnwifi
+
+'findstr' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+=== 05_dismdrv
+
+'powershell' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+=== 06_dlls
+
+'powershell' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+=== 07_svc
+
+'powershell' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+=== 08_net
+
+'powershell' is not recognized as an internal or external command,
+operable program or batch file.
+
+
+=== 09_bootlog
+==== startnet v6 begin ==== 
+[1] wpeinit err=0 
+
+Windows IP Configuration
+
+   Host Name . . . . . . . . . . . . : minint-fg8j2ma
+   Primary Dns Suffix  . . . . . . . : 
+   Node Type . . . . . . . . . . . . : Mixed
+   IP Routing Enabled. . . . . . . . : No
+   WINS Proxy Enabled. . . . . . . . : No
+   DNS Suffix Search List. . . . . . : mshome.net
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . : mshome.net
+   Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+   Physical Address. . . . . . . . . : 00-15-5D-4E-10-99
+   DHCP Enabled. . . . . . . . . . . : Yes
+   Autoconfiguration Enabled . . . . : Yes
+   Link-local IPv6 Address . . . . . : fe80::fc74:7c67:83ca:f786%2(Preferred) 
+   IPv4 Address. . . . . . . . . . . : 172.31.38.211(Preferred) 
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Lease Obtained. . . . . . . . . . : Sunday, October 4, 2026 10:10:49 AM
+   Lease Expires . . . . . . . . . . : Monday, October 5, 2026 10:10:49 AM
+   Default Gateway . . . . . . . . . : 172.31.32.1
+   DHCP Server . . . . . . . . . . . : 172.31.32.1
+   DHCPv6 IAID . . . . . . . . . . . : 33559901
+   DHCPv6 Client DUID. . . . . . . . : 00-01-00-01-32-54-4F-01-00-15-5D-4E-10-99
+   DNS Servers . . . . . . . . . . . : 172.31.32.1
+   NetBIOS over Tcpip. . . . . . . . : Enabled
+[2] pe-sshd started 
+[3] frpc started 
+[4] sunlogin launched 
+[5] wlan best-effort done 
+[6] desktop launched 
+
+
+
+

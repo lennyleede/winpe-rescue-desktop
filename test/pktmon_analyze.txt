@@ -1,0 +1,85 @@
+﻿===== pktmon_analyze 23:22:17 =====
+infile=D:\QoderProject\国内版\生成winpe\test\pktmon_pkt.txt lines=1742
+paired events=278
+
+===== A. 每类包 x 方向 x 组件 的计数 =====
+  arp  |  Rx  |  1  x1
+  arp  |  Rx  |  153  x1
+  arp  |  Rx  |  18  x2
+  arp  |  Rx  |  2  x2
+  arp  |  Rx  |  20  x2
+  arp  |  Rx  |  22  x2
+  arp  |  Rx  |  23  x2
+  arp  |  Rx  |  24  x2
+  arp  |  Rx  |  25  x4
+  arp  |  Rx  |  26  x4
+  arp  |  Rx  |  27  x4
+  arp  |  Rx  |  80  x1
+  arp  |  Rx  |  85  x1
+  arp  |  Rx  |  87  x2
+  arp  |  Tx  |  1  x1
+  arp  |  Tx  |  153  x1
+  arp  |  Tx  |  18  x2
+  arp  |  Tx  |  2  x2
+  arp  |  Tx  |  20  x2
+  arp  |  Tx  |  21  x2
+  arp  |  Tx  |  22  x2
+  arp  |  Tx  |  23  x2
+  arp  |  Tx  |  24  x2
+  arp  |  Tx  |  25  x4
+  arp  |  Tx  |  26  x4
+  arp  |  Tx  |  27  x4
+  arp  |  Tx  |  85  x1
+  arp  |  Tx  |  87  x2
+  icmp-req  |  Rx  |  153  x4
+  icmp-req  |  Rx  |  2  x4
+  icmp-req  |  Rx  |  25  x8
+  icmp-req  |  Rx  |  26  x8
+  icmp-req  |  Rx  |  27  x8
+  icmp-req  |  Rx  |  87  x4
+  icmp-req  |  Tx  |  1  x4
+  icmp-req  |  Tx  |  18  x8
+  icmp-req  |  Tx  |  2  x4
+  icmp-req  |  Tx  |  20  x8
+  icmp-req  |  Tx  |  21  x8
+  icmp-req  |  Tx  |  22  x8
+  icmp-req  |  Tx  |  23  x8
+  icmp-req  |  Tx  |  24  x8
+  icmp-req  |  Tx  |  25  x8
+  icmp-req  |  Tx  |  26  x8
+  icmp-req  |  Tx  |  27  x8
+  icmp-req  |  Tx  |  85  x4
+  icmp-req  |  Tx  |  87  x4
+  other  |  Rx  |  153  x3
+  other  |  Rx  |  2  x3
+  other  |  Rx  |  25  x6
+  other  |  Rx  |  26  x6
+  other  |  Rx  |  27  x6
+  other  |  Rx  |  87  x3
+  other  |  Tx  |  1  x3
+  other  |  Tx  |  18  x6
+  other  |  Tx  |  2  x3
+  other  |  Tx  |  20  x6
+  other  |  Tx  |  21  x6
+  other  |  Tx  |  22  x6
+  other  |  Tx  |  23  x6
+  other  |  Tx  |  24  x6
+  other  |  Tx  |  25  x6
+  other  |  Tx  |  26  x6
+  other  |  Tx  |  27  x6
+  other  |  Tx  |  85  x3
+  other  |  Tx  |  87  x3
+
+===== B. 有没有任何"来自 PE"的帧 (192.168.100.2 作源 / echo reply / ARP reply) =====
+  (无: 整个窗口 VM 一帧都没发出来/没回到主机)
+
+===== C. 包摘要去重(每类只留一条) =====
+  arp -> > 00-15-5D-4E-10-99, ethertype ARP (0x0806), length 42: Request who-has 192.168.100.2 (00-15-5D-4E-10-99) tell 192.168.100.1, length 28
+  icmp-req -> > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 74: 192.168.100.1 > 192.168.100.2: ICMP echo request, id 1, seq 861, length 40
+  other -> > 00-15-5D-4E-10-99, ethertype IPv4 (0x0800), length 66: 192.168.100.1.55916 > 192.168.100.2.22: Flags [S], seq 944840322, win 64240, options [mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
+
+===== D. VM 端点(component 153, WinPE-Test)上看到的方向计数 =====
+  icmp-req | Rx  x4
+  arp | Rx  x1
+  arp | Tx  x1
+  other | Rx  x3

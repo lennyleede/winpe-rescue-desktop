@@ -1,0 +1,77 @@
+===== vm_net_audit 19:08:09  (只读; 不启动/停止任何服务, 不写任何策略) =====
+
+### A. 本机地址 / 默认路由 / DNS
+  Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+  Physical Address. . . . . . . . . : 00-15-5D-00-69-07
+  DHCP Enabled. . . . . . . . . . . : Yes
+  IPv4 Address. . . . . . . . . . . : 172.17.37.103(Preferred)
+  Subnet Mask . . . . . . . . . . . : 255.255.240.0
+  Default Gateway . . . . . . . . . : 172.17.32.1
+  DNS Servers . . . . . . . . . . . : 172.17.32.1
+  Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter #2
+  Physical Address. . . . . . . . . : 00-15-5D-4E-10-99
+  DHCP Enabled. . . . . . . . . . . : No
+  IPv4 Address. . . . . . . . . . . : 192.168.100.2(Preferred)
+  Subnet Mask . . . . . . . . . . . : 255.255.255.0
+  Default Gateway . . . . . . . . . :
+  -- route print 里的 0.0.0.0 行(有没有默认出口就看这两行) --
+    0.0.0.0 0.0.0.0 172.17.32.1 172.17.37.103 15
+
+### B. 关键服务状态(网络栈/解析/防火墙)
+  Dnscache = Running/Auto
+  Dhcp = Running/Auto
+  LanmanWorkstation = Running/Auto
+  LmHosts = Running/Manual
+  Winmgmt = Running/Manual
+  BFE = Running/Auto
+  MpsSvc = Stopped/Disabled
+  SharedAccess = NO-KEY
+  wlansvc = Stopped/Manual
+  dot3svc = Stopped/Manual
+  NlaSvc = Stopped/Manual
+
+### C. 出站能力分层(每项最多等 
+  C1 主机 HTTP  192.168.100.1:8000 -> True
+  C2 主机 SMB   192.168.100.1:445  -> True
+  C4 站点 sunlogin.oray.com DNS=27.128.221.37,27.128.221.35,124.239.228.16,124.239.228.14,106.8.159.9,106.8.159.7,111.225.210.19,111.225.210.57,111.225.210.16,124.239.228.17,124.239.228.20,111.225.210.18,27.128.221.41,106.8.159.6,27.128.221.34,106.8.159.10  tcp443=True
+  C4 站点 www.baidu.com DNS=124.237.178.35,124.237.178.212  tcp443=True
+  C3 公网地址 114.114.114.114:53 -> True
+  C3 公网地址 223.5.5.5:53 -> True
+
+### D. 监听与已连接
+  LISTEN TCP 0.0.0.0:22 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:135 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:445 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:49670 0.0.0.0:0 LISTENING
+  LISTEN TCP 172.17.37.103:139 0.0.0.0:0 LISTENING
+  LISTEN TCP 192.168.100.2:139 0.0.0.0:0 LISTENING
+  LISTEN TCP [::]:22 [::]:0 LISTENING
+  LISTEN TCP [::]:135 [::]:0 LISTENING
+  LISTEN TCP [::]:445 [::]:0 LISTENING
+  ESTABLISHED 条数=2
+    TCP 172.17.37.103:49672 47.96.3.190:443 ESTABLISHED
+    TCP 192.168.100.2:22 192.168.100.1:54726 ESTABLISHED
+
+### E. 相关进程
+  mshta  pid=1492  路径=X:\Windows\System32\mshta.exe
+  pe-sshd  pid=1992  路径=X:\SSH\pe-sshd.exe
+  SunloginSOS  pid=2004  路径=X:\Sunlogin\SunloginSOS.exe
+  SunloginSOS  pid=1452  路径=X:\Sunlogin\SunloginSOS.exe
+  SunloginSOS  pid=1084  路径=X:\Sunlogin\SunloginSOS.exe
+  X:\Sunlogin 存在=True  文件数=8
+  boot.log 末 6 行:
+    'sc' is not recognized as an internal or external command,
+    operable program or batch file.
+    'sc' is not recognized as an internal or external command,
+    operable program or batch file.
+    [6] winmgmt tried
+    [7] desktop launched
+
+### F. 判定(断在哪一层)
+  L1 本机有 IP 且到主机通 = True
+  L2 有默认路由 0.0.0.0   = True
+  L3 域名可解析           = True
+  L4 任意公网端点可达     = True
+  => 链路/路由/公网都通, 那向日葵的问题在应用层(看第 E 节进程与日志)。
+  另: MpsSvc 被离线注册表禁用只影响"别人连进来", 出站方向不受任何限制(本次 C1 能通即为证据)。
+  [19:08:11] 结束

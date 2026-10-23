@@ -1,0 +1,21 @@
+A. DL wifi.exe OK 1399296
+===== B. PE 里的相关 svchost 组现在装了什么 =====
+  LocalSystemNetworkRestricted 条数=4 含wlansvc=False 样例=hidserv|svsvc|Netman|dot3svc
+  LocalServiceNetworkRestricted 条数=5 含wlansvc=False 样例=TimeBrokerSvc|eventlog|WinHttpAutoProxySvc|LmHosts
+  PEWLan 条数=1 含wlansvc=False 样例=%SystemRoot%\System32\wlansvc.dll
+===== C. 把 wlansvc 塞进标准组 LocalSystemNetworkRestricted (真机就在这里) =====
+  组已追加 wlansvc, 新条数=5
+  ImagePath=X:\windows\System32\svchost.exe -k LocalSystemNetworkRestricted -p
+  PEWLan 目前=%SystemRoot%\System32\wlansvc.dll
+===== D. 起服务并轮询 =====
+--- svc start wlansvc ---
+  FAIL StartService 1068 ERROR_SERVICE_DEPENDENCY_FAIL
+  t=2s state=Stopped exit=1068 pid=0
+===== E. 有没有 svchost 真加载了 wlansvc.dll =====
+  没有 svchost 加载 wlansvc.dll
+  svchost pid=1116 cmd=X:\windows\system32\svchost.exe -k LocalSystemNetworkRestricted -p
+===== F. wlanapi 视角 =====
+--- status ---
+  FAIL WlanOpenHandle: 1062 ERROR_SERVICE_ALREADY_RUNNING
+  HINT if wlansvc is down WlanOpenHandle returns 1722/1723; run: wifi.exe deps wlansvc
+===== 结论: wlansvc 仍未起来 =====

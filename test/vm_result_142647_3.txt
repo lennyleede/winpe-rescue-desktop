@@ -1,0 +1,68 @@
+===== vm_net_audit 14:26:40  (只读; 不启动/停止任何服务, 不写任何策略) =====
+
+### A. 本机地址 / 默认路由 / DNS
+  Description . . . . . . . . . . . : Microsoft Hyper-V Network Adapter
+  Physical Address. . . . . . . . . : 00-15-5D-4E-10-99
+  DHCP Enabled. . . . . . . . . . . : No
+  IPv4 Address. . . . . . . . . . . : 192.168.100.2(Preferred)
+  Subnet Mask . . . . . . . . . . . : 255.255.255.0
+  Default Gateway . . . . . . . . . :
+  DNS Servers . . . . . . . . . . . : fec0:0:0:ffff::1%1
+  -- route print 里的 0.0.0.0 行(有没有默认出口就看这两行) --
+
+### B. 关键服务状态(网络栈/解析/防火墙)
+  Dnscache = Running/Auto
+  Dhcp = Running/Auto
+  LanmanWorkstation = Running/Auto
+  LmHosts = Running/Manual
+  Winmgmt = Running/Manual
+  BFE = Running/Auto
+  MpsSvc = Stopped/Disabled
+  SharedAccess = NO-KEY
+  wlansvc = Stopped/Manual
+  dot3svc = Stopped/Manual
+  NlaSvc = Stopped/Manual
+
+### C. 出站能力分层(每项最多等 
+  C1 主机 HTTP  192.168.100.1:8000 -> True
+  C2 主机 SMB   192.168.100.1:445  -> True
+  C4 站点 sunlogin.oray.com DNS=解析失败: Exception calling "GetHostAddresses" with "1" argument(s): "No such host is known"  tcp443=False
+  C4 站点 www.baidu.com DNS=解析失败: Exception calling "GetHostAddresses" with "1" argument(s): "No such host is known"  tcp443=False
+  C3 公网地址 114.114.114.114:53 -> False
+  C3 公网地址 223.5.5.5:53 -> False
+
+### D. 监听与已连接
+  LISTEN TCP 0.0.0.0:22 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:135 0.0.0.0:0 LISTENING
+  LISTEN TCP 0.0.0.0:445 0.0.0.0:0 LISTENING
+  LISTEN TCP 127.0.0.1:49670 0.0.0.0:0 LISTENING
+  LISTEN TCP 192.168.100.2:139 0.0.0.0:0 LISTENING
+  LISTEN TCP [::]:22 [::]:0 LISTENING
+  LISTEN TCP [::]:135 [::]:0 LISTENING
+  LISTEN TCP [::]:445 [::]:0 LISTENING
+  ESTABLISHED 条数=1
+    TCP 192.168.100.2:22 192.168.100.1:49649 ESTABLISHED
+
+### E. 相关进程
+  mshta  pid=1808  路径=X:\Windows\System32\mshta.exe
+  pe-sshd  pid=1944  路径=X:\SSH\pe-sshd.exe
+  SunloginSOS  pid=1956  路径=X:\Sunlogin\SunloginSOS.exe
+  SunloginSOS  pid=1852  路径=X:\Sunlogin\SunloginSOS.exe
+  SunloginSOS  pid=1328  路径=X:\Sunlogin\SunloginSOS.exe
+  X:\Sunlogin 存在=True  文件数=8
+  boot.log 末 6 行:
+    'sc' is not recognized as an internal or external command,
+    operable program or batch file.
+    'sc' is not recognized as an internal or external command,
+    operable program or batch file.
+    [6] winmgmt tried
+    [7] desktop launched
+
+### F. 判定(断在哪一层)
+  L1 本机有 IP 且到主机通 = True
+  L2 有默认路由 0.0.0.0   = False
+  L3 域名可解析           = False
+  L4 任意公网端点可达     = False
+  => 断在第 2 层: 这个网络里根本没有通往外部的路由。VM 挂的是 Internal 交换机(PE-INT), 它只把 VM 和"主机这块 vEthernet"连在一起, 按定义没有上行走公网的出口。这是测试拓扑的限制, 不是镜像/防火墙的问题。
+  另: MpsSvc 被离线注册表禁用只影响"别人连进来", 出站方向不受任何限制(本次 C1 能通即为证据)。
+  [14:26:43] 结束

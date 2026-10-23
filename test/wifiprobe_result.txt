@@ -1,0 +1,18 @@
+﻿===== 1. ? WiFi ????? =====
+DL wlanapi.dll OK ??=473224
+DL wlanmsm.dll OK ??=436224
+===== 2. ?? wlansvc =====
+net start wlansvc => net.exe : System error 1068 has occurred. At X:\w1.ps1:17 char:8 + $ns = (& net.exe start wlansvc 2>&1 | Out-String).Trim() + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (System error 1068 has occurred.:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError The dependency service or group failed to start.
+wlansvc state=Stopped pid=0 startmode=Manual
+===== 3. svchost ??????? (wlansvc ??????) =====
+svchost pid ?=11 ??=372,388,484,568,736,812,932,1496,1540,1660,1728
+===== 4. ???????: ??????? wlansvc.dll =====
+  ???????? wlansvc.dll
+===== 5. dot3svc ?? (PE ?????, ??????) =====
+net start dot3svc => The Wired AutoConfig service is starting. The Wired AutoConfig service was started successfully.
+===== 6. ????? (VM ???????, ????? 0) =====
+  NA: Microsoft Hyper-V Network Adapter GUID={CF0E5225-1ECB-4496-BB51-451B9C63201E} ??=netvsc ??=Ethernet 802.3
+RESULT-POSTED
+
+Warning: Permanently added '[127.0.0.1]:6000' (ED25519) to the list of known hosts.
+

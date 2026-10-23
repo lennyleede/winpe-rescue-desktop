@@ -1,0 +1,40 @@
+﻿isAdmin=True
+
+===== 现状 =====
+hostvnic Container NIC d741302a switch=Default Switch mac=00155DAA873E
+hostvnic PE-EXT switch=PE-EXT mac=D83BBF3671F3
+hostvnic PE-EXT switch=PE-EXT mac=F875A4DF1874
+nic vEthernet (PE-EXT) | Hyper-V Virtual Ethernet Adapter #2 | Up | D8-3B-BF-36-71-F3
+nic vEthernet (PE-EXT) 2 | Hyper-V Virtual Ethernet Adapter #3 | Up | F8-75-A4-DF-18-74
+nic vEthernet (Default Switch) | Hyper-V Virtual Ethernet Adapter | Up | 00-15-5D-AA-87-3E
+nic WLAN | Intel(R) Wireless-AC 9260 160MHz | Disabled | D8-3B-BF-36-71-F3
+nic 蓝牙网络连接 | Bluetooth Device (Personal Area Network) | Disconnected | D8-3B-BF-36-71-F7
+ip vEthernet (PE-EXT) = 192.168.0.100/24 ifIdx=54
+ip vEthernet (PE-EXT) 2 = 192.168.0.106/24 ifIdx=25
+[retest before]
+  ipconfig on host: 192.168.0.100@vEthernet (PE-EXT) , 192.168.0.106@vEthernet (PE-EXT) 2
+  neighbor: vEthernet (PE-EXT) 2=Reachable
+  ping:  正在 Ping 192.168.0.108 具有 32 字节的数据: 请求超时。 请求超时。 请求超时。 请求超时。 192.168.0.108 的 Ping 统计信息: 数据包: 已发送 = 4，已接收 = 0，丢失 = 4 (100% 丢失)，
+  tcp22: SYN 无回应
+  => 还是不通
+
+===== 摘掉 192.168.0.100 这个重复子网地址 =====
+removed 192.168.0.100 on vEthernet (PE-EXT)
+removed 192.168.0.106 on vEthernet (PE-EXT) 2
+
+===== 删除借用无线 MAC(
+removed PE-EXT mac=D83BBF3671F3 id=Microsoft:B264F441-A8FC-4EF5-9E31-7EC6C1FD0A97\B6AA5F9F-0BB8-4674-96AB-78A0B030EB09
+
+===== 复测 =====
+[retest after]
+  ipconfig on host: 
+  neighbor: vEthernet (PE-EXT) 2=Unreachable
+  ping:  正在 Ping 192.168.0.108 具有 32 字节的数据: PING：传输失败。常见故障。 PING：传输失败。常见故障。 请求超时。 请求超时。 192.168.0.108 的 Ping 统计信息: 数据包: 已发送 = 4，已接收 = 0，丢失 = 4 (100% 丢失)，
+  tcp22: SYN 无回应
+  => 还是不通
+
+还是不通的话, PE 侧要重启一次拿干净链路(刚才端口被断开重接过):
+  Restart-VM -Name WinPE-Test -Force
+起来后 ipconfig 看新地址, 再跑一次本脚本(不带 -Fix)复测。
+
+无线恢复: Enable-NetAdapter -Name WLAN   (需要重新插无线时)

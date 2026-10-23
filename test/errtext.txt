@@ -1,0 +1,13 @@
+﻿1057         0x00000421 => The account name is invalid or does not exist, or the password is invalid for the account name specified.
+1060         0x00000424 => The specified service does not exist as an installed service.
+1061         0x00000425 => The service cannot accept control messages at this time.
+1062         0x00000426 => The service has not been started.
+1063         0x00000427 => The service process could not connect to the service controller.
+1067         0x0000042B => The process terminated unexpectedly.
+1069         0x0000042D => The service did not start due to a logon failure.
+1072         0x00000430 => The specified service has been marked for deletion.
+1073         0x00000431 => The specified service already exists.
+1076         0x00000434 => The current boot has already been accepted for use as the last-known-good control set.
+1077         0x00000435 => No attempts to start the service have been made since the last boot.
+1078         0x00000436 => The name is already in use as either a service name or a service display name.
+1079         0x00000437 => The account specified for this service is different from the account specified for other services running in the same process.

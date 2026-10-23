@@ -1,0 +1,27 @@
+===== A. 从主机取缺失的伴随 DLL =====
+  DL wcmsvc.dll OK 994816
+  DL dmcmnutils.dll OK 525968
+  DL mdmregistration.dll OK 422400
+  DL wci.dll OK 27648
+  DL netshell.dll OK 586240
+===== B. PE 里 svchost 组 (正确位置: SOFTWARE\...\SVCHOST) =====
+  组数=19 列表=DcomLaunch,defragsvc,LocalService,LocalServiceNetworkRestricted,LocalServiceNoNetwork,LocalServiceNoNetworkFirewall,LocalSystemNetworkRestricted,netprofm,netsvcs,NetworkService,NetworkServiceNetworkRestricted,PEWLan,RPCSS,smbsvcs,smphost,swprv,UserProfileService,utcsvc,WerSvcGroup
+===== C. 补齐依赖服务键 =====
+  nativewifip -> system32\DRIVERS\nwifi.sys (file=True)
+  Ndisuio -> system32\drivers\ndisuio.sys (file=True)
+  nsi 服务键存在=True
+  wcmsvc 键已写
+===== D. wlansvc 配置对齐主机, 依赖先只留 RpcSs =====
+  PEWLan=%SystemRoot%\System32\wlansvc.dll
+  wlansvc ImagePath=X:\windows\System32\svchost.exe -k PEWLan -p
+===== E. 逐个起服务 =====
+  net start wcmsvc => More help is available by typing NET HELPMSG 2185.  [state=查不到]
+  net start wlansvc => The dependency service or group failed to start.  [state=Stopped pid=0]
+===== F. 换成完整依赖再试一次 (真机上 nativewifip 会因插着无线网卡而 running) =====
+  net start wlansvc => The dependency service or group failed to start.  [state=Stopped pid=0]
+===== G. wlansvc.dll 到底加载了没 =====
+  没有 svchost 进程加载 wlansvc.dll/wcmsvc.dll
+===== H. 事件日志里 SCM/SideBySide 的报错 =====
+  System 相关事件 0 条
+  Application 相关事件 0 条
+===== 结论: wlansvc 启动 仍失败 / wcmsvc 失败

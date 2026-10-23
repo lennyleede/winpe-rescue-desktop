@@ -1,0 +1,24 @@
+﻿[A0_identity] NT AUTHORITY\SYSTEM SID=S-1-5-18 IsAdmin=True
+[A_ssh_Administrator] +        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //     + CategoryInfo          : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException //     + FullyQualifiedErrorId : NativeCommandError
+[A_dbg_Administrator] debug1: Server will not fork when running in debugging mode. // Connection from 127.0.0.1 port 49719 on 127.0.0.1 port 22 // debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 // debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 // debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 // debug1: monitor_read_log: child log fd closed // debug1: do_cleanup // debug1: Killing privsep child 1796
+[A_ssh_SYSTEM] +        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //     + CategoryInfo          : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException //     + FullyQualifiedErrorId : NativeCommandError
+[A_dbg_SYSTEM] Server listening on 0.0.0.0 port 22. // debug1: Server will not fork when running in debugging mode. // Connection from 127.0.0.1 port 49720 on 127.0.0.1 port 22 // debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 // debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 // debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 // debug1: do_cleanup // debug1: Killing privsep child 332
+[A_ssh_admin] +        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //     + CategoryInfo          : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException //     + FullyQualifiedErrorId : NativeCommandError
+[A_dbg_admin] debug1: Server will not fork when running in debugging mode. // Connection from 127.0.0.1 port 49721 on 127.0.0.1 port 22 // debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 // debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 // debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 // debug1: monitor_read_log: child log fd closed // debug1: do_cleanup // debug1: Killing privsep child 1940
+[A_final_sshd] RUNNING
+[B_imports_SunloginSOS.exe] 解析失败: Exception calling "ReadByte" with "0" argument(s): "Unable to read beyond the end of the stream."
+[B_imports_sshd.exe] 共 0 个 DLL; 缺失: 无
+[B_apiset_sshd.exe] 0 个 api-set(PE 里可能无法解析)
+[B_sunlogin_files] libcrypto.dll,msvcp140.dll,msvcp140_1.dll,msvcp140_2.dll,SunloginSOS.exe,ucrtbase.dll,vcruntime140.dll,vcruntime140_1.dll
+[C_scm_count] 59
+[C_scm_has_wlansvc] NO
+[C_scm_sample] swprv,SstpSvc,Power,wmiApSrv,NlaSvc,Eaphost,netprofm,sacsvr,SamSs,hidserv,TrustedInstaller,DeviceInstall,LocalKdc,SystemEventsBroker,FontCache,CryptSvc,DiagTrack,wisvc,SENS,NetSetupSvc,EventLog,DcomLaunch,W32Time,TapiSrv,PolicyAgent
+[C_scm_lanlike] dot3svc,gpsvc,LanmanServer,LanmanWorkstation,RpcEptMapper,RpcSs
+[C_reg_values] Type=32 ; Start=3 ; Error=1 ; ImagePath=X:\windows\System32\svchost.exe -k PEWLan ; ObjectName=LocalService ; DisplayName=WLAN AutoConfig (PE) ; DependOnService=RPCSS
+[C_reg_subkeys] Parameters
+[C_direct_svchost] 已退出 exit=0
+[C_svc_RpcSs] Running
+[C_svc_DcomLaunch] Running
+[C_svc_NSI] Running
+[C_svc_Dhcp] Running
+[C_svc_LanmanWorkstation] Running

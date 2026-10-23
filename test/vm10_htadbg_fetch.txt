@@ -1,0 +1,12 @@
+﻿===== HtaTypingDebug phase=fetch 17:05:24 目标=Administrator@172.17.40.212 =====
+---------- B. 采样结果 X:\fg.log ----------
+  (rc=0 用时=0s 行数=1)
+  17:03:12.598 鍓嶅彴鍒囨崲 -> fg pid=1120(mshta) hwnd=0x10070  mshta.Responding=True
+---------- B2. 行数与关键计数 ----------
+  (rc=0 用时=6s 行数=5)
+  ???=1
+  ??????=0
+  mshta ?????=0
+  --- ?? 20 ? ---
+  17:03:12.598 ???鴨^貞??-> fg pid=1120(mshta) hwnd=0x10070  mshta.Responding=True
+结果文件 = D:\QoderProject\国内版\生成winpe\test\vm10_htadbg_fetch.txt

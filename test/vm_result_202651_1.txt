@@ -1,0 +1,18 @@
+﻿[A_keygen] 
+[A_key_exists] YES
+[A_key_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+[A_ak_acl] NT AUTHORITY\SYSTEM Allow  FullControl
+BUILTIN\Administrators Allow  FullControl
+BUILTIN\Users Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+APPLICATION PACKAGE AUTHORITY\ALL RESTRICTED APPLICATION PACKAGES Allow  ReadAndExecute, Synchronize
+[A_cfg] Port 22 ; ListenAddress 0.0.0.0 ; HostKey X:\Windows\System32\OpenSSH\ssh_host_t14_key ; AuthorizedKeysFile X:\Windows\System32\OpenSSH\administrators_authorized_keys ; PermitRootLogin yes ; PasswordAuthentication no ; PubkeyAuthentication yes ; StrictModes no ; LogLevel DEBUG3 ; PidFile X:\sshd_t14.pid ; Subsystem sftp X:\Windows\System32\OpenSSH\sftp-server.exe
+[B_t] 
+[C_listening] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+[L_sys32_t14] Connection reset by 127.0.0.1 port 22
+[C_stop] pid=1932 ExitStatus=0xFFFFFFFF ;; pid=1564 ExitStatus=0xC0000142 ;; pid=516 ExitStatus=0x000000FF
+[C_srv_tail] debug1: Local version string SSH-2.0-OpenSSH_for_Windows_9.5 || debug1: Remote protocol version 2.0, remote software version OpenSSH_for_Windows_9.5 || debug1: compat_banner: match: OpenSSH_for_Windows_9.5 pat OpenSSH* compat 0x04000000 || debug1: monitor_read_log: child log fd closed || debug1: do_cleanup || debug1: Killing privsep child 1564
+[L_root_t14] banner exchange: Connection to UNKNOWN port -1: Connection refused
+[D_srv_tail] debug1: sshd version OpenSSH_for_Windows_9.5, LibreSSL 3.8.2 || debug1: get_passwd: lookup_sid() failed: 1332. || Unable to load host key: X:\\OpenSSH\\ssh_host_t14_key || sshd: no hostkeys available -- exiting.
+[E_sshd_running] YES

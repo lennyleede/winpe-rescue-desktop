@@ -1,0 +1,16 @@
+serverAddr = "your-frp-server.example.com"
+serverPort = 7000
+auth.token = "CHANGE_ME"
+
+# 开机自启时把运行日志写到这里, 便于排查是否连上 frps
+log.to = "X:\\frpc.log"
+log.level = "info"
+log.maxDays = 1
+
+# 示例：将本机 SSH(22) 穿透到服务器 6000 端口
+[[proxies]]
+name = "pe-ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000

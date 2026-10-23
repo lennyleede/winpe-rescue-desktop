@@ -1,0 +1,36 @@
+﻿
+===== elevation =====
+user=RESCUE-HOST-01\rescueuser
+isAdmin=True
+
+===== Get-VMSwitch =====
+switch name=Default Switch  type=Internal  allowMgmtOS=True  uplink=
+switch name=PE-EXT  type=External  allowMgmtOS=True  uplink=Intel(R) Ethernet Connection (6) I219-V
+
+===== Get-VM =====
+vm=PE-TEST  state=Off  gen=1  uptime=00:00:00
+vm=WinPE-Test  state=Running  gen=2  uptime=00:48:21.9830000
+
+===== VM network adapters (which switch each VM NIC hangs on) =====
+
+===== Management OS (host side) vNICs =====
+hostvnic=Container NIC d741302a  switch=Default Switch  mac=00155D424FD0
+hostvnic=PE-EXT  switch=PE-EXT  mac=D83BBF3671F3
+hostvnic=PE-EXT  switch=PE-EXT  mac=F875A4DF1874
+
+===== physical adapters =====
+phys 以太网  id=Intel(R) Ethernet Connection (6) I219-V  status=Up  mac=F8-75-A4-DF-18-74  link=100 Mbps
+phys WLAN  id=Intel(R) Wireless-AC 9260 160MHz  status=Disconnected  mac=D8-3B-BF-36-71-F3  link=300 Mbps
+
+===== neighbor for PE =====
+vEthernet (PE-EXT) 2  192.168.0.108  Reachable  00-15-5D-4E-10-99
+WLAN  192.168.0.108  Unreachable  00-00-00-00-00-00
+
+===== does host->PE traffic hit the physical wire? (adapter statistics delta across 10 pings) =====
+ping out :  / 正在 Ping 192.168.0.108 具有 32 字节的数据: / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / 请求超时。 / / 192.168.0.108 的 Ping 统计信息: / 数据包: 已发送 = 10，已接收 = 0，丢失 = 10 (100% 丢失)，
+phys 以太网  txDelta=0  rxDelta=179059
+vnic vEthernet (PE-EXT) 2  txDelta=0  rxDelta=206670
+txDelta>0 on phys = 包被送到线上, 由路由器回折(同端口被丢); txDelta=0 而 vnic>0 = 交换机内部转发, 问题在 PE 侧
+
+===== tcp 22 from host =====
+tcp 22: SYN no answer

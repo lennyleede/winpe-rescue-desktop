@@ -1,0 +1,13 @@
+serverAddr = "172.31.32.1"
+serverPort = 7000
+auth.token = "CHANGE_ME"
+
+log.to = "X:\\frpc.log"
+log.level = "info"
+
+[[proxies]]
+name = "pe-ssh"
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000

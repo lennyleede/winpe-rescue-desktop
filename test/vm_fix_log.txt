@@ -1,0 +1,43 @@
+﻿
+===== elevation + 现状 =====
+isAdmin=True
+switch Default Switch type=Internal uplink= allowMgmtOS=True
+switch PE-EXT type=External uplink=Intel(R) Ethernet Connection (6) I219-V allowMgmtOS=True
+hostvnic Container NIC d741302a switch=Default Switch mac=00155DAA873E
+hostvnic PE-EXT switch=PE-EXT mac=D83BBF3671F3
+hostvnic PE-EXT switch=PE-EXT mac=F875A4DF1874
+vm=PE-TEST state=Off nic=网络适配器 switch=Default Switch mac=00155D006900 macSpoof=Off dhcpGuard=Off routerGuard=Off
+vm=WinPE-Test state=Running nic=网络适配器 switch=PE-EXT mac=00155D4E1099 macSpoof=Off dhcpGuard=Off routerGuard=Off
+nic 以太网 | Intel(R) Ethernet Connection (6) I219-V | Up | F8-75-A4-DF-18-74 | 802.3
+nic vEthernet (PE-EXT) | Hyper-V Virtual Ethernet Adapter #2 | Up | D8-3B-BF-36-71-F3 | Unspecified
+nic vEthernet (PE-EXT) 2 | Hyper-V Virtual Ethernet Adapter #3 | Up | F8-75-A4-DF-18-74 | Unspecified
+nic vEthernet (Default Switch) | Hyper-V Virtual Ethernet Adapter | Up | 00-15-5D-AA-87-3E | Unspecified
+nic WLAN | Intel(R) Wireless-AC 9260 160MHz | Disabled | D8-3B-BF-36-71-F3 | Native 802.11
+nic 蓝牙网络连接 | Bluetooth Device (Personal Area Network) | Disconnected | D8-3B-BF-36-71-F7 | BlueTooth
+ip vEthernet (PE-EXT) = 192.168.0.100/24 metric=35 35
+ip vEthernet (PE-EXT) 2 = 192.168.0.106/24 metric=35 35
+[retest before]
+  neighbor: vEthernet (PE-EXT) 2=Probe
+  ping:  正在 Ping 192.168.0.108 具有 32 字节的数据: 请求超时。 请求超时。 请求超时。 192.168.0.108 的 Ping 统计信息: 数据包: 已发送 = 3，已接收 = 0，丢失 = 3 (100% 丢失)，
+  tcp22: SYN 仍无回应
+  => 还是不通
+
+===== 步骤B1: 删除 external switch 上的空壳 host vNIC =====
+remove 失败: 找不到与参数名称“InputObject”匹配的参数。
+
+===== 步骤B2: 把 external switch 重新绑到有线网卡 =====
+Set-VMSwitch PE-EXT -> 以太网
+
+===== 步骤B3: 刷新 VM 端口(断开再接回) + 开 macSpoofing =====
+macSpoof=On on 网络适配器
+disconnected 网络适配器
+reconnected -> PE-EXT
+[retest B]
+  neighbor: vEthernet (PE-EXT) 2=Probe
+  ping:  正在 Ping 192.168.0.108 具有 32 字节的数据: 请求超时。 请求超时。 请求超时。 192.168.0.108 的 Ping 统计信息: 数据包: 已发送 = 3，已接收 = 0，丢失 = 3 (100% 丢失)，
+  tcp22: SYN 仍无回应
+  => 还是不通
+
+===== 收尾 =====
+如果还不通: PE 侧需要重启一次 VM(拿新链路), 然后重跑本脚本的 -Fix -SkipA 只复测。
+无线网卡恢复命令: Enable-NetAdapter -Name WLAN

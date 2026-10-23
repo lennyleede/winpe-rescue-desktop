@@ -1,0 +1,1027 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!-- PE 里 docMode>=9 的 mshta 页面拿不到输入框焦点(focus() 与真鼠标点击都无效, 实测见
+     test\pe10_focusprobe.ps1); docMode 7/8 完全正常, 所以这里固定 IE=8 并只用 IE8 认的 CSS。 -->
+<!-- i18n(v11): 全部界面文案集中在 script 区的 I18N 表(zh/en 两套, 键必须一一对应, 由
+     build\scratch\t_hta_i18n_gate.js 校验键完整性)。带 k 属性的静态节点由 applyLang() 统一
+     填 innerHTML; 动态文案一律走 T('KEY')。开机按 Nls\Language(退回 WMI Locale) 自动判定,
+     顶栏 English/中文 按钮手动切换。PE 注册表不持久化: 重启后回到自动判定, 这是刻意设计。 -->
+<meta http-equiv="x-ua-compatible" content="IE=8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>WinPE 救援桌面</title>
+<HTA:APPLICATION
+  ID="WinPEDesktop"
+  APPLICATIONNAME="WinPE Rescue Desktop"
+  BORDER="none"
+  INNERBORDER="no"
+  MAXIMIZEBUTTON="yes"
+  MINIMIZEBUTTON="yes"
+  SCROLL="no"
+  SINGLEINSTANCE="yes"
+  CONTEXTMENU="no"
+/>
+<style>
+  /* IE8 文档模式不支持 rgba()/linear-gradient/box-shadow/border-radius/background-size/
+     四边同时定位。每条现代写法前面都放一条 IE8 能解析的纯色兜底(IE8 会丢弃它读不懂的那条)。
+     跨全屏的层(bar/grid/foot/frp)不用 right/bottom 拉伸, 宽度由 layout() 按视口算成 px。 */
+  html,body { height:100%; margin:0; padding:0; overflow:hidden;
+    font-family:"Microsoft YaHei","Segoe UI","SimHei",sans-serif; }
+  body { background-color:#0b1424; color:#e8f1ff;
+    background-image:url('wallpaper.jpg');
+    background-repeat:no-repeat; background-position:center center;
+    background-size:cover; }
+  /* IE8 没有 background-size:cover, 用老滤镜把壁纸拉到整屏(edge/IE9+ 会忽略这条, 走 body 的 cover) */
+  #bg { -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='wallpaper.jpg', sizingMethod='scale')";
+        filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='wallpaper.jpg', sizingMethod='scale');
+        position:absolute; top:0; left:0; z-index:1; }
+
+  /* ---------- 顶栏 ---------- */
+  #bar { position:absolute; top:0; left:0; height:66px; z-index:5;
+    background:#0e1a2b; background:rgba(8,16,30,0.58);
+    border-bottom:1px solid #24405f; border-bottom:1px solid rgba(120,180,255,0.22); }
+  #bar .l { float:left; padding:14px 0 0 20px; }
+  #bar .r { float:right; padding:6px 20px 0 0; text-align:right; }
+  #brand { display:inline-block; width:34px; height:34px; line-height:34px; margin-right:12px;
+    text-align:center; font-size:15px; font-weight:bold; color:#fff; border-radius:9px;
+    background:#2b7fd4; background:linear-gradient(135deg,#2b7fd4,#1e5f8f);
+    box-shadow:0 2px 8px rgba(0,0,0,.45); }
+  #title { display:inline-block; font-size:19px; font-weight:bold; letter-spacing:1px;
+    vertical-align:12px; }
+  #sub { display:inline-block; font-size:12px; color:#9dc4ee; vertical-align:14px; margin-left:10px; }
+  #clock { font-size:20px; font-weight:bold; color:#dff0ff; }
+  #host { font-size:12px; color:#9dc4ee; margin-top:2px; }
+
+  /* ---------- 图标区 ---------- */
+  #grid { position:absolute; top:66px; left:0; z-index:5; overflow:auto; }
+  #gridwrap { display:block; padding:22px 26px; }
+  .tile { display:inline-block; vertical-align:top; width:120px; margin:8px 10px 14px 10px;
+    padding:12px 6px 10px 6px; text-align:center; cursor:pointer; border-radius:14px;
+    background:#141f33; background:rgba(255,255,255,0.06);
+    border:1px solid #2a4160; border:1px solid rgba(150,200,255,0.16);
+    box-shadow:0 3px 12px rgba(0,0,0,0.28); }
+  .tile:hover { background:#24405f; background:rgba(120,180,255,0.18);
+    border-color:#52759b; border-color:rgba(170,215,255,0.5); }
+  .badge { width:54px; height:54px; line-height:54px; margin:0 auto; border-radius:14px;
+    font-size:18px; font-weight:bold; color:#fff; letter-spacing:0; }
+  .name { font-size:13px; margin-top:9px; color:#eaf3ff; }
+  .hint { font-size:11px; margin-top:3px; color:#8fb6dd; }
+  .c1 { background:#2668a1; background:linear-gradient(135deg,#2f80c3,#1c4f7a); }
+  .c2 { background:#2c8857; background:linear-gradient(135deg,#3aa76d,#1f6b47); }
+  .c3 { background:#6a52a6; background:linear-gradient(135deg,#8a6fc7,#4b3a86); }
+  .c4 { background:#a06b28; background:linear-gradient(135deg,#c7883a,#8a5320); }
+  .c5 { background:#a03a52; background:linear-gradient(135deg,#c25566,#7e2f42); }
+  .c6 { background:#2f7b89; background:linear-gradient(135deg,#3d9aa8,#215b68); }
+  .grp { display:block; width:100%; margin:14px 0 2px 4px; font-size:12px; color:#9cc6ef;
+    letter-spacing:2px; padding-bottom:4px;
+    border-bottom:1px solid #233c58; border-bottom:1px solid rgba(130,185,240,0.18); }
+
+  /* ---------- 底栏状态 ---------- */
+  #foot { position:absolute; bottom:0; left:0; height:118px; z-index:5;
+    background:#0e1a2b; background:rgba(8,16,30,0.66);
+    border-top:1px solid #24405f; border-top:1px solid rgba(120,180,255,0.22); }
+  #footrow { padding:8px 20px 0 20px; }
+  .pill { display:inline-block; margin:4px 10px 4px 0; padding:5px 12px 5px 10px;
+    font-size:12.5px; border-radius:20px;
+    background:#182438; background:rgba(255,255,255,0.08);
+    border:1px solid #2f4a68; border:1px solid rgba(150,200,255,0.2); }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:7px;
+    vertical-align:1px; background:#777; }
+  .ok { background:#39d98a; box-shadow:0 0 8px #39d98a; }
+  .bad { background:#ff6b6b; }
+  .idle { background:#8aa0b8; }
+  #ipbox { cursor:pointer; }
+  #note { font-size:11.5px; color:#8fb2d6; line-height:1.6; margin:2px 0 0 0; padding:0 20px; }
+  .btn { font-size:13px; padding:6px 16px; margin:0 6px 0 0; cursor:pointer; color:#eaf4ff;
+    background:#30609a; background:linear-gradient(180deg,#3b6da8,#264f7d);
+    border:1px solid #6f9bd1; border-radius:7px; }
+  .btn:hover { background:#3f74b3; background:linear-gradient(180deg,#4a82c4,#2f5f94); }
+  .btn.mini { font-size:12px; padding:4px 12px; }
+  .btn.gray { background:#3b4453; background:linear-gradient(180deg,#4a5768,#333d4a); border-color:#76839a; }
+
+  /* ---------- frp 面板 ---------- */
+  #frp { display:none; position:absolute; top:66px; right:0; width:420px; z-index:9;
+    overflow:auto; background:#070e1a; background:rgba(7,14,26,0.94);
+    border-left:1px solid #2b4c73; border-left:1px solid rgba(130,190,255,0.3); }
+  #frpin { display:block; padding:16px 18px; }
+  #frp h3 { margin:0 0 10px 0; font-size:16px; }
+  #frp label { display:block; font-size:12px; color:#9dc4ee; margin:11px 0 3px 0; }
+  /* IE8 没有 box-sizing: 宽度按 content-box 算死(384 内容 - 16 内边距 - 2 边框) */
+  #frp input, #frp select { width:366px; padding:6px 8px; font-size:13px;
+    color:#eaf4ff; background:#14243c; border:1px solid #3d6390; border-radius:5px; }
+  #frp .row { margin-top:14px; }
+  #frplog { margin-top:12px; padding:8px; height:150px; overflow:auto; font-family:Consolas,monospace;
+    font-size:11.5px; line-height:1.5; color:#c8dcf0; background:#0a1322;
+    border:1px solid #29435f; border-radius:5px; white-space:pre; }
+  #frpstat { font-size:12.5px; margin-top:10px; color:#9dc4ee; }
+  .close { float:right; cursor:pointer; font-size:18px; color:#9dc4ee; padding:0 6px; }
+  .close:hover { color:#fff; }
+
+  /* ---------- WiFi 面板(照 #frp 那套 IE8 能解析的写法) ---------- */
+  #wlan { display:none; position:absolute; top:66px; right:0; width:420px; z-index:9;
+    overflow:auto; background:#070e1a; background:rgba(7,14,26,0.94);
+    border-left:1px solid #2b4c73; border-left:1px solid rgba(130,190,255,0.3); }
+  #wlanin { display:block; padding:16px 18px; }
+  #wlan h3 { margin:0 0 10px 0; font-size:16px; }
+  #wlan label { display:block; font-size:12px; color:#9dc4ee; margin:11px 0 3px 0; }
+  #wlan .tip { display:block; font-size:12px; color:#9dc4ee; line-height:1.6; margin:0 0 6px 0; }
+  #wlan input, #wlan select { width:366px; padding:6px 8px; font-size:13px;
+    color:#eaf4ff; background:#14243c; border:1px solid #3d6390; border-radius:5px; }
+  #wlan .row { margin-top:14px; }
+  #wstat { font-size:12.5px; margin-top:10px; color:#9dc4ee; }
+
+  /* ---------- 隐藏后的药丸 ---------- */
+  #pill { display:none; position:absolute; top:0; left:0; z-index:20; padding:14px 18px;
+    font-size:14px; cursor:pointer; color:#fff;
+    background:#143c69; background:rgba(20,60,105,0.92);
+    border:1px solid #5d90c8; border-radius:0 0 14px 0; }
+</style>
+</head>
+<body>
+
+<div id="bg"></div>
+
+<div id="bar">
+  <div class="l">
+    <span id="brand">PE</span><span id="title" k="title">WinPE 救援桌面</span><span id="sub" k="sub">SSH / 向日葵 已自启 · frp 手动启动 · 面板 v10-ie8</span>
+  </div>
+  <div class="r">
+    <div><button class="btn mini gray" id="langbtn" onclick="toggleLang()">English</button></div>
+    <div id="clock">--:--:--</div>
+    <div id="host">读取中...</div>
+  </div>
+</div>
+
+<div id="grid"><div id="gridwrap">
+  <span class="grp" k="grpTerm">终端与磁盘</span>
+  <div class="tile" onclick="run('cmd.exe')"><div class="badge c1">CMD</div><div class="name" k="tCmd">命令提示符</div></div>
+  <div class="tile" onclick="runPS()"><div class="badge c3">PS</div><div class="name">PowerShell</div></div>
+  <div class="tile" onclick="run('notepad.exe')"><div class="badge c6">TXT</div><div class="name" k="tTxt">记事本</div></div>
+  <div class="tile" onclick="run('cmd.exe /k diskpart')"><div class="badge c4">DSK</div><div class="name">diskpart</div></div>
+  <div class="tile" onclick="run('cmd.exe /k X:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoExit -NoProfile -Command Get-Volume')"><div class="badge c4">VOL</div><div class="name" k="tVol">分区/卷标</div></div>
+
+  <span class="grp" k="grpRescue">救援修复(离线, 先体检)</span>
+  <div class="tile" onclick="run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\bootfix.ps1 -Check')"><div class="badge c4">BCD</div><div class="name" k="tBoot">引导体检/修复</div><div class="hint" k="tBootHint">bootfix, 含 BOOTSTAT 收尾链</div></div>
+  <div class="tile" onclick="run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\filefix.ps1 -Check')"><div class="badge c1">FIL</div><div class="name" k="tFile">系统文件体检</div><div class="hint" k="tFileHint">filefix: 离线 sfc, 约 1-4 分钟</div></div>
+  <div class="tile" onclick="run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\drvfix.ps1')"><div class="badge c3">DRV</div><div class="name" k="tDrv">启动驱动体检</div><div class="hint" k="tDrvHint">drvfix: 列被禁用的启动关键服务</div></div>
+  <div class="tile" onclick="run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\letterfix.ps1')"><div class="badge c2">LTR</div><div class="name" k="tLtr">盘符体检</div><div class="hint" k="tLtrHint">letterfix: 解 MountedDevices 对卷</div></div>
+  <div class="tile" onclick="run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\gptfix.ps1')"><div class="badge c5">GPT</div><div class="name" k="tGpt">分区表体检/修复</div><div class="hint" k="tGptHint">gptfix: GPT 头/表, 支持盘外 dump 还原</div></div>
+
+  <span class="grp" k="grpNet">网络与远程</span>
+  <div class="tile" onclick="run('cmd.exe /k ipconfig /all')"><div class="badge c2">NET</div><div class="name" k="tNet">网络信息</div></div>
+  <div class="tile" onclick="run('cmd.exe /k netstat -anop tcp')"><div class="badge c2">PORT</div><div class="name" k="tPort">端口状态</div></div>
+  <div class="tile" onclick="run('cmd.exe /k type X:\\sshd.log')"><div class="badge c1">SSH</div><div class="name" k="tSsh">SSH 日志</div><div class="hint">pe-sshd :22</div></div>
+  <div class="tile" onclick="runSunlogin()"><div class="badge c5">SOS</div><div class="name" k="tSos">向日葵 SOS</div><div class="hint" k="tSosHint">识别码在其窗口</div></div>
+  <div class="tile" onclick="openFrp()"><div class="badge c5">FRP</div><div class="name" k="tFrp">frp 穿透</div><div class="hint" k="tFrpHint">手动配置并启动</div></div>
+  <div class="tile" onclick="openWlan()"><div class="badge c6">WiFi</div><div class="name" k="tWlan">WiFi 连接</div><div class="hint" k="tWlanHint">扫描/连接, 绿灯=已连</div></div>
+
+  <span class="grp" k="grpPower">日志与电源</span>
+  <div class="tile" onclick="runReport()"><div class="badge c2">RPT</div><div class="name" k="tRpt">自检报告</div><div class="hint" k="tRptHint">网络/SSH/frp/向日葵, 结果写 U 盘</div></div>
+  <div class="tile" onclick="run('notepad.exe X:\\boot.log')"><div class="badge c3">LOG</div><div class="name" k="tLog">启动日志</div></div>
+  <div class="tile" onclick="doPower('shutdown')"><div class="badge c5">OFF</div><div class="name" k="tOff">关机</div></div>
+  <div class="tile" onclick="doPower('reboot')"><div class="badge c4">RST</div><div class="name" k="tRst">重启</div></div>
+</div></div>
+
+<div id="frp"><div id="frpin">
+  <span class="close" onclick="closeFrp()">×</span>
+  <h3 k="frpTitle">frp 内网穿透（手动）</h3>
+  <div style="font-size:12px;color:#9dc4ee;line-height:1.6" k="frpIntro">
+    frpc 不随开机启动。填好下面几项 → 保存配置 → 启动，窗口里能直接看到连接日志。
+  </div>
+
+  <label k="frpLAddr">frp 服务器地址 serverAddr（例: frp.example.com 或 1.2.3.4）</label>
+  <input id="addr" type="text" />
+  <label k="frpLSport">服务器端口 serverPort</label>
+  <input id="sport" type="text" value="7000" />
+  <label k="frpLToken">鉴权令牌 auth.token（与 frps 一致，留空则不带）</label>
+  <input id="token" type="text" />
+
+  <label k="frpLSsh">穿透本机 SSH</label>
+  <div style="font-size:12px;color:#9dc4ee;margin:2px 0 6px 0">
+    <span k="frpSshA">本地 127.0.0.1:22 映射到服务器的</span>
+    <input id="rport" type="text" value="6000" style="width:70px;display:inline-block;padding:3px 6px" />
+    <span k="frpSshB">端口</span>
+  </div>
+
+  <div class="row">
+    <button class="btn" onclick="saveFrp()" k="frpBtnSave">保存配置</button>
+    <button class="btn" onclick="startFrp()" k="frpBtnStart">启动 frpc</button>
+    <button class="btn gray" onclick="stopFrp()" k="frpBtnStop">停止</button>
+  </div>
+  <div class="row">
+    <button class="btn mini gray" onclick="loadFrp()" k="frpBtnReload">重新读取配置</button>
+    <button class="btn mini gray" onclick="tailFrp()" k="frpBtnTail">刷新日志</button>
+    <button class="btn mini gray" onclick="run('notepad.exe X:\\frpc.log')" k="frpBtnNote">记事本打开日志</button>
+    <button class="btn mini gray" onclick="run('cmd.exe /k type X:\\Desktop\\Frp\\frpc.toml')" k="frpBtnToml">查看 toml</button>
+  </div>
+  <div id="frpstat" k="frpStatLoading">状态读取中...</div>
+  <div id="frplog" k="frpLogEmpty">(还没有日志)</div>
+</div></div>
+
+<!-- WiFi 面板: wifi.exe 已具备 scan/connect/disconnect/status, 这里只做 UI(约束与编码见脚本区 WiFi 段注释)。 -->
+<div id="wlan"><div id="wlanin">
+  <span class="close" onclick="closeWlan()">×</span>
+  <h3 k="wlanTitle">WiFi 连接</h3>
+  <div class="tip" k="wlanTip">扫描后点列表选一个网络(也可手输 SSID), 填密码点连接。连上后底部 WiFi 灯变绿并显示网络名。<br />
+    开放网络密码留空; 连不上时对照列表里的加密类型(wpa2-psk 等)确认。</div>
+  <label k="wlanLList">扫描到的网络(双击连接)</label>
+  <select id="wlist" size="8" onchange="wPick()" ondblclick="wConnect()"></select>
+  <label>SSID</label>
+  <input id="wssid" type="text" />
+  <label k="wlanLKey">密码 / 密钥(开放网络留空)</label>
+  <input id="wkey" type="text" />
+  <div class="row">
+    <button class="btn" onclick="wScan()" id="wbtnscan" k="btnScan">扫描</button>
+    <button class="btn" onclick="wConnect()" id="wbtnc" k="btnConn">连接</button>
+    <button class="btn gray" onclick="wDisconnect()" k="btnDis">断开</button>
+    <button class="btn gray" onclick="wSaveConf()" k="btnSaveConf">保存配置</button>
+  </div>
+  <div id="wstat" k="frpStatLoading">状态读取中...</div>
+  <div id="wlog" k="wLogEmpty">(还没扫描)</div>
+</div></div>
+
+<div id="foot">
+  <div id="footrow">
+    <span class="pill"><span id="d-ssh" class="dot idle"></span><span k="pillSsh">SSH 服务端</span></span>
+    <span class="pill"><span id="d-sun" class="dot idle"></span><span k="pillSun">向日葵</span></span>
+    <span class="pill"><span id="d-frp" class="dot idle"></span><span>frpc</span></span>
+    <span class="pill"><span id="d-wlan" class="dot idle"></span><span>WiFi</span></span>
+    <span class="pill" id="ipbox" onclick="copySsh()"><span id="d-ip" class="dot idle"></span><span id="ip">IP 读取中</span></span>
+    <span class="pill" id="d-tunnel">隧道: 未启用</span>
+    <span style="float:right">
+      <button class="btn mini" onclick="openFrp()" k="btnFrpPanel">frp 面板</button>
+      <button class="btn mini gray" onclick="hideDesktop()" k="btnHide">隐藏桌面</button>
+    </span>
+  </div>
+  <div id="note">
+    <span id="noteTxt" k="noteHtml">SSH：<b>ssh Administrator@上面的IP</b>（救援盘默认空密码直接进，也认公钥 X:\SSH\authorized_keys；点 IP 可复制命令）。
+    向日葵与 SSH 已开机自启；frpc 需在本面板手动启动。日志：X:\boot.log、X:\sshd.log、X:\frpc.log</span>
+    <span id="copymsg" style="color:#7fe0ac"></span>
+  </div>
+</div>
+
+<div id="pill" onclick="showDesktop()" k="pillRestore">恢复桌面</div>
+
+<script>
+var shell = new ActiveXObject("WScript.Shell");
+var fso   = new ActiveXObject("Scripting.FileSystemObject");
+var FRPDIR = "X:\\Desktop\\Frp";
+var CFG    = FRPDIR + "\\frpc.toml";
+var PSEXEC = "X:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe";
+
+/* ---------------- i18n: 字符串表(zh/en 键必须一一对应, t_hta_i18n_gate.js 将完整性) ---------------- */
+/* ==I18N-START== */
+var I18N = {
+  zh: {
+    title: "WinPE 救援桌面",
+    sub: "SSH / 向日葵 已自启 · frp 手动启动 · 面板 v11-i18n",
+    grpTerm: "终端与磁盘", grpRescue: "救援修复(离线, 先体检)", grpNet: "网络与远程", grpPower: "日志与电源",
+    tCmd: "命令提示符", tTxt: "记事本", tVol: "分区/卷标",
+    tBoot: "引导体检/修复", tBootHint: "bootfix, 含 BOOTSTAT 收尾链",
+    tFile: "系统文件体检", tFileHint: "filefix: 离线 sfc, 约 1-4 分钟",
+    tDrv: "启动驱动体检", tDrvHint: "drvfix: 列被禁用的启动关键服务",
+    tLtr: "盘符体检", tLtrHint: "letterfix: 解 MountedDevices 对卷",
+    tGpt: "分区表体检/修复", tGptHint: "gptfix: GPT 头/表, 支持盘外 dump 还原",
+    tNet: "网络信息", tPort: "端口状态", tSsh: "SSH 日志",
+    tSos: "向日葵 SOS", tSosHint: "识别码在其窗口",
+    tFrp: "frp 穿透", tFrpHint: "手动配置并启动",
+    tWlan: "WiFi 连接", tWlanHint: "扫描/连接, 绿灯=已连",
+    tRpt: "自检报告", tRptHint: "网络/SSH/frp/向日葵, 结果写 U 盘",
+    tLog: "启动日志", tOff: "关机", tRst: "重启",
+    frpTitle: "frp 内网穿透（手动）",
+    frpIntro: "frpc 不随开机启动。填好下面几项 → 保存配置 → 启动，窗口里能直接看到连接日志。",
+    frpLAddr: "frp 服务器地址 serverAddr（例: frp.example.com 或 1.2.3.4）",
+    frpLSport: "服务器端口 serverPort",
+    frpLToken: "鉴权令牌 auth.token（与 frps 一致，留空则不带）",
+    frpLSsh: "穿透本机 SSH",
+    frpSshA: "本地 127.0.0.1:22 映射到服务器的", frpSshB: "端口",
+    frpBtnSave: "保存配置", frpBtnStart: "启动 frpc", frpBtnStop: "停止",
+    frpBtnReload: "重新读取配置", frpBtnTail: "刷新日志", frpBtnNote: "记事本打开日志", frpBtnToml: "查看 toml",
+    wlanTitle: "WiFi 连接",
+    wlanTip: "扫描后点列表选一个网络(也可手输 SSID), 填密码点连接。连上后底部 WiFi 灯变绿并显示网络名。<br />开放网络密码留空; 连不上时对照列表里的加密类型(wpa2-psk 等)确认。",
+    wlanLList: "扫描到的网络(双击连接)", wlanLKey: "密码 / 密钥(开放网络留空)",
+    btnScan: "扫描", btnConn: "连接", btnDis: "断开", btnSaveConf: "保存配置",
+    btnFrpPanel: "frp 面板", btnHide: "隐藏桌面", pillRestore: "恢复桌面",
+    pillSsh: "SSH 服务端", pillSun: "向日葵",
+    noteHtml: "SSH：<b>ssh Administrator@上面的IP</b>（救援盘默认空密码直接进，也认公钥 X:\\SSH\\authorized_keys；点 IP 可复制命令）。向日葵与 SSH 已开机自启；frpc 需在本面板手动启动。日志：X:\\boot.log、X:\\sshd.log、X:\\frpc.log",
+    hostLoading: "读取中...", hostP: "主机 ", hostWmiFail: "WMI 不可用（状态改由 X:\\status.txt 判断）",
+    ipLoading: "IP 读取中", noIp4: "无 IPv4", noIpHint: "无 IPv4 · 插网线或手机 USB 共享网络",
+    tunnelA: "隧道: ", tunnelOff: "未启用",
+    frpCfgA: "frpc 配置: ", frpCfgNone: "未填写服务器",
+    wmiNo: "WMI 不可用", sshListen: "监听 0.0.0.0:22", notRunning: "未运行",
+    sunProc: "向日葵 SOS 进程", frpProcT: "frpc 进程",
+    errLaunch: "启动失败: ", sunMissing: "未找到 X:\\Sunlogin\\SunloginSOS.exe",
+    confirmShut: "确认关机？未保存的数据会丢失。", confirmReboot: "确认重启？",
+    noIpAlert: "还没有 IPv4 地址", copied: "已复制: ",
+    frpStatLoading: "状态读取中...", frpLogEmpty: "(还没有日志)",
+    frpReadFail: "读不到 ", frpWritten: "已写入 ",
+    frpSavedPort: ", 服务器端口 ", frpSavedRemote: ", SSH 映射到远端 ",
+    frpAlertNoAddr: "serverAddr 不能为空",
+    frpAlertBadAddr: "serverAddr 只填域名或 IP, 不要带端口或 http://",
+    frpAlertPort: "端口范围 1-65535",
+    frpWriteFail: "写入失败: ",
+    frpPlaceholder: "frpc.toml 里 serverAddr 还是占位串, 请先保存配置",
+    frpProc: "进程: ", frpRunning: "运行中", frpCfg: "配置: ",
+    frpNone: "未配置", frpSet: "已配置 ",
+    frpHintA: "连上后在服务器侧 ", frpHintB: " root@服务器",
+    frpLogMissing: "(读不到 X:\\frpc.log —— frpc 未启动, 或日志文件被占用)",
+    wScanning: "扫描中...", wScanLong: "扫描中(WlanScan 要 3-5 秒)...",
+    wFoundA: "找到 ", wFoundB: " 个网络, 点一行填 SSID, 双击直接连。",
+    wZeroHint: " 若为 0: 等 5 秒再扫一次(无线电冷启动)。",
+    wStackDown: " —— WiFi 栈没起来, 先在 CMD 里跑 wlan.cmd 看报错。",
+    optNoConn: " (不可连)", optSaved: " [存过]",
+    wNoSsid: "先扫描选一个网络, 或手填 SSID",
+    wSsidLong: "SSID 太长(>32 字节), 检查是不是把整行日志粘进来了",
+    wSsidMeta: "SSID 含 cmd 元字符(& | < > \" ^ %), 请改走\"保存配置\"后重启自动连",
+    wKeyMeta: "密码含 cmd 元字符, 面板里传不了; 用\"保存配置\"+开机 wlan.cmd 自动连(注意 conf 也不支持 & \" % ^)",
+    wConnA: "正在连接 \"", wConnB: "\" (最长 60 秒)...",
+    wConnBusy: "连接中...",
+    wDoneA: "<b>已连接 ", wDoneB: "</b>",
+    wStatPrefix: "状态: ", wLogEmpty: "(还没扫描)",
+    wFailHead: "<b>没连上</b><br />",
+    wFailA: "连不上: ", wFailB: " —— 密码/加密类型不对? 看右侧 auth 值, 重扫确认",
+    wTimeout: "wifi.exe 60 秒内没给出结论(连接可能仍在后台推进)。以底部 WiFi 灯为准：变绿即已连接；常亮红可点断开后重连。",
+    wDisReq: "已请求断开。",
+    wConfGuard: "SSID/密码含 & \" % ^ 之一, wifi.conf 的批处理解析会坏, 没有写入。这类密码请开 CMD 手动跑:",
+    confC1: "; ===== WiFi 开机自动连接配置 =====",
+    confC2: "; 填好下面两项(等号后不要加空格/引号), 下次开机 PE 会自动连接并 ipconfig /renew",
+    confC3: "; 若密码含 & \" % ^ 等特殊字符, 自动连接可能失效, 请用 \"WiFi 连接\" 图标手动连",
+    confC4: "; 前提: 无线网卡驱动已在镜像里(先扫得到网络 X:\\boot.log 里 [5] 有输出)",
+    wSavedA: "已保存 ", wSavedB: " (SSID=", wSavedC: ")。下次开机会自动连。<br />注意 X: 是内存盘: 重启后想保留, 把这份拷到 U 盘, 或改母版后重出盘。",
+    wSavedNone: "(空)",
+    wStackBadA: "WiFi 栈不可用(wlansvc? ", wConnState: "已连接 · ",
+    wBusyA: "进行中(", wNotA: "未连接(", wNoState: "读不到状态"
+  },
+  en: {
+    title: "WinPE Rescue Desktop",
+    sub: "SSH / Sunlogin autostart · frp manual · panel v11-i18n",
+    grpTerm: "Terminal & Disk", grpRescue: "Rescue Repair (offline, survey first)", grpNet: "Network & Remote", grpPower: "Logs & Power",
+    tCmd: "Command Prompt", tTxt: "Notepad", tVol: "Partitions / Volumes",
+    tBoot: "Boot survey/repair", tBootHint: "bootfix, incl. BOOTSTAT cleanup",
+    tFile: "System files survey", tFileHint: "filefix: offline sfc, ~1-4 min",
+    tDrv: "Boot drivers survey", tDrvHint: "drvfix: lists disabled boot-critical services",
+    tLtr: "Drive letters survey", tLtrHint: "letterfix: decodes MountedDevices vs live volumes",
+    tGpt: "Partition table survey/repair", tGptHint: "gptfix: GPT headers/tables, restores from off-disk dump",
+    tNet: "Network info", tPort: "Port status", tSsh: "SSH log",
+    tSos: "Sunlogin SOS", tSosHint: "ID shown in its window",
+    tFrp: "frp tunnel", tFrpHint: "configure & start manually",
+    tWlan: "WiFi connect", tWlanHint: "scan/connect, green dot = linked",
+    tRpt: "Self-test report", tRptHint: "network/SSH/frp/Sunlogin, result written to USB",
+    tLog: "Boot log", tOff: "Shut down", tRst: "Reboot",
+    frpTitle: "frp tunnel (manual)",
+    frpIntro: "frpc does not autostart. Fill the fields below, Save config, then Start; the connection log shows in its own window.",
+    frpLAddr: "frp server address serverAddr (e.g. frp.example.com or 1.2.3.4)",
+    frpLSport: "Server port serverPort",
+    frpLToken: "Auth token auth.token (must match frps; empty = none)",
+    frpLSsh: "Expose local SSH",
+    frpSshA: "Maps local 127.0.0.1:22 to server port", frpSshB: ".",
+    frpBtnSave: "Save config", frpBtnStart: "Start frpc", frpBtnStop: "Stop",
+    frpBtnReload: "Reload config", frpBtnTail: "Refresh log", frpBtnNote: "Open log in Notepad", frpBtnToml: "View toml",
+    wlanTitle: "WiFi connect",
+    wlanTip: "Scan, pick a network from the list (or type the SSID), enter the password and press Connect. When linked, the WiFi dot at the bottom turns green.<br />Leave the password empty for open networks; if it fails, check the encryption type in the list (wpa2-psk etc.).",
+    wlanLList: "Networks found (double-click to connect)", wlanLKey: "Password / key (empty for open networks)",
+    btnScan: "Scan", btnConn: "Connect", btnDis: "Disconnect", btnSaveConf: "Save config",
+    btnFrpPanel: "frp panel", btnHide: "Hide desktop", pillRestore: "Restore desktop",
+    pillSsh: "SSH server", pillSun: "Sunlogin",
+    noteHtml: "SSH: <b>ssh Administrator@IP-above</b> (rescue disk: empty password by default, also accepts the key in X:\\SSH\\authorized_keys; click the IP to copy the command). Sunlogin and SSH autostarted; start frpc manually from its panel. Logs: X:\\boot.log, X:\\sshd.log, X:\\frpc.log",
+    hostLoading: "reading...", hostP: "host ", hostWmiFail: "WMI unavailable (status falls back to X:\\status.txt)",
+    ipLoading: "IP reading...", noIp4: "no IPv4", noIpHint: "no IPv4 - plug in Ethernet or share phone USB",
+    tunnelA: "Tunnel: ", tunnelOff: "not enabled",
+    frpCfgA: "frpc config: ", frpCfgNone: "server not set",
+    wmiNo: "WMI unavailable", sshListen: "listening 0.0.0.0:22", notRunning: "not running",
+    sunProc: "Sunlogin SOS process", frpProcT: "frpc process",
+    errLaunch: "Launch failed: ", sunMissing: "Not found: X:\\Sunlogin\\SunloginSOS.exe",
+    confirmShut: "Shut down now? Unsaved data will be lost.", confirmReboot: "Reboot now?",
+    noIpAlert: "No IPv4 address yet", copied: "copied: ",
+    frpStatLoading: "reading status...", frpLogEmpty: "(no log yet)",
+    frpReadFail: "Cannot read ", frpWritten: "Written ",
+    frpSavedPort: ", server port ", frpSavedRemote: ", SSH mapped to remote ",
+    frpAlertNoAddr: "serverAddr is required",
+    frpAlertBadAddr: "serverAddr: domain or IP only, no port and no http://",
+    frpAlertPort: "Port must be 1-65535",
+    frpWriteFail: "Write failed: ",
+    frpPlaceholder: "serverAddr in frpc.toml is still the placeholder - save a real config first",
+    frpProc: "Process: ", frpRunning: "RUNNING", frpCfg: "Config: ",
+    frpNone: "not configured", frpSet: "configured ",
+    frpHintA: "Once connected, from the server run ", frpHintB: " root@your-server",
+    frpLogMissing: "(cannot read X:\\frpc.log - frpc not started, or the file is locked)",
+    wScanning: "scanning...", wScanLong: "scanning (WlanScan takes 3-5s)...",
+    wFoundA: "Found ", wFoundB: " networks. Click a row to fill SSID, double-click to connect.",
+    wZeroHint: " If 0: wait 5s and scan again (radio cold start).",
+    wStackDown: " - WiFi stack not up; run wlan.cmd in a CMD window to see the error.",
+    optNoConn: " (blocked)", optSaved: " [profiled]",
+    wNoSsid: "Scan and pick a network first, or type the SSID",
+    wSsidLong: "SSID too long (>32 bytes) - did you paste a whole log line?",
+    wSsidMeta: "SSID contains cmd metacharacters (& | < > \" ^ %) - use \"Save config\" and reboot to auto-connect",
+    wKeyMeta: "Password contains cmd metacharacters and cannot be passed from the panel - use \"Save config\" + wlan.cmd auto-connect (note: conf also rejects & \" % ^)",
+    wConnA: "Connecting to \"", wConnB: "\" (up to 60s)...",
+    wConnBusy: "connecting...",
+    wDoneA: "<b>Connected to ", wDoneB: "</b>",
+    wStatPrefix: "Status: ", wLogEmpty: "(not scanned yet)",
+    wFailHead: "<b>Not connected</b><br />",
+    wFailA: "Cannot connect: ", wFailB: " - wrong password or encryption type? check the auth column and rescan",
+    wTimeout: "wifi.exe gave no verdict within 60s (the attempt may still be running in background). Trust the WiFi dot at the bottom: green = linked; steady red = Disconnect and retry.",
+    wDisReq: "Disconnect requested.",
+    wConfGuard: "SSID/password contains one of & \" % ^ which breaks the batch parsing of wifi.conf - nothing was written. For such passwords connect manually from a CMD window:",
+    confC1: "; ===== WiFi auto-connect config =====",
+    confC2: "; Fill the two lines below (no spaces/quotes after =); PE auto-connects and runs ipconfig /renew on next boot",
+    confC3: "; If the password contains & \" % ^ auto-connect may fail - connect manually from the WiFi icon",
+    confC4: "; Prerequisite: the WLAN driver is baked into the image (scan works; see [5] in X:\\boot.log)",
+    wSavedA: "Saved ", wSavedB: " (SSID=", wSavedC: "). It will auto-connect on next boot.<br />Note: X: is a RAM disk - copy this file to the USB stick to keep it after reboot, or patch the master image.",
+    wSavedNone: "(empty)",
+    wStackBadA: "WiFi stack unavailable (wlansvc? ", wConnState: "connected · ",
+    wBusyA: "busy(", wNotA: "not connected(", wNoState: "no status"
+  }
+};
+/* ==I18N-END== */
+
+var LANG = "zh";
+function T(k){
+  var L = I18N[LANG];
+  if (L && L[k] != null) return L[k];
+  if (I18N.zh[k] != null) return I18N.zh[k];
+  return k;
+}
+function detectLang(){
+  // 1) 注册表安装语言: HKLM\SYSTEM\CurrentControlSet\Control\Nls\Language InstallLanguage/Default = 00000804(zh-CN) 等
+  try {
+    var v = shell.RegRead("HKLM\\SYSTEM\\CurrentControlSet\\Control\\Nls\\Language\\InstallLanguage");
+    if (!v) v = shell.RegRead("HKLM\\SYSTEM\\CurrentControlSet\\Control\\Nls\\Language\\Default");
+    v = ("" + v).toUpperCase();
+    if (v.length) return (v.indexOf("0804") >= 0 || v.indexOf("0404") >= 0 || v.indexOf("0C04") >= 0 || v.indexOf("1004") >= 0 || v.indexOf("1404") >= 0) ? "zh" : "en";
+  } catch(e){}
+  // 2) WMI Locale 兜底(2052=zh-CN, 1028=zh-TW, 3076=zh-HK, 4100=zh-MO, 10244? no)
+  try {
+    var rows = wql("SELECT Locale FROM Win32_OperatingSystem");
+    var os = rows ? firstOf(rows) : null;
+    if (os) { var loc = parseInt(os.Locale, 10); return (loc == 2052 || loc == 1028 || loc == 3076 || loc == 4100) ? "zh" : "en"; }
+  } catch(e2){}
+  return "zh";  // 判不出来退回中文(母语言)
+}
+function applyLang(){
+  var els = document.all, n = els.length;
+  for (var i = 0; i < n; i++) {
+    var el = els[i];
+    var k = null;
+    try { k = el.getAttribute("k"); } catch(e){}
+    if (k) el.innerHTML = T(k);
+  }
+  document.title = T("title");
+  var lb = document.getElementById("langbtn");
+  if (lb) lb.innerHTML = (LANG == "zh" ? "English" : "中文");
+  if (WNETS.length) wRenderList();
+}
+function toggleLang(){
+  LANG = (LANG == "zh" ? "en" : "zh");
+  applyLang();
+  hostInfo();
+  refresh();
+  wStatusNow();
+}
+
+function run(cmd){ try{ shell.Run(cmd, 1, false); }catch(e){ alert(T("errLaunch") + e.message); } }
+function runPS(){ run('cmd.exe /c start "" ' + PSEXEC + ' -NoExit -ExecutionPolicy Bypass'); }
+function runReport(){ run('cmd.exe /k ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -File X:\\Windows\\System32\\pe_report.ps1'); }
+function fileExists(p){ try { return fso.FileExists(p); } catch(e){ return false; } }
+
+/* WMI: edge 模式的 mshta 里没有全局 GetObject(实测 ReferenceError), 只能自己 new SWbemLocator */
+var WMI = null;
+function wmi(){
+  if (WMI === null) {
+    try { WMI = new ActiveXObject('WbemScripting.SWbemLocator').ConnectServer('.', 'root/cimv2'); }
+    catch(e){ WMI = false; }
+  }
+  return WMI;
+}
+function wql(sql){
+  var s = wmi();
+  if (!s) return null;
+  try { return s.ExecQuery(sql); } catch(e){ return null; }
+}
+
+function readText(p){
+  try {
+    var f = fso.OpenTextFile(p, 1, false, 0);
+    var s = f.ReadAll(); f.Close(); return s;
+  } catch(e){ return ''; }
+}
+function writeText(p, s){
+  // frpc.toml 只写 ASCII, 用 ANSI(0) 避免 UTF-8 BOM 让 Go 的 toml 解析失败
+  var f = fso.OpenTextFile(p, 2, true, 0);
+  f.Write(s); f.Close();
+}
+
+/* ---------------- 时钟 / 主机 ---------------- */
+function pad(n){ return (n < 10 ? "0" : "") + n; }
+function tick(){
+  var d = new Date();
+  document.getElementById("clock").innerHTML =
+    d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()) +
+    " &nbsp;" + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+}
+tick(); setInterval(tick, 1000);
+
+function firstOf(rows){ var e = new Enumerator(rows); return e.atEnd() ? null : e.item(); }
+function hostInfo(){
+  var cs = firstOf(wql("SELECT * FROM Win32_ComputerSystem"));
+  var os = firstOf(wql("SELECT * FROM Win32_OperatingSystem"));
+  if (!cs || !os) {
+    var cn = "";
+    try { cn = shell.ExpandEnvironmentStrings("%COMPUTERNAME%"); } catch(e2){}
+    document.getElementById("host").innerHTML =
+      (cn ? T("hostP") + cn + " &nbsp;·&nbsp; " : "") + T("hostWmiFail");
+    return;
+  }
+  var mb = Math.round(os.TotalVisibleMemorySize / 1024);
+  document.getElementById("host").innerHTML =
+    T("hostP") + cs.Name + " &nbsp;·&nbsp; " + cs.Manufacturer + " " + cs.Model +
+    " &nbsp;·&nbsp; " + mb + " MB &nbsp;·&nbsp; build " + os.Version;
+}
+
+/* ---------------- 状态灯 ---------------- */
+function procNames(){
+  var out = {};
+  var rows = wql("SELECT Name FROM Win32_Process");
+  if (!rows) {
+    // 没有 WMI 就退回读 startnet.cmd 写的自启记录, 行格式 <进程名.exe>=started
+    out.__ok = 0;
+    var txt = readText("X:\\status.txt");
+    var m = (txt || "").split("\n");
+    for (var i = 0; i < m.length; i++) {
+      var kv = m[i].split("=");
+      if (kv.length == 2 && kv[1].indexOf("started") == 0) out[kv[0].toLowerCase()] = 1;
+    }
+    return out;
+  }
+  var e = new Enumerator(rows);
+  for (; !e.atEnd(); e.moveNext()) { out[(e.item().Name + "").toLowerCase()] = 1; }
+  out.__ok = 1;
+  return out;
+}
+// WMI 的多值属性(IPAddress 等)在 JScript 里 typeof 是 'unknown', 真值判断会当成 null 丢掉, 只能用 VBArray 取
+function arrOf(v){
+  var out = [];
+  if (typeof v == 'undefined') return out;
+  try {
+    var t = new VBArray(v).toArray();
+    for (var i = 0; i < t.length; i++) out.push(t[i] + '');
+    if (out.length) return out;
+  } catch(e){}
+  try {
+    if (typeof v.length == 'number') { for (var j = 0; j < v.length; j++) out.push(v[j] + ''); return out; }
+  } catch(e2){}
+  try { if (v != null) return [v + '']; } catch(e3){}
+  return out;
+}
+function ipList(){
+  var ips = [];
+  var rows = wql("SELECT IPAddress FROM Win32_NetworkAdapterConfiguration WHERE IPEnabled=True");
+  if (!rows) return ips;
+  var e = new Enumerator(rows);
+  for (; !e.atEnd(); e.moveNext()) {
+    var a = arrOf(e.item().IPAddress);
+    for (var i = 0; i < a.length; i++) { if (a[i].indexOf(":") < 0) ips.push(a[i]); }
+  }
+  return ips;
+}
+// WMI 不可用时退回 startnet.cmd 存进 boot.log 的 ipconfig 输出
+function ipFromLog(){
+  var m = (readText("X:\\boot.log") || "").match(/(?:IPv4|IP Address)[^\d]*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g);
+  var out = [];
+  if (!m) return out;
+  for (var i = 0; i < m.length; i++) {
+    var ip = m[i].replace(/[^\d.]/g, "");
+    if (ip.indexOf("169.") != 0 && ip.indexOf("127.") != 0) out.push(ip);
+  }
+  return out;
+}
+function setDot(id, cls, text){
+  var d = document.getElementById(id);
+  d.className = "dot " + cls;
+  if (text) { var p = d.parentNode; p.title = text; }
+}
+function refresh(){
+  var ps = procNames(), ips = ipList();
+  if (!ips.length) ips = ipFromLog();
+  var wmiOk = ps.__ok == 1;
+  setDot("d-ssh", !wmiOk ? "idle" : (ps["pe-sshd.exe"] ? "ok" : "bad"), !wmiOk ? T("wmiNo") : (ps["pe-sshd.exe"] ? T("sshListen") : T("notRunning")));
+  setDot("d-sun", !wmiOk ? "idle" : (ps["sunlogin.exe"] || ps["sunloginsos.exe"] ? "ok" : "bad"), T("sunProc"));
+  setDot("d-frp", !wmiOk ? "idle" : (ps["frpc.exe"] ? "ok" : "bad"), T("frpProcT"));
+  if (ips.length) {
+    setDot("d-ip", "ok", ips.join(", "));
+    document.getElementById("ip").innerHTML = ips.join(" / ");
+  } else {
+    setDot("d-ip", "bad", T("noIp4"));
+    document.getElementById("ip").innerHTML = T("noIpHint");
+  }
+  var cfg = readText(CFG);
+  document.getElementById("d-tunnel").innerHTML = cfg.indexOf("your-frp-server") >= 0
+    ? T("frpCfgA") + T("frpCfgNone") : T("frpCfgA") + pickVal(cfg, "serverAddr");
+  if (document.getElementById("frp").style.display == "block") { frpStat(); }
+}
+
+function pickVal(txt, key){
+  var lines = (txt || "").split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var l = lines[i];
+    if (l.indexOf(key) == 0) {
+      var q1 = l.indexOf('"'), q2 = l.lastIndexOf('"');
+      if (q1 >= 0 && q2 > q1) return l.substring(q1 + 1, q2);
+    }
+  }
+  return "";
+}
+
+function copySsh(){
+  var ips = ipList();
+  if (!ips.length) { alert(T("noIpAlert")); return; }
+  var cmd = "ssh Administrator@" + ips[0];
+  try {
+    window.clipboardData.setData("Text", cmd);
+    document.getElementById("copymsg").innerHTML = " &nbsp;" + T("copied") + cmd;
+  } catch(e){ alert(cmd); }
+}
+
+/* ---------------- 向日葵 / 电源 ---------------- */
+function runSunlogin(){
+  if (fileExists("X:\\Sunlogin\\SunloginSOS.exe")) run("X:\\Sunlogin\\SunloginSOS.exe");
+  else alert(T("sunMissing"));
+}
+function doPower(action){
+  if (confirm(action == "shutdown" ? T("confirmShut") : T("confirmReboot")))
+    run("cmd.exe /c wpeutil " + action);
+}
+
+/* ---------------- frp 面板 ---------------- */
+function openFrp(){
+  document.getElementById("frp").style.display = "block";
+  loadFrp(); tailFrp(); frpStat();
+}
+function closeFrp(){ document.getElementById("frp").style.display = "none"; }
+
+function loadFrp(){
+  var txt = readText(CFG);
+  if (!txt) { document.getElementById("frpstat").innerHTML = T("frpReadFail") + CFG; return; }
+  var sp = pickVal(txt, "serverPort"), tk = pickVal(txt, "auth.token"), rp = "";
+  var m = txt.split("\n");
+  for (var i = 0; i < m.length; i++) { if (m[i].indexOf("remotePort") == 0) rp = m[i].replace(/[^0-9]/g, ""); }
+  document.getElementById("addr").value  = pickVal(txt, "serverAddr");
+  document.getElementById("sport").value = sp ? sp : "7000";
+  document.getElementById("token").value = tk;
+  document.getElementById("rport").value = rp ? rp : "6000";
+  if (document.getElementById("addr").value.indexOf("your-frp-server") >= 0) document.getElementById("addr").value = "";
+}
+
+function safeVal(v){ return (v + "").replace(/["\\]/g, "").replace(/[^\x20-\x7E]/g, ""); }
+
+function saveFrp(){
+  var addr = safeVal(document.getElementById("addr").value).replace(/\s/g, "");
+  var sport = (document.getElementById("sport").value + "").replace(/[^0-9]/g, "") || "7000";
+  var rport = (document.getElementById("rport").value + "").replace(/[^0-9]/g, "") || "6000";
+  var token = safeVal(document.getElementById("token").value);
+  if (!addr) { alert(T("frpAlertNoAddr")); return; }
+  if (addr.indexOf("/") >= 0 || addr.indexOf(":") >= 0) { alert(T("frpAlertBadAddr")); return; }
+  if (sport < 1 || sport > 65535 || rport < 1 || rport > 65535) { alert(T("frpAlertPort")); return; }
+
+  var s = '';
+  s += 'serverAddr = "' + addr + '"\n';
+  s += 'serverPort = ' + sport + '\n';
+  if (token) s += 'auth.token = "' + token + '"\n';
+  s += '\n';
+  s += 'log.to = "X:\\\\frpc.log"\n';
+  s += 'log.level = "info"\n';
+  s += 'log.maxDays = 1\n';
+  s += '\n';
+  s += '[[proxies]]\n';
+  s += 'name = "pe-ssh"\n';
+  s += 'type = "tcp"\n';
+  s += 'localIP = "127.0.0.1"\n';
+  s += 'localPort = 22\n';
+  s += 'remotePort = ' + rport + '\n';
+  try {
+    writeText(CFG, s);
+    document.getElementById("frpstat").innerHTML = T("frpWritten") + CFG + " (serverAddr=" + addr +
+      T("frpSavedPort") + sport + T("frpSavedRemote") + rport + ")";
+    refresh();
+  } catch(e){ alert(T("frpWriteFail") + e.message); }
+}
+
+function startFrp(){
+  if (readText(CFG).indexOf("your-frp-server") >= 0) { alert(T("frpPlaceholder")); return; }
+  run('cmd.exe /k ' + FRPDIR + '\\frpc.exe -c ' + CFG);
+  setTimeout(tailFrp, 4000); setTimeout(frpStat, 4000);
+}
+function stopFrp(){
+  run('cmd.exe /c ' + PSEXEC + ' -NoProfile -ExecutionPolicy Bypass -Command "Stop-Process -Name frpc -Force -ErrorAction SilentlyContinue"');
+  setTimeout(frpStat, 1500);
+}
+function frpStat(){
+  var ps = procNames();
+  var running = ps["frpc.exe"] ? 1 : 0;
+  var txt = readText(CFG);
+  var cfgd = txt.indexOf("your-frp-server") >= 0 ? T("frpNone") : T("frpSet") + pickVal(txt, "serverAddr");
+  document.getElementById("frpstat").innerHTML =
+    T("frpProc") + (ps.__ok ? (running ? "<b>" + T("frpRunning") + "</b>" : T("notRunning")) : T("wmiNo")) +
+    " &nbsp;·&nbsp; " + T("frpCfg") + cfgd +
+    (running ? " &nbsp;·&nbsp; " + T("frpHintA") + "<code>ssh -p " + (pickValRemote(txt) || 6000) + T("frpHintB") + "</code>" : "");
+}
+function pickValRemote(txt){
+  var m = (txt || "").split("\n");
+  for (var i = 0; i < m.length; i++) if (m[i].indexOf("remotePort") == 0) return m[i].replace(/[^0-9]/g, "");
+  return "";
+}
+function setText(id, s){
+  var el = document.getElementById(id);
+  if (el.textContent != null) el.textContent = s; else el.innerText = s;
+}
+function tailFrp(){
+  var s = readText("X:\\frpc.log");
+  if (!s) { setText("frplog", T("frpLogMissing")); return; }
+  var m = s.split("\n"), from = m.length > 25 ? m.length - 25 : 0, out = [];
+  for (var i = from; i < m.length; i++) { if (m[i].replace(/\s/g, "") != "") out.push(m[i]); }
+  setText("frplog", out.join("\n"));
+}
+
+/* ---------------- WiFi 面板 ---------------- */
+/* 三条通道约束(都有实测依据, 别改回去):
+   1) wifi.exe 的输出只能"重定向到文件再读": shell.Exec 的管道对 Go 程序是块缓冲, 读不到中间态;
+      Run(wait=true) 同步等待会把 UI 冻住(connect 内部轮询最长 25x1.2s=30s), 所以全部 Run(wait=false)
+      + setInterval 轮文件里的终态行(CONNECTED/TIMEOUT/FAIL)。
+   2) 编码: wifi.exe 是 Go, 重定向文件里是 **UTF-8 字节**; 而 FSO 的 ANSI 读按系统码页(zh-CN=GBK)解码
+      (正对照 build/scratch/_hta_utf8_probe.vbs: 写"测试"落 GBK 字节 B2E2 CAD4, 读回来 charCode=0x8BD5
+       即已按 GBK 解成 Unicode, 并非逐字节保真)。所以**不能**用"字节透明+手工 UTF-8 解码"读 wifi.exe
+       输出(中文 SSID 会花屏), 要用 ADODB.Stream Charset=utf-8 直接解出 Unicode 串。
+   3) wifi.conf 反过来必须存 GBK(wlan.cmd 的 for/f 和模板原件都是 GBK), 所以写 conf 用 FSO ANSI(0) 是对的。
+      SSID/KEY 作命令行参数给 wifi.exe 走 UTF-16(Windows 参数), Go 拿到真字符, 中文无损; 但 cmd 元字符要挡。 */
+var WEXE  = "X:\\Windows\\System32\\wifi.exe";
+var WCONF = "X:\\Desktop\\Wlan\\wifi.conf";
+var WSCAN = "X:\\wlan_scan.txt";
+var WCONN = "X:\\wlan_connect.txt";
+var WSTAT = "X:\\wlan_status.txt";
+var WNETS = [];          // 与 select 的 option 一一对应 {ssid,keyhint}
+var WNETN = -1;          // 最近一次 scan 的 networks= 计数(切语言时重画列表用)
+var wConnTimer = null, wScanTimer = null;
+
+function runHidden(cmd){ try { shell.Run(cmd, 0, false); return 1; } catch(e){ return 0; } }
+// 用 ADODB 按 UTF-8 读回 wifi.exe 的输出; ADODB 不可用时退回 ANSI 读(纯 ASCII SSID 两者一样)
+function readWifi(p){
+  try {
+    var st = new ActiveXObject("ADODB.Stream");
+    st.Type = 2; st.Charset = "utf-8"; st.Open();
+    st.LoadFromFile(p);
+    var s = st.ReadText(-1); st.Close();
+    return s;
+  } catch(e){ return readText(p); }
+}
+function wlog(s){ var el = document.getElementById("wlog"); el.innerHTML = s; el.scrollTop = el.scrollHeight; }
+
+// windot11.h DOT11_AUTH_ALGORITHM / DOT11_CIPHER_ALGORITHM 官方值(2026-10-13 实机对照修正:
+// 之前把 WLAN_AUTH 那套数字混进来了, 把 WPA2-PSK 的 auth=7 标成了 wpa-none)。未知回退显示原数字。
+var AUTHN = { 1:'open', 2:'shared', 3:'wpa', 4:'wpa-psk', 5:'wpa-none', 6:'wpa2(802.1X)', 7:'wpa2-psk',
+              8:'wpa3-ent', 9:'wpa3-sae', 10:'owe', 11:'wpa3-ent' };
+var CIPHN = { 0:'open', 1:'wep40', 2:'wep104', 3:'wep', 4:'tkip', 5:'aes', 6:'wep-ncp', 7:'aes-192', 8:'aes-256' };
+
+function parseWifiTxt(txt){
+  // scan: "  <SSID 补白到32> prof=... bss=N sig= NN% sec=N auth=N cipher=N conn=N ..."
+  // status: "  <guid> state=N(name) desc=..."
+  var m = txt.match(/networks=(\d+)/);
+  var nets = m ? parseInt(m[1], 10) : -1;
+  var list = [], lines = (txt || '').split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var L = lines[i];
+    var g = L.match(/^\s+(.+?)\s+prof=(.*?)\s+bss=\d+\s+sig=\s*(\d+)%.*?auth=(\d+)\s+cipher=(\d+)\s+conn=(\d+)/);
+    if (g) list.push({ ssid: g[1], prof: g[2], sig: parseInt(g[3], 10),
+                       auth: parseInt(g[4], 10), ciph: parseInt(g[5], 10), conn: parseInt(g[6], 10) });
+  }
+  var st = txt.match(/state=(\d+)\(([^)]*)\)\s+desc=(.*)/);
+  var fail = txt.match(/^(FAIL[^\n]*)/m);
+  return { nets: nets, list: list, state: st ? parseInt(st[1], 10) : -1,
+           sname: st ? st[2] : '', desc: st ? st[3] : '', fail: fail ? fail[1] : '' };
+}
+
+function wScan(){
+  if (wScanTimer) { clearInterval(wScanTimer); wScanTimer = null; }
+  var btn = document.getElementById("wbtnscan"); btn.disabled = 1; btn.innerHTML = T("wScanning");
+  wlog(T("wScanLong"));
+  runHidden('cmd.exe /c ' + WEXE + ' scan > ' + WSCAN + ' 2>&1');
+  var waited = 0;
+  wScanTimer = setInterval(function(){
+    waited += 1;
+    var txt = readWifi(WSCAN);
+    if (txt.indexOf('networks=') >= 0 || txt.indexOf('FAIL') >= 0 || txt.indexOf('BUG') >= 0 || waited > 20) {
+      clearInterval(wScanTimer); wScanTimer = null;
+      btn.disabled = 0; btn.innerHTML = T("btnScan");
+      wRenderScan(txt);
+    }
+  }, 1000);
+}
+function wRenderScan(txt){
+  var r = parseWifiTxt(txt);
+  WNETS = r.list; WNETN = r.nets;
+  wRenderList();
+  wlog(T("wFoundA") + r.nets + T("wFoundB") + (r.nets == 0 ? T("wZeroHint") : ""));
+  if (r.fail) wlog("<b>" + r.fail + "</b>" + T("wStackDown"));
+}
+function wRenderList(){
+  var sel = document.getElementById("wlist");
+  sel.options.length = 0;
+  for (var i = 0; i < WNETS.length; i++) {
+    var n = WNETS[i];
+    var o = document.createElement("option");
+    o.value = "" + i;
+    o.text = n.ssid + "   " + n.sig + "% " + (AUTHN[n.auth] || ("a" + n.auth))
+             + (n.conn == 1 ? "" : T("optNoConn")) + (n.prof ? T("optSaved") : "");
+    try { sel.add(o); } catch(e){ sel.add(o, undefined); }
+  }
+}
+function wPick(){
+  var sel = document.getElementById("wlist");
+  var i = parseInt(sel.value, 10);
+  if (isNaN(i) || !WNETS[i]) return;
+  document.getElementById("wssid").value = WNETS[i].ssid;
+  var a = WNETS[i].auth;
+  if (a == 1) document.getElementById("wkey").value = "";   // 开放网络
+}
+
+function wConnect(){
+  var ssid = document.getElementById("wssid").value.replace(/^\s+|\s+$/g, "");
+  var key  = document.getElementById("wkey").value;
+  if (!ssid) { alert(T("wNoSsid")); return; }
+  if (ssid.length > 32) { alert(T("wSsidLong")); return; }
+  if (ssid.match(/[&|<>"%^]/)) { alert(T("wSsidMeta")); return; }
+  if (key.match(/[&|<>"^]/)) { alert(T("wKeyMeta")); return; }
+  if (wConnTimer) { clearInterval(wConnTimer); wConnTimer = null; }
+  try { fso.DeleteFile(WCONN); } catch(e){}
+  var cmd = 'cmd.exe /c ' + WEXE + ' connect "' + ssid + '"';
+  if (key) cmd = cmd + ' "' + key + '"';
+  cmd += ' > ' + WCONN + ' 2>&1';
+  runHidden(cmd);
+  var btn = document.getElementById("wbtnc"); btn.disabled = 1; btn.innerHTML = T("wConnBusy");
+  wlog(T("wConnA") + ssid + T("wConnB"));
+  var waited = 0;
+  wConnTimer = setInterval(function(){
+    waited += 1;
+    var txt = readWifi(WCONN);
+    if (txt.indexOf('CONNECTED') >= 0) {
+      wDone(); wlog(T("wDoneA") + ssid + T("wDoneB")); wSetStat("ok", T("wConnState") + ssid);
+      runHidden('cmd.exe /c ipconfig /renew > X:\\wlan_renew.txt 2>&1');
+      setTimeout(wStatusNow, 6000);
+    } else if (txt.indexOf('TIMEOUT') >= 0 || txt.indexOf('FAIL') >= 0) {
+      wDone();
+      wlog(T("wFailHead") + escWifi(txt));
+      wSetStat("bad", T("wFailA") + ssid + T("wFailB"));
+      wStatusNow();
+    } else if (waited > 75) {
+      wDone();
+      wStatusNow();
+      wlog(T("wTimeout"));
+    }
+  }, 1000);
+}
+function wDone(){
+  var btn = document.getElementById("wbtnc"); if (btn) { btn.disabled = 0; btn.innerHTML = T("btnConn"); }
+  if (wConnTimer) { clearInterval(wConnTimer); wConnTimer = null; }
+}
+function escWifi(s){
+  s = s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  s = s.replace(/\n/g, "<br />");
+  return s;
+}
+function wDisconnect(){
+  runHidden('cmd.exe /c ' + WEXE + ' disconnect > ' + WSTAT + ' 2>&1');
+  wlog(T("wDisReq")); setTimeout(wStatusNow, 1500);
+}
+function wSaveConf(){
+  var ssid = document.getElementById("wssid").value.replace(/^\s+|\s+$/g, "");
+  var key  = document.getElementById("wkey").value;
+  if ((ssid + key).match(/[&"%^]/)) {
+    alert(T("wConfGuard") + "\r\n" + WEXE + ' connect "SSID" "KEY"');
+    return;
+  }
+  var s = T("confC1") + '\n' + T("confC2") + '\n' + T("confC3") + '\n' + T("confC4") + '\n'
+        + 'SSID=' + ssid + '\nKEY=' + key + '\n';
+  try { writeText(WCONF, s); wlog(T("wSavedA") + WCONF + T("wSavedB") + (ssid || T("wSavedNone")) + T("wSavedC")); }
+  catch(e){ alert(T("frpWriteFail") + e.message); }
+}
+function wLoadConf(){
+  var t = readText(WCONF);
+  var ms = t.match(/^SSID=(.*)$/m), mk = t.match(/^KEY=(.*)$/m);
+  if (ms) document.getElementById("wssid").value = ms[1].replace(/\s+$/, "");
+  if (mk) document.getElementById("wkey").value = mk[1].replace(/\s+$/, "");
+}
+
+function wSetStat(cls, text){
+  var d = document.getElementById("d-wlan");
+  if (d) d.className = "dot " + cls;
+  var p = d ? d.parentNode : null;
+  if (p) p.title = text;
+  var el = document.getElementById("wstat");
+  if (el) el.innerHTML = T("wStatPrefix") + text;
+}
+function wStatusNow(){
+  runHidden('cmd.exe /c ' + WEXE + ' status > ' + WSTAT + ' 2>&1');
+  setTimeout(wStatusRead, 1200);   // 异步读: status 是秒级返回, 但绝不同步等(坑 1)
+}
+function wStatusRead(){
+  var txt = readWifi(WSTAT);
+  if (!txt) { wSetStat("idle", T("frpStatLoading")); return; }
+  var r = parseWifiTxt(txt);
+  if (r.fail) { wSetStat("bad", T("wStackBadA") + r.fail + ")"); return; }
+  if (r.state == 1)  wSetStat("ok",  T("wConnState") + r.desc);
+  else if (r.state == 3 || r.state == 7) wSetStat("idle", T("wBusyA") + r.sname + ") · " + r.desc);
+  else if (r.state >= 0) wSetStat("idle", T("wNotA") + r.sname + ") · " + r.desc);
+  else wSetStat("idle", T("wNoState"));
+}
+
+function openWlan(){
+  document.getElementById("wlan").style.display = "block";
+  wLoadConf(); wStatusNow();
+  layout();
+}
+function closeWlan(){
+  document.getElementById("wlan").style.display = "none";
+  wDone();
+  if (wScanTimer) { clearInterval(wScanTimer); wScanTimer = null;
+    var b = document.getElementById("wbtnscan"); if (b) { b.disabled = 0; b.innerHTML = T("btnScan"); } }
+}
+
+/* ---------------- 布局 / 隐藏 / 恢复 ---------------- */
+/* IE8 只认 top/bottom 单独定位(四边拉伸要 IE9+), 所以跨全屏的层用 px 度量视口。
+   67/119 = 顶栏/底栏高度 + 各自的 1px 描边。 */
+var TOPH = 67, BOTPH = 119;
+function fullSize(){
+  // 注意: resizeTo 用的是外框尺寸, 标题栏+边框约占 56x22, 客户端会自动落在工作区内,
+  // 不要再把 outer-inner 的差值加回去(加了会把底栏顶出屏幕)
+  try {
+    window.moveTo(0, 0);
+    window.resizeTo(screen.availWidth, screen.availHeight);
+    window.moveTo(0, 0);
+  } catch(e){}
+}
+function setBox(id, w, h){
+  var el = document.getElementById(id);
+  if (!el) return;
+  if (w > 0) el.style.width  = w + "px";
+  if (h > 0) el.style.height = h + "px";
+}
+function layout(){
+  var w = document.documentElement.clientWidth  || (screen.availWidth  || 1024);
+  var h = document.documentElement.clientHeight || (screen.availHeight || 768);
+  if (w < 200 || h < 200) return;      // 隐藏态的小药丸窗口不重排
+  var mid = h - TOPH - BOTPH; if (mid < 60) mid = 60;
+  setBox("bg",   w, h);
+  setBox("bar",  w, 66);
+  setBox("foot", w, 118);
+  setBox("grid", w, mid);
+  setBox("frp",  0, mid);
+  setBox("wlan", 0, mid);
+}
+window.onresize = layout;
+
+function hideDesktop(){
+  document.getElementById("bar").style.display = "none";
+  document.getElementById("grid").style.display = "none";
+  document.getElementById("foot").style.display = "none";
+  document.getElementById("frp").style.display = "none";
+  document.getElementById("wlan").style.display = "none";
+  document.getElementById("bg").style.display = "none";
+  document.getElementById("pill").style.display = "block";
+  // 标题栏+边框约吃掉 22x56, 所以外框给足尺寸, 让"恢复桌面"这几个字留在客户端里
+  try { window.moveTo(0, 0); window.resizeTo(250, 110); } catch(e){}
+  document.body.style.backgroundColor = "#123a5f";
+  document.body.style.backgroundImage = "none";
+}
+function showDesktop(){
+  document.getElementById("bar").style.display = "block";
+  document.getElementById("grid").style.display = "block";
+  document.getElementById("foot").style.display = "block";
+  document.getElementById("bg").style.display = "block";
+  document.getElementById("pill").style.display = "none";
+  document.body.style.backgroundColor = "#0b1424";
+  document.body.style.backgroundImage = "url('wallpaper.jpg')";
+  fullSize();
+  setTimeout(layout, 60);
+  refresh();
+}
+
+/* ---------------- 启动顺序 ---------------- */
+/* LANG 必须在 hostInfo()/refresh() 首次渲染前定好; detectLang 用到的 wql/firstOf 是函数声明,
+   已被提升, 可以直接调。判定失败退回 zh(母语言)。 */
+LANG = detectLang();
+applyLang();
+hostInfo();
+refresh();
+setInterval(refresh, 3000);
+layout();
+setTimeout(fullSize, 80);
+setTimeout(fullSize, 300);
+setTimeout(layout, 120);
+setTimeout(layout, 400);
+setTimeout(function(){ loadFrp(); }, 600);
+/* WiFi 底栏灯: 开机 3 秒后查一次(那时 netdrvfix 的绑定轮差不多完成), 之后每 8 秒一次;
+   全程"发起命令 -> 1.2 秒后读文件", 绝不在 UI 线程上等 wifi.exe(connect 会自轮询 30 秒)。 */
+setTimeout(wStatusNow, 3000);
+setInterval(wStatusNow, 8000);
+</script>
+</body>
+</html>

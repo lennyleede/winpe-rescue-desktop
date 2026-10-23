@@ -1,0 +1,49 @@
+﻿isAdmin=True
+
+===== 现状 =====
+vm=PE-TEST state=Off nic=网络适配器 switch=Default Switch mac=00155D006900
+   IpSecConfigurationStatus = 
+   DynamicMacAddressing = 
+   StaticMacAddress = 
+   MacAddressSpoofing = Off
+   DhcpGuard = Off
+   RouterGuard = Off
+   IovWeight = 0
+   VMQWeight = 100
+vm=WinPE-Test state=Running nic=网络适配器 switch=Default Switch mac=00155D4E1099
+   IpSecConfigurationStatus = 
+   DynamicMacAddressing = 
+   StaticMacAddress = 
+   MacAddressSpoofing = On
+   DhcpGuard = Off
+   RouterGuard = Off
+   IovWeight = 0
+   VMQWeight = 100
+  host ips: 192.168.0.106@以太网 , 172.26.16.1@vEthernet (Default Switch) 2
+[retest before 172.26.18.238]
+  neighbor: vEthernet (Default Switch) 2=Permanent/00-15-5D-4E-10-99
+  ping:  正在 Ping 172.26.18.238 具有 32 字节的数据: 请求超时。 请求超时。 请求超时。 请求超时。 172.26.18.238 的 Ping 统计信息: 数据包: 已发送 = 4，已接收 = 0，丢失 = 4 (100% 丢失)，
+  tcp22: SYN 无回应
+  => 还是不通
+
+===== 清 ACL / 关掉 IPSec 过滤 =====
+  PE-TEST/网络适配器 NoFiltering 失败: 无法绑定参数“IPsecOffloadMaximumSecurityAssociation”。无法将值“NoFiltering”转换为类型“System.UInt32”。错误:“输入字符串的格式不正确。”
+  WinPE-Test/网络适配器 NoFiltering 失败: 无法绑定参数“IPsecOffloadMaximumSecurityAssociation”。无法将值“NoFiltering”转换为类型“System.UInt32”。错误:“输入字符串的格式不正确。”
+
+===== 重启 WinPE-Test =====
+  已重启, 等 50 秒
+  扫描 pe-sshd:
+   待扫 507 个 end point ...
+   没扫到任何在听 22 的主机 => PE 要么没开机/没起来网络, 要么和宿主机不在同一个网段
+   --- 本机 IPv4 与默认路由(核对网段用) ---
+     以太网                              192.168.0.106/24
+     vEthernet (Default Switch) 2     172.26.16.1/20
+     Loopback Pseudo-Interface 1      127.0.0.1/8
+   --- ARP 表里的邻居(PE 刚连过时 MAC 会是 Intel/Realtek 网卡) ---
+     192.168.0.1           8c-a6-df-e8-c8-ee     动态
+     192.168.0.101         b4-f1-8c-4e-32-6c     动态
+     192.168.0.103         2c-57-31-06-0a-64     动态
+     192.168.0.105         b8-27-eb-86-fb-32     动态
+     192.168.0.107         34-5a-60-0b-25-60     动态
+     192.168.0.109         d8-cb-8a-5a-0b-e1     动态
+  没扫到 pe-sshd

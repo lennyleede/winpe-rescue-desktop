@@ -1,0 +1,25 @@
+﻿[A_ipv4] 172.31.38.211, fe80::3abb:d8a2:19d7:5c95
+[A_gateway] 172.31.32.1
+[A_ping_loopback] OK
+[A_ping_host] OK
+[A_ping_gw] OK
+[A_tcp_stack] TCP/IP 栈正常(有 LISTENING 条目)
+[B_sizes] exe=3766784 ak=94 tk=399 frpc_toml=219
+[B_ak_head] ssh-ed25519 AAAAC3Nz
+[B_proc] pid=796
+[B_listen22] TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+  TCP    [::]:22                [::]:0                 LISTENING
+[B_hostkey] 已生成 400 字节
+[B_log_tail] 
+[C_ssh_loopback] ssh.exe : Connection reset by 127.0.0.1 port 22
+At X:\t15.ps1:56 char:6
++ $r = & X:\OpenSSH\ssh.exe -o StrictHostKeyChecking=no -o UserKnownHos ...
++      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+[C_has_OK] NO
+[C_srv_log] 
+[D_frpc_proc] pid=1596
+[D_frpc_log] 2026-10-03 23:29:55.632 [I] [sub/root.go:194] start frpc service for config file [X:\Desktop\Frp\frpc_test.toml] with aggregated configuration || 2026-10-03 23:29:55.636 [I] [client/service.go:312] try to connect to server... || 2026-10-03 23:29:57.441 [I] [client/service.go:332] [7da361d4a48b4788] login to server success, get run id [7da361d4a48b4788] || 2026-10-03 23:29:57.441 [I] [proxy/proxy_manager.go:183] [7da361d4a48b4788] proxy added: [pe-ssh] || 2026-10-03 23:29:57.486 [I] [client/control.go:174] [7da361d4a48b4788] [pe-ssh] start proxy success
+[E_sunlogin] 未运行

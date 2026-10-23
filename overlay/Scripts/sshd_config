@@ -1,0 +1,12 @@
+# WinPE OpenSSH sshd 配置 v4 (公钥登录)
+Port 22
+ListenAddress 0.0.0.0
+HostKey X:\OpenSSH\ssh_host_rsa_key
+HostKey X:\OpenSSH\ssh_host_ecdsa_key
+HostKey X:\OpenSSH\ssh_host_ed25519_key
+AuthorizedKeysFile X:\OpenSSH\administrators_authorized_keys
+PasswordAuthentication no
+PubkeyAuthentication yes
+StrictModes no
+LogLevel VERBOSE
+Subsystem sftp X:\OpenSSH\sftp-server.exe

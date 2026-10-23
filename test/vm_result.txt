@@ -1,0 +1,45 @@
+﻿[TIME] 2026-10-03 13:14:10
+[IDENTITY] NT AUTHORITY\SYSTEM
+[COMPUTER] MINWINPC
+[PSVER] 5.1.26100.1
+[CLRVER] 4.0.30319.42000
+[PROC_sshd] RUNNING
+[PROC_mshta] RUNNING
+[PROC_SunloginSOS] NOT-RUNNING
+[PROC_svchost] RUNNING
+[PROC_services] RUNNING
+[PROC_explorer] NOT-RUNNING
+[PROC_ALL] cmd,conhost,csrss,fontdrvhost,Idle,lsass,mshta,powershell,Registry,services,smss,sshd,svchost,System,WallpaperHost,wininit,winlogon,winpeshl,WmiPrvSE
+[NETSTAT22]   TCP    0.0.0.0:22             0.0.0.0:0              LISTENING
+[NETTCP22] unavailable: Invalid namespace 
+[WLANSVC] State= StartMode= Path=
+[WLANSVC_PS] Get-Service 不可用
+[FILE_wlansvc.dll] PRESENT
+[FILE_wlancfg.dll] PRESENT
+[FILE_nwifi.sys] PRESENT
+[FILE_ndis.sys] PRESENT
+[FILE_dot3svc.dll] PRESENT
+[NETSH_WLAN] The following command was not found: wlan show interfaces.
+
+[ADAPTERS] Microsoft Hyper-V Network Adapter=2 | Microsoft Kernel Debug Network Adapter=
+[DIR_X:\Frp] MISSING
+[DIR_X:\Sunlogin] 8 文件, 29.1 MB
+[DIRLIST_X:\Sunlogin] libcrypto.dll,msvcp140.dll,msvcp140_1.dll,msvcp140_2.dll,SunloginSOS.exe,ucrtbase.dll,vcruntime140.dll,vcruntime140_1.dll
+[DIR_X:\Desktop] 9 文件, 35.5 MB
+[DIRLIST_X:\Desktop] Desktop.hta,frpc.exe,frpc.toml,frps.exe,frps.toml,LICENSE,start_frpc.bat,start_frps.bat,profile.xml
+[DIR_X:\OpenSSH] 24 文件, 8.2 MB
+[DIRLIST_X:\OpenSSH] LICENSE.txt,moduli,NOTICE.txt,scp.exe,sftp-server.exe,sftp.exe,ssh-add.exe,ssh-agent.exe,ssh-keygen.exe,ssh-keyscan.exe,ssh-pkcs11-helper.exe,ssh-shellhost.exe,ssh-sk-helper.exe,ssh.exe,sshd.exe,sshd_config_default,sshd_config,ssh_host_rsa_key,ssh_host_rsa_key.pub,ssh_host_ecdsa_key,ssh_host_ecdsa_key.pub,ssh_host_ed25519_key,ssh_host_ed25519_key.pub,administrators_authorized_keys
+[DIR_X:\Desktop\Frp] 7 文件, 35.5 MB
+[DIRLIST_X:\Desktop\Frp] frpc.exe,frpc.toml,frps.exe,frps.toml,LICENSE,start_frpc.bat,start_frps.bat
+[COMP_mshta.exe] OK
+[COMP_wmiprvse.exe] OK
+[COMP_powershell.exe] OK
+[COMP_wmiprvse.exe.mui] NO
+[FONT_COUNT] 150
+[FONT_ZH] 中文字体: msyh.ttc,msyhl.ttc,simsun.ttc
+[DOT3_RNDIS_PPPoE] 部分缺失
+[DISKS] D: 666MB | X: 513MB
+[LOG_boot.log]   UDP    0.0.0.0:500            *:*                     //   UDP    0.0.0.0:4500           *:*                     //   UDP    0.0.0.0:5353           *:*                     //   UDP    0.0.0.0:5355           *:*                     //   UDP    172.31.38.211:137      *:*                     //   UDP    172.31.38.211:138      *:*                     //   UDP    [::]:500               *:*                     //   UDP    [::]:4500              *:*                     //   UDP    [::]:5353              *:*                     //   UDP    [::]:5355              *:*                     //   UDP    [fe80::a8f5:4f0:58da:f262%2]:546  *:*                     // [2] sshd started  // [3] sunlogin launched  // [4] wlan best-effort done  // [5] desktop launched 
+[LOG_sshd.log] 
+[SSH_KEYGEN] OK ssh-ed25519 AAAAC3NzaC1lZDI1NT...
+[SSH_LOOPBACK] ssh.exe : Connection reset by 127.0.0.1 port 22 At X:\v.ps1:89 char:10 + $r = & X:\OpenSSH\ssh.exe -o StrictHostKeyChecking=no -o UserKnow ... + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ + CategoryInfo : NotSpecified: (Connection reset by 127.0.0.1 port 22:String) [], RemoteException + FullyQualifiedErrorId : NativeCommandError

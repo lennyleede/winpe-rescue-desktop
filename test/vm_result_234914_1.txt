@@ -1,0 +1,31 @@
+===== vm_fw_fix 23:48:07  Only=  Observe=30s =====
+
+### 0. 起点状态
+  DomainProfile EnableFirewall=1
+  StandardProfile EnableFirewall=1
+  PublicProfile EnableFirewall=1
+  BFE\Parameters\Policy\BootTime 值 = 
+  BFE State=Running StartMode=Auto
+  MpsSvc State=Running StartMode=Auto
+  计数起点: Packets Received = 3204 | Received Packets Delivered = 3400 | Packets Received = 1184 | Received Packets Delivered = 970 | Echo Replies 25 21 | Echos 751 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 2 | Current Connections = 0 | Segments Received = 1255 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+
+### 1. 阶段 B: 保持防火墙开启, 加允许规则(观察窗 30 秒)
+  FwPolicy2 可用, 现有规则数=43
+  FirewallEnabled Domain=True Private=True Public=True
+  加规则1(放行 入站 TCP 22): ReturnValue=
+  加规则2(放行 入站 ICMP echo request): ReturnValue=
+  规则数现在=45
+  [23:48:08] 进入观察窗, 主机请保持 ping
+  [23:48:38] 观察后计数: Packets Received = 8975 | Received Packets Delivered = 9171 | Packets Received = 1184 | Received Packets Delivered = 970 | Echo Replies 25 1174 | Echos 1904 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 1156 | Current Connections = 0 | Segments Received = 5872 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+
+### 2. 阶段 A: 三个 profile EnableFirewall=0 并重启 MpsSvc(观察窗 30 秒)
+  DomainProfile EnableFirewall -> 0
+  StandardProfile EnableFirewall -> 0
+  PublicProfile EnableFirewall -> 0
+  net stop MpsSvc -> The requested pause, continue, or stop is not valid for this service. | System.Management.Automation.RemoteException | More help is available by typing NET HELPMSG 2191. | System.Management.Automation.RemoteException
+  net start MpsSvc -> The requested service has already been started. | System.Management.Automation.RemoteException | More help is available by typing NET HELPMSG 2182. | System.Management.Automation.RemoteException
+  [23:48:40] 进入观察窗
+  [23:49:10] 观察后计数: Packets Received = 15556 | Received Packets Delivered = 15752 | Packets Received = 1184 | Received Packets Delivered = 970 | Echo Replies 25 2491 | Echos 3221 25 | Echos 0 0 | Echo Replies 0 0 | Passive Opens = 2473 | Current Connections = 1 | Segments Received = 11138 | Passive Opens = 0 | Current Connections = 0 | Segments Received = 0
+  MpsSvc State=Running
+
+### 3. 结束 23:49:11

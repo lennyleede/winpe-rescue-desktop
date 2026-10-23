@@ -1,0 +1,5 @@
+gptdump baseline captured 2026-10-14 19:03 from VM Windows (VM-RESCUE-01, disk0 VMware NVMe 60GB)
+s4b_prim_hdr_20261014_190324.bin bytes=512 md5=1f6eba584a78872f76169d1df09c292a verify=OK
+s4b_prim_tab_20261014_190324.bin bytes=16384 md5=1b2ff31014068b5cb01283d899d16a94 verify=OK
+s4b_backup_hdr_20261014_190324.bin bytes=512 md5=dba7a04e1bb648a0013f7f713b97dc3e verify=OK
+s4b_backup_tab_20261014_190324.bin bytes=16384 md5=1b2ff31014068b5cb01283d899d16a94 verify=OK

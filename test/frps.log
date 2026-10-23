@@ -1,0 +1,67 @@
+2026-10-04 09:19:59.806 [I] [server/service.go:803] [3053938484f4b70d] client login info: ip [127.0.0.1:60533] version [0.71.0] hostname [rescue-host-01] os [windows] arch [amd64]
+2026-10-04 09:19:59.838 [I] [proxy/tcp.go:82] [3053938484f4b70d] [pe-ssh-local] tcp proxy listen port [6001]
+2026-10-04 09:19:59.838 [I] [server/control.go:761] [3053938484f4b70d] new proxy [pe-ssh-local] type [tcp] success
+2026-10-04 09:20:04.250 [I] [proxy/proxy.go:260] [3053938484f4b70d] [pe-ssh-local] get a user connection [127.0.0.1:60540]
+2026-10-04 09:20:04.712 [I] [proxy/proxy.go:260] [3053938484f4b70d] [pe-ssh-local] get a user connection [127.0.0.1:60542]
+2026-10-04 09:20:05.120 [I] [proxy/proxy.go:139] [3053938484f4b70d] [pe-ssh-local] proxy closing
+2026-10-04 09:20:05.125 [I] [server/control.go:721] [3053938484f4b70d] client exit success
+2026-10-04 09:20:05.125 [W] [proxy/proxy.go:257] [3053938484f4b70d] [pe-ssh-local] listener is closed: accept tcp [::]:6001: use of closed network connection
+2026-10-04 09:32:59.464 [I] [proxy/proxy.go:139] [7da361d4a48b4788] [pe-ssh] proxy closing
+2026-10-04 09:32:59.464 [W] [proxy/proxy.go:257] [7da361d4a48b4788] [pe-ssh] listener is closed: accept tcp [::]:6000: use of closed network connection
+2026-10-04 09:32:59.464 [I] [server/control.go:721] [7da361d4a48b4788] client exit success
+2026-10-04 09:32:59.533 [I] [server/service.go:803] [e130543af9897c75] client login info: ip [172.31.38.211:56143] version [0.71.0] hostname [minint-0dvihmv] os [windows] arch [amd64]
+2026-10-04 09:32:59.535 [I] [proxy/tcp.go:82] [e130543af9897c75] [pe-ssh] tcp proxy listen port [6000]
+2026-10-04 09:32:59.537 [I] [server/control.go:761] [e130543af9897c75] new proxy [pe-ssh] type [tcp] success
+2026-10-04 09:39:43.655 [I] [proxy/proxy.go:139] [e130543af9897c75] [pe-ssh] proxy closing
+2026-10-04 09:39:43.655 [W] [proxy/proxy.go:257] [e130543af9897c75] [pe-ssh] listener is closed: accept tcp [::]:6000: use of closed network connection
+2026-10-04 09:39:43.655 [I] [server/control.go:721] [e130543af9897c75] client exit success
+2026-10-04 09:39:43.722 [I] [server/service.go:803] [36851e61f4da1ce5] client login info: ip [172.31.38.211:56196] version [0.71.0] hostname [minint-0dvihmv] os [windows] arch [amd64]
+2026-10-04 09:39:43.723 [I] [proxy/tcp.go:82] [36851e61f4da1ce5] [pe-ssh16] tcp proxy listen port [6000]
+2026-10-04 09:39:43.723 [I] [server/control.go:761] [36851e61f4da1ce5] new proxy [pe-ssh16] type [tcp] success
+2026-10-04 09:41:20.494 [I] [proxy/proxy.go:260] [36851e61f4da1ce5] [pe-ssh16] get a user connection [127.0.0.1:60800]
+2026-10-04 09:41:21.119 [I] [proxy/proxy.go:260] [36851e61f4da1ce5] [pe-ssh16] get a user connection [127.0.0.1:60801]
+2026-10-04 09:41:21.508 [I] [proxy/proxy.go:260] [36851e61f4da1ce5] [pe-ssh16] get a user connection [127.0.0.1:60802]
+2026-10-04 10:10:54.022 [I] [proxy/proxy.go:139] [36851e61f4da1ce5] [pe-ssh16] proxy closing
+2026-10-04 10:10:54.023 [W] [proxy/proxy.go:257] [36851e61f4da1ce5] [pe-ssh16] listener is closed: accept tcp [::]:6000: use of closed network connection
+2026-10-04 10:10:54.023 [I] [server/control.go:721] [36851e61f4da1ce5] client exit success
+2026-10-04 10:12:30.659 [I] [server/service.go:803] [da1e9a68e2ae3810] client login info: ip [172.31.38.211:49683] version [0.71.0] hostname [minint-fg8j2ma] os [windows] arch [amd64]
+2026-10-04 10:12:30.664 [I] [proxy/tcp.go:82] [da1e9a68e2ae3810] [pe-ssh16] tcp proxy listen port [6000]
+2026-10-04 10:12:30.664 [I] [server/control.go:761] [da1e9a68e2ae3810] new proxy [pe-ssh16] type [tcp] success
+2026-10-04 10:16:14.759 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61363]
+2026-10-04 10:16:15.049 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61364]
+2026-10-04 10:16:15.260 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61365]
+2026-10-04 10:52:59.016 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61861]
+2026-10-04 10:52:59.299 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61862]
+2026-10-04 10:52:59.508 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61863]
+2026-10-04 10:52:59.724 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61864]
+2026-10-04 10:53:01.851 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61866]
+2026-10-04 10:53:03.571 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61868]
+2026-10-04 10:53:05.294 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61869]
+2026-10-04 10:53:07.348 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61870]
+2026-10-04 10:53:07.597 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61871]
+2026-10-04 10:54:29.841 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61890]
+2026-10-04 10:54:36.072 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61891]
+2026-10-04 10:54:42.149 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61894]
+2026-10-04 10:54:47.910 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61895]
+2026-10-04 10:56:41.450 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61916]
+2026-10-04 10:56:47.049 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61917]
+2026-10-04 10:56:52.900 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61918]
+2026-10-04 10:59:49.335 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:61959]
+2026-10-04 11:02:09.575 [I] [proxy/proxy.go:139] [da1e9a68e2ae3810] [pe-ssh16] proxy closing
+2026-10-04 11:02:09.576 [W] [proxy/proxy.go:257] [da1e9a68e2ae3810] [pe-ssh16] listener is closed: accept tcp [::]:6000: use of closed network connection
+2026-10-04 11:02:09.576 [I] [server/control.go:721] [da1e9a68e2ae3810] client exit success
+2026-10-04 11:02:30.831 [I] [server/service.go:803] [da1e9a68e2ae3810] client login info: ip [172.31.38.211:49709] version [0.71.0] hostname [minint-fg8j2ma] os [windows] arch [amd64]
+2026-10-04 11:02:30.833 [I] [proxy/tcp.go:82] [da1e9a68e2ae3810] [pe-ssh16] tcp proxy listen port [6000]
+2026-10-04 11:02:30.834 [I] [server/control.go:761] [da1e9a68e2ae3810] new proxy [pe-ssh16] type [tcp] success
+2026-10-04 11:02:47.693 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:62120]
+2026-10-04 11:09:33.169 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:62269]
+2026-10-04 11:24:43.662 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63013]
+2026-10-04 11:26:47.864 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63195]
+2026-10-04 11:28:09.769 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63246]
+2026-10-04 11:31:03.253 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63334]
+2026-10-04 11:33:31.566 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63411]
+2026-10-04 11:38:19.427 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63547]
+2026-10-04 11:39:45.102 [I] [proxy/proxy.go:260] [da1e9a68e2ae3810] [pe-ssh16] get a user connection [127.0.0.1:63571]
+2026-10-04 12:04:41.032 [I] [proxy/proxy.go:139] [da1e9a68e2ae3810] [pe-ssh16] proxy closing
+2026-10-04 12:04:41.032 [W] [proxy/proxy.go:257] [da1e9a68e2ae3810] [pe-ssh16] listener is closed: accept tcp [::]:6000: use of closed network connection
+2026-10-04 12:04:41.032 [I] [server/control.go:721] [da1e9a68e2ae3810] client exit success

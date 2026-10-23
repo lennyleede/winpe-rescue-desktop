@@ -1,0 +1,4 @@
+﻿key=TUNNEL_TO_PE_OK X:\ Microsoft Windows [Version 10.0.26100.1] Warning: Permanently added '[127.0.0.1]:6000' (ED25519) to the list of known hosts. 
+anon=TUNNEL_TO_PE_ANON_OK X:\ 
+shell=Microsoft Windows [Version 10.0.26100.1] (c) Microsoft Corporation. All rights reserved. X:\> 
+verdict=经隧道公钥登录 PE 通过 / 经隧道空密码登录 PE 通过 / 隧道交互 shell 未取到 ipconfig
